@@ -1,0 +1,61 @@
+openapi: 3.0.0
+
+info:
+  title: Teamsykmelding-mock-backend API
+  description: API for teamsykmelding-mock-backend.
+  version: 1.0.0
+servers:
+  - url: 'https://teamsykmelding-mock-backend.dev.intern.nav.no'
+paths:
+  /narmesteleder/opprett:
+    post:
+      operationId: opprettNarmesteleder
+      tags:
+        - Narmesteleder
+      summary: Opprett nærmeste leder-kobling
+      requestBody:
+        $ref: '#/components/requestBodies/OpprettNarmestelederRequestBody'
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+
+components:
+  requestBodies:
+    OpprettNarmestelederRequestBody:
+      description: "Opprett nærmeste leder-kobling"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OpprettNarmestelederRequest'
+
+  schemas:
+    Date:
+      type: string
+      format: date
+    OpprettNarmestelederRequest:
+      type: object
+      properties:
+        ansattFnr:
+          type: string
+        lederFnr:
+          type: string
+        orgnummer:
+          type: string
+        mobil:
+          type: string
+        epost:
+          type: string
+        forskutterer:
+          type: boolean
+        aktivFom:
+          $ref: '#/components/schemas/Date'
+      required:
+        - ansattFnr
+        - lederFnr
+        - orgnummer
+        - mobil
+        - epost
+        - forskutterer
+        - aktivFom

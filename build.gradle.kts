@@ -12,11 +12,12 @@ val ktorVersion = "1.6.7"
 val logbackVersion = "1.2.10"
 val logstashEncoderVersion = "7.0.1"
 val prometheusVersion = "0.15.0"
-val smCommonVersion = "1.a92720c"
+val smCommonVersion = "1.a434402"
 val mockkVersion = "1.12.2"
-val testContainerKafkaVersion = "1.16.2"
+val testContainerKafkaVersion = "1.16.3"
 val kotlinVersion = "1.6.0"
 val kotestVersion = "5.1.0"
+val swaggerUiVersion = "4.1.2"
 
 tasks.withType<Jar> {
     manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
@@ -27,6 +28,7 @@ plugins {
     kotlin("jvm") version "1.6.0"
     id("com.diffplug.spotless") version "5.16.0"
     id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("org.hidetake.swagger.generator") version "2.18.2" apply true
     jacoco
 }
 
@@ -68,10 +70,14 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
 
+    implementation("no.nav.helse:syfosm-common-kafka:$smCommonVersion")
+
     implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+
+    swaggerUI( "org.webjars:swagger-ui:$swaggerUiVersion")
 
     testImplementation("org.amshove.kluent:kluent:$kluentVersion") 
     testImplementation("io.mockk:mockk:$mockkVersion")
@@ -91,6 +97,11 @@ tasks.jacocoTestReport {
     }
 }
 
+swaggerSources {
+    create("teamsykmelding-mock-backend").apply {
+        setInputFile(file("api/oas3/teamsykmelding-mock-backend-api.yaml"))
+    }
+}
 
 tasks {
 
@@ -108,13 +119,18 @@ tasks {
                     exclude()
                 }
         )
-
     }
+
+    withType<org.hidetake.gradle.swagger.generator.GenerateSwaggerUI> {
+        outputDir = File(buildDir.path + "/resources/main/api")
+    }
+
     withType<ShadowJar> {
         transform(ServiceFileTransformer::class.java) {
             setPath("META-INF/cxf")
             include("bus-extensions.txt")
         }
+        dependsOn("generateSwaggerUI")
     }
 
     withType<Test> {
