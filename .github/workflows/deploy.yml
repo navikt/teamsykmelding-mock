@@ -1,4 +1,4 @@
-name: Deploy to dev and prod
+name: Deploy to dev
 on:
   push:
     branches:
@@ -88,16 +88,3 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: naiserator-dev.yaml
-  deploy-prod:
-    name: Deploy to prod
-    runs-on: ubuntu-latest
-    needs: [ snyk-test, build, deploy-dev ]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Deploy to Prod
-        uses: nais/deploy/actions/deploy@master
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: naiserator-prod.yaml
