@@ -2,7 +2,7 @@ name: Deploy to dev
 on:
   push:
     branches:
-      - master
+      - main
 env:
   IMAGE: docker.pkg.github.com/${{ github.repository }}/teamsykmelding-mock-backend:${{ github.sha }}
 
