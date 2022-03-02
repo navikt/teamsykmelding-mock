@@ -6,6 +6,7 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.post
+import no.nav.syfo.log
 import no.nav.syfo.narmesteleder.NarmestelederService
 import java.time.LocalDate
 
@@ -23,6 +24,7 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
                     orgnummer = request.orgnummer.trim { it <= ' ' }
                 )
             )
+            log.info("Opprettet nærmesteleder-kobling")
             call.respond(HttpStatusCode.OK)
         } else {
             call.respond(HttpStatusCode.BadRequest, "Feil lengde på fødselsnummer eller orgnummer")
