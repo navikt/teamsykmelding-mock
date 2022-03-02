@@ -27,6 +27,8 @@ import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.withKtor
 import org.amshove.kluent.shouldBeEqualTo
 import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 class NarmestelederApiKtTest : FunSpec({
     val nlResponseProducer = mockk<NlResponseProducer>(relaxed = true)
@@ -91,7 +93,8 @@ class NarmestelederApiKtTest : FunSpec({
                                 sykmeldt = Sykmeldt(
                                     fnr = ansattFnr,
                                     navn = "Fornavn Etternavn"
-                                )
+                                ),
+                                aktivFom = OffsetDateTime.of(LocalDate.now().atStartOfDay(), ZoneOffset.UTC)
                             )
                         }
                     )

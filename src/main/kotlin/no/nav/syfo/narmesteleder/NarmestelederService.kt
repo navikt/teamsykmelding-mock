@@ -7,6 +7,8 @@ import no.nav.syfo.narmesteleder.kafka.model.NlResponse
 import no.nav.syfo.narmesteleder.kafka.model.Sykmeldt
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.service.PdlPersonService
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 class NarmestelederService(
     private val nlResponseProducer: NlResponseProducer,
@@ -31,12 +33,13 @@ class NarmestelederService(
                 sykmeldt = Sykmeldt(
                     fnr = opprettNarmestelederRequest.ansattFnr,
                     navn = getName(sykmeldt?.navn)
-                )
+                ),
+                aktivFom = OffsetDateTime.of(opprettNarmestelederRequest.aktivFom.atStartOfDay(), ZoneOffset.UTC)
             )
         )
     }
 
-    fun getName(person: Navn?): String {
+    private fun getName(person: Navn?): String {
         return if (person?.mellomnavn == null) {
             "${person?.fornavn} ${person?.etternavn}"
         } else {
