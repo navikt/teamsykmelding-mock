@@ -112,6 +112,8 @@ components:
           type: string
         mottakId:
           type: string
+        msgId:
+          type: string
         fnrLege:
           type: string
         herId:

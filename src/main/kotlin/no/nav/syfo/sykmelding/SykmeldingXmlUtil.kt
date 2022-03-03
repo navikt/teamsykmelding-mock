@@ -137,8 +137,8 @@ private fun medisinskVurdering(kode: String?, annenFraverGrunn: AnnenFraverGrunn
             diagnosekode.add(
                 CV().apply {
                     s = Diagnosekoder.ICD10_CODE
-                    v = "L87"
-                    dn = Diagnosekoder.icd10["L87"]?.text ?: ""
+                    v = "M674"
+                    dn = Diagnosekoder.icd10["M674"]?.text ?: ""
                 }
             )
         }
