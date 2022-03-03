@@ -17,7 +17,11 @@ val mockkVersion = "1.12.2"
 val testContainerKafkaVersion = "1.16.3"
 val kotlinVersion = "1.6.0"
 val kotestVersion = "5.1.0"
-val swaggerUiVersion = "4.1.2"
+val swaggerUiVersion = "4.5.0"
+val fellesformatVersion = "1.c22de09"
+val jaxbRuntimeVersion = "2.4.0-b180830.0438"
+val jaxwsApiVersion = "2.3.1"
+val jaxbApiVersion = "2.4.0-b180830.0359"
 
 tasks.withType<Jar> {
     manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
@@ -71,6 +75,15 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
 
     implementation("no.nav.helse:syfosm-common-kafka:$smCommonVersion")
+    implementation("no.nav.helse:syfosm-common-mq:$smCommonVersion")
+    implementation ("no.nav.helse:syfosm-common-diagnosis-codes:$smCommonVersion")
+
+    implementation("no.nav.helse.xml:xmlfellesformat:$fellesformatVersion")
+    implementation("no.nav.helse.xml:kith-hodemelding:$fellesformatVersion")
+    implementation("no.nav.helse.xml:sm2013:$fellesformatVersion")
+    implementation("javax.xml.ws:jaxws-api:$jaxwsApiVersion")
+    implementation("javax.xml.bind:jaxb-api:$jaxbApiVersion")
+    implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion")
 
     implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
