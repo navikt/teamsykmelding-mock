@@ -45,7 +45,7 @@ components:
           schema:
             $ref: '#/components/schemas/OpprettNarmestelederRequest'
     SykmeldingRequestBody:
-      description: "Opprett nærmeste leder-kobling"
+      description: "Opprett sykmelding"
       content:
         application/json:
           schema:
