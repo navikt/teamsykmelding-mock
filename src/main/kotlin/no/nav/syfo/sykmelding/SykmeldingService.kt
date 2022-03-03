@@ -53,7 +53,9 @@ class SykmeldingService(
         pasient.ident.forEach { ident -> ident.id = sykmeldingRequest.fnr }
         fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] = sykmelding
         fellesformat.get<XMLMsgHead>().msgInfo.msgId = sykmeldingRequest.msgId
-        fellesformat.get<XMLMsgHead>().msgInfo.receiver.organisation.ident[0] = hentXmlIdentHerid(sykmeldingRequest.herId)
+        sykmeldingRequest.herId?.let {
+            fellesformat.get<XMLMsgHead>().msgInfo.receiver.organisation.ident[0] = hentXmlIdentHerid(it)
+        }
         fellesformat.get<XMLMottakenhetBlokk>().ediLoggId = sykmeldingRequest.mottakId
         fellesformat.get<XMLMottakenhetBlokk>().mottattDatotid = convertToXmlGregorianCalendar(sykmeldingRequest.behandletDato)
         fellesformat.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur = sykmeldingRequest.fnrLege
