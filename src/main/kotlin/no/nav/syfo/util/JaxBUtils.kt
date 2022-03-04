@@ -18,12 +18,6 @@ import kotlin.apply
 val fellesformatJaxBContext: JAXBContext = JAXBContext.newInstance(XMLEIFellesformat::class.java, XMLMsgHead::class.java, HelseOpplysningerArbeidsuforhet::class.java)
 val fellesformatUnmarshaller: Unmarshaller = fellesformatJaxBContext.createUnmarshaller()
 
-val fellesformatMarshaller: Marshaller = fellesformatJaxBContext.createMarshaller().apply {
-    setProperty(Marshaller.JAXB_ENCODING, "UTF-8")
-    setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-    setProperty(JAXB_FRAGMENT, true)
-}
-
 fun marshallFellesformat(element: Any): String {
     return try {
         val writer = StringWriter()
