@@ -21,11 +21,13 @@ import no.nav.syfo.application.exception.ServiceUnavailableException
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toProducerConfig
+import no.nav.syfo.mq.connectionFactory
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
 import no.nav.syfo.narmesteleder.kafka.model.NlResponseKafkaMessage
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
+import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.util.JacksonKafkaSerializer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.common.serialization.StringSerializer
@@ -42,8 +44,12 @@ val objectMapper: ObjectMapper = ObjectMapper().apply {
 
 fun main() {
     val env = Environment()
+    val serviceUser = ServiceUser()
     DefaultExports.initialize()
     val applicationState = ApplicationState()
+
+    val connection = connectionFactory(env).createConnection(serviceUser.username, serviceUser.password)
+    connection.start()
 
     val config: HttpClientConfig<ApacheEngineConfig>.() -> Unit = {
         install(JsonFeature) {
@@ -81,10 +87,13 @@ fun main() {
 
     val narmestelederService = NarmestelederService(nlResponseKafkaProducer, pdlPersonService)
 
+    val sykmeldingService = SykmeldingService(pdlPersonService, connection, env.sykmeldingQueue)
+
     val applicationEngine = createApplicationEngine(
         env,
         applicationState,
-        narmestelederService
+        narmestelederService,
+        sykmeldingService
     )
     val applicationServer = ApplicationServer(applicationEngine, applicationState)
     applicationServer.start()

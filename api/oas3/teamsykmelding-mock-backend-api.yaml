@@ -20,6 +20,21 @@ paths:
           description: Ok
         '400':
           description: Bad Request
+        '500':
+          description: Internal server error
+  /sykmelding/opprett:
+    post:
+      operationId: opprettSykmelding
+      tags:
+        - Sykmelding
+      summary: Opprett sykmelding
+      requestBody:
+        $ref: '#/components/requestBodies/SykmeldingRequestBody'
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Internal server error
 
 components:
   requestBodies:
@@ -29,6 +44,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OpprettNarmestelederRequest'
+    SykmeldingRequestBody:
+      description: "Opprett sykmelding"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SykmeldingRequest'
 
   schemas:
     Date:
@@ -59,3 +80,80 @@ components:
         - epost
         - forskutterer
         - aktivFom
+    SykmeldingPeriode:
+      type: object
+      properties:
+        fom:
+          $ref: '#/components/schemas/Date'
+        tom:
+          $ref: '#/components/schemas/Date'
+        type:
+          type: string
+          enum:
+            - AVVENTENDE
+            - GRADERT_20
+            - GRADERT_40
+            - GRADERT_50
+            - GRADERT_60
+            - GRADERT_80
+            - GRADERT_REISETILSKUDD
+            - HUNDREPROSENT
+            - BEHANDLINGSDAGER
+            - BEHANDLINGSDAG
+            - REISETILSKUDD
+      required:
+        - fom
+        - tom
+        - type
+    SykmeldingRequest:
+      type: object
+      properties:
+        fnr:
+          type: string
+        mottakId:
+          type: string
+        msgId:
+          type: string
+        fnrLege:
+          type: string
+        herId:
+          type: string
+        syketilfelleStartdato:
+          $ref: '#/components/schemas/Date'
+        diagnosekode:
+          type: string
+        annenFraverGrunn:
+          type: string
+          enum:
+            - GODKJENT_HELSEINSTITUSJON
+            - BEHANDLING_FORHINDRER_ARBEID
+            - ARBEIDSRETTET_TILTAK
+            - MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND
+            - NODVENDIG_KONTROLLUNDENRSOKELSE
+            - SMITTEFARE
+            - ABORT
+            - UFOR_GRUNNET_BARNLOSHET
+            - DONOR
+            - BEHANDLING_STERILISERING
+        perioder:
+          type: array
+          items:
+            $ref: '#/components/schemas/SykmeldingPeriode'
+        behandletDato:
+          $ref: '#/components/schemas/Date'
+        kontaktDato:
+          $ref: '#/components/schemas/Date'
+        begrunnIkkeKontakt:
+          type: string
+        vedlegg:
+          type: boolean
+      required:
+        - fnr
+        - mottakId
+        - msgId
+        - fnrLege
+        - syketilfelleStartdato
+        - diagnosekode
+        - perioder
+        - behandletDato
+        - vedlegg

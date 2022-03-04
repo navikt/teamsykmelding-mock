@@ -25,12 +25,15 @@ import no.nav.syfo.application.metrics.monitorHttpRequests
 import no.nav.syfo.log
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.api.registrerNarmestelederApi
+import no.nav.syfo.sykmelding.SykmeldingService
+import no.nav.syfo.sykmelding.api.registrerSykmeldingApi
 import java.util.UUID
 
 fun createApplicationEngine(
     env: Environment,
     applicationState: ApplicationState,
-    narmestelederService: NarmestelederService
+    narmestelederService: NarmestelederService,
+    sykmeldingService: SykmeldingService
 ): ApplicationEngine =
     embeddedServer(Netty, env.applicationPort) {
         install(ContentNegotiation) {
@@ -58,6 +61,7 @@ fun createApplicationEngine(
             registerNaisApi(applicationState)
             setupSwaggerDocApi()
             registrerNarmestelederApi(narmestelederService)
+            registrerSykmeldingApi(sykmeldingService)
         }
         intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests())
     }
