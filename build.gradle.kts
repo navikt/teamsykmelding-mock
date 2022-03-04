@@ -20,7 +20,6 @@ val kotestVersion = "5.1.0"
 val swaggerUiVersion = "4.5.0"
 val fellesformatVersion = "1.c22de09"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
-val jaxwsApiVersion = "2.3.1"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 
 tasks.withType<Jar> {
@@ -81,7 +80,6 @@ dependencies {
     implementation("no.nav.helse.xml:xmlfellesformat:$fellesformatVersion")
     implementation("no.nav.helse.xml:kith-hodemelding:$fellesformatVersion")
     implementation("no.nav.helse.xml:sm2013:$fellesformatVersion")
-    implementation("javax.xml.ws:jaxws-api:$jaxwsApiVersion")
     implementation("javax.xml.bind:jaxb-api:$jaxbApiVersion")
     implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion")
 

@@ -150,6 +150,7 @@ components:
       required:
         - fnr
         - mottakId
+        - msgId
         - fnrLege
         - syketilfelleStartdato
         - diagnosekode
