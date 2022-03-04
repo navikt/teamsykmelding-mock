@@ -4,6 +4,7 @@ import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.syfo.log
+import no.nav.syfo.mq.producerForQueue
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.mq.SyfosmmottakMqProducer
@@ -13,14 +14,22 @@ import no.nav.syfo.util.marshallFellesformat
 import java.io.StringReader
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
+import javax.jms.Connection
+import javax.jms.Session
 
 class SykmeldingService(
     private val pdlPersonService: PdlPersonService,
-    private val syfosmmottakMqProducer: SyfosmmottakMqProducer
+    private val connection: Connection,
+    private val sykmeldingQueue: String
 ) {
     suspend fun opprettSykmelding(sykmeldingRequest: SykmeldingRequest) {
         val sykmelding = tilSykmeldingXml(sykmeldingRequest)
         val sykmeldingXml = marshallFellesformat(sykmelding)
+
+        val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
+        val messageProducer = session.producerForQueue(sykmeldingQueue)
+        val syfosmmottakMqProducer = SyfosmmottakMqProducer(session, messageProducer)
+
         syfosmmottakMqProducer.send(sykmeldingXml)
     }
 
