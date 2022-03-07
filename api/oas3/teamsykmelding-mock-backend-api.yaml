@@ -22,6 +22,22 @@ paths:
           description: Bad Request
         '500':
           description: Internal server error
+  /narmesteleder/{orgnummer}/nullstill:
+    post:
+      operationId: nullstillNarmesteleder
+      tags:
+        - Narmesteleder
+      summary: Bryter nærmeste leder-kobling for ansatt og orgnummer
+      parameters:
+        - $ref: '#/components/parameters/Orgnummer'
+        - $ref: '#/components/parameters/SykmeldtFnr'
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal server error
   /sykmelding/opprett:
     post:
       operationId: opprettSykmelding
@@ -50,6 +66,22 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/SykmeldingRequest'
+  parameters:
+    Orgnummer:
+      description: Bedriftens orgnummer
+      name: orgnummer
+      in: path
+      required: true
+      schema:
+        type: string
+      example: '974600951'
+    SykmeldtFnr:
+      description: fnr for den sykmeldte
+      name: Sykmeldt-Fnr
+      in: header
+      required: true
+      schema:
+        type: string
 
   schemas:
     Date:

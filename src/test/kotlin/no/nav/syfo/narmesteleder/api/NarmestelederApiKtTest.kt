@@ -96,6 +96,24 @@ class NarmestelederApiKtTest : FunSpec({
                                 ),
                                 aktivFom = OffsetDateTime.of(LocalDate.now().atStartOfDay(), ZoneOffset.UTC)
                             )
+                        },
+                        nlAvbrutt = null
+                    )
+                }
+            }
+            test("Deaktiverer NL-kobling") {
+                with(
+                    handleRequest(HttpMethod.Post, "/narmesteleder/$orgnummer/nullstill") {
+                        addHeader("Sykmeldt-Fnr", ansattFnr)
+                    }
+                ) {
+                    response.status() shouldBeEqualTo HttpStatusCode.OK
+                }
+                coVerify {
+                    nlResponseProducer.sendNlResponse(
+                        nlResponse = null,
+                        match {
+                            it.orgnummer == orgnummer && it.sykmeldtFnr == ansattFnr
                         }
                     )
                 }

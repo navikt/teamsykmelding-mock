@@ -30,6 +30,22 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
             call.respond(HttpStatusCode.BadRequest, "Feil lengde på fødselsnummer eller orgnummer")
         }
     }
+    post("/narmesteleder/{orgnummer}/nullstill") {
+        val fnrSykmeldt = call.request.headers["Sykmeldt-Fnr"]?.takeIf { it.isNotEmpty() }
+        val orgnummer = call.parameters["orgnummer"]?.takeIf { it.isNotEmpty() }
+        if (fnrSykmeldt == null) {
+            call.respond(HttpStatusCode.BadRequest, "Sykmeldt-Fnr mangler")
+        }
+        if (orgnummer == null) {
+            call.respond(HttpStatusCode.BadRequest, "Orgnummer mangler")
+        }
+        narmestelederService.nullstillNarmesteleder(
+            sykmeldtFnr = fnrSykmeldt!!,
+            orgnummer = orgnummer!!
+        )
+        log.info("Nullstilt nærmesteleder-koblinger for orgnummer $orgnummer")
+        call.respond(HttpStatusCode.OK)
+    }
 }
 
 data class OpprettNarmestelederRequest(

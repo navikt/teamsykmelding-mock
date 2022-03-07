@@ -2,5 +2,6 @@ package no.nav.syfo.narmesteleder.kafka.model
 
 data class NlResponseKafkaMessage(
     val kafkaMetadata: KafkaMetadata,
-    val nlResponse: NlResponse
+    val nlResponse: NlResponse?,
+    val nlAvbrutt: NlAvbrutt?
 )
