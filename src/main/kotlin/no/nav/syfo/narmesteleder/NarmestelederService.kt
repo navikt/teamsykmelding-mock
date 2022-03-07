@@ -3,6 +3,7 @@ package no.nav.syfo.narmesteleder
 import no.nav.syfo.narmesteleder.api.OpprettNarmestelederRequest
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
 import no.nav.syfo.narmesteleder.kafka.model.Leder
+import no.nav.syfo.narmesteleder.kafka.model.NlAvbrutt
 import no.nav.syfo.narmesteleder.kafka.model.NlResponse
 import no.nav.syfo.narmesteleder.kafka.model.Sykmeldt
 import no.nav.syfo.pdl.model.Navn
@@ -20,7 +21,7 @@ class NarmestelederService(
         val leder = personer[opprettNarmestelederRequest.lederFnr]
 
         nlResponseProducer.sendNlResponse(
-            NlResponse(
+            nlResponse = NlResponse(
                 orgnummer = opprettNarmestelederRequest.orgnummer,
                 utbetalesLonn = opprettNarmestelederRequest.forskutterer,
                 leder = Leder(
@@ -35,6 +36,18 @@ class NarmestelederService(
                     navn = getName(sykmeldt?.navn)
                 ),
                 aktivFom = OffsetDateTime.of(opprettNarmestelederRequest.aktivFom.atStartOfDay(), ZoneOffset.UTC)
+            ),
+            nlAvbrutt = null
+        )
+    }
+
+    fun nullstillNarmesteleder(sykmeldtFnr: String, orgnummer: String) {
+        nlResponseProducer.sendNlResponse(
+            nlResponse = null,
+            nlAvbrutt = NlAvbrutt(
+                orgnummer = orgnummer,
+                sykmeldtFnr = sykmeldtFnr,
+                aktivTom = OffsetDateTime.now(ZoneOffset.UTC)
             )
         )
     }
