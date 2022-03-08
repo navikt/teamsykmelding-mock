@@ -4,10 +4,10 @@ import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.syfo.log
+import no.nav.syfo.mq.MqProducer
 import no.nav.syfo.mq.producerForQueue
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
-import no.nav.syfo.sykmelding.mq.SyfosmmottakMqProducer
 import no.nav.syfo.util.fellesformatUnmarshaller
 import no.nav.syfo.util.get
 import no.nav.syfo.util.marshallFellesformat
@@ -28,7 +28,7 @@ class SykmeldingService(
 
         val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
         val messageProducer = session.producerForQueue(sykmeldingQueue)
-        val syfosmmottakMqProducer = SyfosmmottakMqProducer(session, messageProducer)
+        val syfosmmottakMqProducer = MqProducer(session, messageProducer)
 
         syfosmmottakMqProducer.send(sykmeldingXml)
     }

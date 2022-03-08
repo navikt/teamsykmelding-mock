@@ -21,6 +21,7 @@ val swaggerUiVersion = "4.5.0"
 val fellesformatVersion = "1.c22de09"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
+val legeerklaeringVersion = "2019.07.29-02-53-86b22e73f7843e422ee500b486dac387a582f2d1"
 
 tasks.withType<Jar> {
     manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
@@ -75,11 +76,12 @@ dependencies {
 
     implementation("no.nav.helse:syfosm-common-kafka:$smCommonVersion")
     implementation("no.nav.helse:syfosm-common-mq:$smCommonVersion")
-    implementation ("no.nav.helse:syfosm-common-diagnosis-codes:$smCommonVersion")
+    implementation("no.nav.helse:syfosm-common-diagnosis-codes:$smCommonVersion")
 
     implementation("no.nav.helse.xml:xmlfellesformat:$fellesformatVersion")
     implementation("no.nav.helse.xml:kith-hodemelding:$fellesformatVersion")
     implementation("no.nav.helse.xml:sm2013:$fellesformatVersion")
+    implementation("no.nav.helse.xml:legeerklaering:$legeerklaeringVersion")
     implementation("javax.xml.bind:jaxb-api:$jaxbApiVersion")
     implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion")
 

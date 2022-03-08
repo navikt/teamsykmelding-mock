@@ -21,6 +21,7 @@ import no.nav.syfo.application.exception.ServiceUnavailableException
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toProducerConfig
+import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.mq.connectionFactory
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
@@ -86,14 +87,15 @@ fun main() {
     val nlResponseKafkaProducer = NlResponseProducer(kafkaProducer, env.narmestelederTopic)
 
     val narmestelederService = NarmestelederService(nlResponseKafkaProducer, pdlPersonService)
-
     val sykmeldingService = SykmeldingService(pdlPersonService, connection, env.sykmeldingQueue)
+    val legeerklaeringService = LegeerklaeringService(pdlPersonService, connection, env.legeerklaeringQueue)
 
     val applicationEngine = createApplicationEngine(
         env,
         applicationState,
         narmestelederService,
-        sykmeldingService
+        sykmeldingService,
+        legeerklaeringService
     )
     val applicationServer = ApplicationServer(applicationEngine, applicationState)
     applicationServer.start()
