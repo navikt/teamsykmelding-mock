@@ -51,6 +51,19 @@ paths:
           description: Ok
         '500':
           description: Internal server error
+  /legeerklaering/opprett:
+    post:
+      operationId: opprettLegeerklaering
+      tags:
+        - Legeerklaering
+      summary: Opprett legeerklæring
+      requestBody:
+        $ref: '#/components/requestBodies/LegeerklaeringRequestBody'
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Internal server error
 
 components:
   requestBodies:
@@ -66,6 +79,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/SykmeldingRequest'
+    LegeerklaeringRequestBody:
+      description: "Opprett legeerklæring"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LegeerklaeringRequest'
   parameters:
     Orgnummer:
       description: Bedriftens orgnummer
@@ -188,4 +207,28 @@ components:
         - diagnosekode
         - perioder
         - behandletDato
+        - vedlegg
+    LegeerklaeringRequest:
+      type: object
+      properties:
+        fnr:
+          type: string
+        mottakId:
+          type: string
+        msgId:
+          type: string
+        fnrLege:
+          type: string
+        diagnosekode:
+          type: string
+        statusPresens:
+          type: string
+        vedlegg:
+          type: boolean
+      required:
+        - fnr
+        - mottakId
+        - msgId
+        - fnrLege
+        - diagnosekode
         - vedlegg

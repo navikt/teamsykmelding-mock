@@ -22,6 +22,8 @@ import no.nav.syfo.Environment
 import no.nav.syfo.application.api.registerNaisApi
 import no.nav.syfo.application.api.setupSwaggerDocApi
 import no.nav.syfo.application.metrics.monitorHttpRequests
+import no.nav.syfo.legeerklaering.LegeerklaeringService
+import no.nav.syfo.legeerklaering.api.registrerLegeerklaeringApi
 import no.nav.syfo.log
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.api.registrerNarmestelederApi
@@ -33,7 +35,8 @@ fun createApplicationEngine(
     env: Environment,
     applicationState: ApplicationState,
     narmestelederService: NarmestelederService,
-    sykmeldingService: SykmeldingService
+    sykmeldingService: SykmeldingService,
+    legeerklaeringService: LegeerklaeringService
 ): ApplicationEngine =
     embeddedServer(Netty, env.applicationPort) {
         install(ContentNegotiation) {
@@ -62,6 +65,7 @@ fun createApplicationEngine(
             setupSwaggerDocApi()
             registrerNarmestelederApi(narmestelederService)
             registrerSykmeldingApi(sykmeldingService)
+            registrerLegeerklaeringApi(legeerklaeringService)
         }
         intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests())
     }

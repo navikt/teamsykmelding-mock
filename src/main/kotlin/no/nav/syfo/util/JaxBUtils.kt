@@ -1,6 +1,7 @@
 package no.nav.syfo.util
 
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
+import no.nav.helse.legeerklaering.Legeerklaring
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
 import java.io.StringWriter
@@ -18,10 +19,28 @@ import kotlin.apply
 val fellesformatJaxBContext: JAXBContext = JAXBContext.newInstance(XMLEIFellesformat::class.java, XMLMsgHead::class.java, HelseOpplysningerArbeidsuforhet::class.java)
 val fellesformatUnmarshaller: Unmarshaller = fellesformatJaxBContext.createUnmarshaller()
 
+val legeerklaeringJaxBContext: JAXBContext = JAXBContext.newInstance(XMLEIFellesformat::class.java, XMLMsgHead::class.java, Legeerklaring::class.java)
+val legeerklaeringUnmarshaller: Unmarshaller = legeerklaeringJaxBContext.createUnmarshaller()
+
 fun marshallFellesformat(element: Any): String {
     return try {
         val writer = StringWriter()
         val marshaller: Marshaller = fellesformatJaxBContext.createMarshaller().apply {
+            setProperty(Marshaller.JAXB_ENCODING, "UTF-8")
+            setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
+            setProperty(JAXB_FRAGMENT, true)
+        }
+        marshaller.marshal(element, StreamResult(writer))
+        writer.toString()
+    } catch (e: JAXBException) {
+        throw RuntimeException(e)
+    }
+}
+
+fun marshallLegeerklaering(element: Any): String {
+    return try {
+        val writer = StringWriter()
+        val marshaller: Marshaller = legeerklaeringJaxBContext.createMarshaller().apply {
             setProperty(Marshaller.JAXB_ENCODING, "UTF-8")
             setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
             setProperty(JAXB_FRAGMENT, true)
