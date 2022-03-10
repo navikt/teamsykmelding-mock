@@ -38,6 +38,7 @@ class SykmeldingServiceTest : FunSpec({
                 fnrLege = legeFnr,
                 msgId = "msgId",
                 herId = null,
+                hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
                 annenFraverGrunn = null,
@@ -51,7 +52,8 @@ class SykmeldingServiceTest : FunSpec({
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
-                vedlegg = false
+                vedlegg = false,
+                virksomhetsykmelding = false
             )
 
             val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest)
@@ -70,6 +72,7 @@ class SykmeldingServiceTest : FunSpec({
                 fnrLege = legeFnr,
                 msgId = "msgId",
                 herId = "herId",
+                hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
                 annenFraverGrunn = null,
@@ -83,7 +86,8 @@ class SykmeldingServiceTest : FunSpec({
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
-                vedlegg = true
+                vedlegg = true,
+                virksomhetsykmelding = false
             )
 
             val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest)
@@ -94,6 +98,43 @@ class SykmeldingServiceTest : FunSpec({
             sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo "mottakId"
             sykmeldingXml.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur shouldBeEqualTo legeFnr
             sykmeldingXml.get<XMLMsgHead>().document.size shouldBeEqualTo 3
+        }
+        test("Oppretter korrekt virksomhetsykmeldingXml") {
+            val sykmeldingRequest = SykmeldingRequest(
+                fnr = fnr,
+                mottakId = "mottakId",
+                fnrLege = legeFnr,
+                msgId = "msgId",
+                herId = null,
+                hprNummer = "hpr",
+                syketilfelleStartdato = LocalDate.now().minusDays(1),
+                diagnosekode = "M674",
+                annenFraverGrunn = null,
+                perioder = listOf(
+                    SykmeldingPeriode(
+                        fom = LocalDate.now().plusDays(1),
+                        tom = LocalDate.now().plusWeeks(1),
+                        type = SykmeldingType.HUNDREPROSENT
+                    )
+                ),
+                behandletDato = LocalDate.now(),
+                kontaktDato = null,
+                begrunnIkkeKontakt = null,
+                vedlegg = false,
+                virksomhetsykmelding = true
+            )
+
+            val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest)
+
+            sykmeldingXml.get<XMLMsgHead>().msgInfo.msgId shouldBeEqualTo "msgId"
+            sykmeldingXml.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional?.ident?.find {
+                it.typeId.v == "HPR"
+            }?.id shouldBeEqualTo "hpr"
+            sykmeldingXml.get<XMLMsgHead>().msgInfo.patient.ident[0].id shouldBeEqualTo fnr
+            sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo "mottakId"
+            sykmeldingXml.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur shouldBeEqualTo null
+            sykmeldingXml.get<XMLMottakenhetBlokk>().ebService shouldBeEqualTo "SykmeldingVirksomhet"
+            sykmeldingXml.get<XMLMsgHead>().document.size shouldBeEqualTo 1
         }
     }
 })

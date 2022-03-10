@@ -36,6 +36,8 @@ class SykmeldingService(
     suspend fun tilSykmeldingXml(sykmeldingRequest: SykmeldingRequest): XMLEIFellesformat {
         val sykmeldingXml = if (sykmeldingRequest.vedlegg) {
             SykmeldingService::class.java.getResource("/sykmelding/sykmelding_med_vedlegg.xml").readText(charset = Charsets.ISO_8859_1)
+        } else if (sykmeldingRequest.virksomhetsykmelding) {
+            SykmeldingService::class.java.getResource("/sykmelding/virksomhetsykmelding.xml").readText(charset = Charsets.ISO_8859_1)
         } else {
             SykmeldingService::class.java.getResource("/sykmelding/sykmelding.xml").readText(charset = Charsets.ISO_8859_1)
         }
@@ -63,11 +65,17 @@ class SykmeldingService(
         fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] = sykmelding
         fellesformat.get<XMLMsgHead>().msgInfo.msgId = sykmeldingRequest.msgId
         sykmeldingRequest.herId?.let {
-            fellesformat.get<XMLMsgHead>().msgInfo.receiver.organisation.ident[0] = hentXmlIdentHerid(it)
+            fellesformat.get<XMLMsgHead>().msgInfo.receiver.organisation.ident[0] = xmlIdentHerid(it)
+        }
+        sykmeldingRequest.hprNummer?.let {
+            fellesformat.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional.ident.add(xmlIdentHPR(sykmeldingRequest.hprNummer))
         }
         fellesformat.get<XMLMottakenhetBlokk>().ediLoggId = sykmeldingRequest.mottakId
         fellesformat.get<XMLMottakenhetBlokk>().mottattDatotid = convertToXmlGregorianCalendar(sykmeldingRequest.behandletDato)
-        fellesformat.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur = sykmeldingRequest.fnrLege
+
+        if (!sykmeldingRequest.virksomhetsykmelding) {
+            fellesformat.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur = sykmeldingRequest.fnrLege
+        }
 
         return fellesformat
     }

@@ -8,6 +8,7 @@ data class SykmeldingRequest(
     val msgId: String,
     val fnrLege: String,
     val herId: String?,
+    val hprNummer: String?,
     val syketilfelleStartdato: LocalDate,
     val diagnosekode: String,
     val annenFraverGrunn: AnnenFraverGrunn?,
@@ -15,7 +16,8 @@ data class SykmeldingRequest(
     val behandletDato: LocalDate,
     val kontaktDato: LocalDate?,
     val begrunnIkkeKontakt: String?,
-    val vedlegg: Boolean
+    val vedlegg: Boolean,
+    val virksomhetsykmelding: Boolean
 )
 
 data class SykmeldingPeriode(
