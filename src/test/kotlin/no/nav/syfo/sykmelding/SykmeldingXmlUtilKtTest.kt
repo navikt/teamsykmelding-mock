@@ -22,6 +22,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 fnrLege = "10987654321",
                 msgId = "msgId",
                 herId = null,
+                hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
                 annenFraverGrunn = null,
@@ -35,7 +36,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
-                vedlegg = false
+                vedlegg = false,
+                virksomhetsykmelding = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -62,6 +64,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 fnrLege = "10987654321",
                 msgId = "msgId",
                 herId = "herId",
+                hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
                 annenFraverGrunn = AnnenFraverGrunn.SMITTEFARE,
@@ -80,7 +83,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 behandletDato = LocalDate.now(),
                 kontaktDato = LocalDate.now().minusDays(2),
                 begrunnIkkeKontakt = "Hadde ikke tid",
-                vedlegg = false
+                vedlegg = false,
+                virksomhetsykmelding = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -114,6 +118,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 fnrLege = "10987654321",
                 msgId = "msgId",
                 herId = null,
+                hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "TULLEKODE",
                 annenFraverGrunn = null,
@@ -127,7 +132,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
-                vedlegg = false
+                vedlegg = false,
+                virksomhetsykmelding = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -137,6 +143,37 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.v shouldBeEqualTo "TULLEKODE"
             helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.s shouldBeEqualTo Diagnosekoder.ICD10_CODE
             helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.dn shouldBeEqualTo ""
+        }
+        test("Virksomhetsykmelding får riktig behandler") {
+            val sykmeldingRequest = SykmeldingRequest(
+                fnr = "12345678910",
+                mottakId = "mottakId",
+                fnrLege = "10987654321",
+                msgId = "msgId",
+                herId = null,
+                hprNummer = "hpr",
+                syketilfelleStartdato = LocalDate.now().minusDays(1),
+                diagnosekode = "M674",
+                annenFraverGrunn = null,
+                perioder = listOf(
+                    SykmeldingPeriode(
+                        fom = LocalDate.now().plusDays(1),
+                        tom = LocalDate.now().plusWeeks(1),
+                        type = SykmeldingType.HUNDREPROSENT
+                    )
+                ),
+                behandletDato = LocalDate.now(),
+                kontaktDato = null,
+                begrunnIkkeKontakt = null,
+                vedlegg = false,
+                virksomhetsykmelding = true
+            )
+            val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
+            val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
+
+            val helseopplysninger = lagHelseopplysninger(sykmeldingRequest, sykmeldt, lege)
+
+            helseopplysninger.behandler.id[0].id shouldBeEqualTo "10987654321"
         }
     }
 })

@@ -167,8 +167,12 @@ components:
           type: string
         fnrLege:
           type: string
+          example: '01117302624'
         herId:
           type: string
+        hprNummer:
+          type: string
+          example: '7125186'
         syketilfelleStartdato:
           $ref: '#/components/schemas/Date'
         diagnosekode:
@@ -198,6 +202,8 @@ components:
           type: string
         vedlegg:
           type: boolean
+        virksomhetsykmelding:
+          type: boolean
       required:
         - fnr
         - mottakId
@@ -208,6 +214,7 @@ components:
         - perioder
         - behandletDato
         - vedlegg
+        - virksomhetsykmelding
     LegeerklaeringRequest:
       type: object
       properties:

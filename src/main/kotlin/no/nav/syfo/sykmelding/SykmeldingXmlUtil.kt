@@ -326,15 +326,24 @@ fun convertToXmlGregorianCalendar(dato: LocalDate): XMLGregorianCalendar? {
     }
 }
 
-fun hentXmlIdentHerid(herid: String?): XMLIdent {
-    val xmlcvHerid = XMLCV().apply {
-        dn = "HER-id"
-        s = "1.2.3"
-        v = "HER"
-    }
-    val xmlIdentHerId = XMLIdent().apply {
+fun xmlIdentHerid(herid: String): XMLIdent {
+    return XMLIdent().apply {
         id = herid
-        typeId = xmlcvHerid
+        typeId = XMLCV().apply {
+            dn = "HER-id"
+            s = "2.16.578.1.12.4.1.1.8116"
+            v = "HER"
+        }
     }
-    return xmlIdentHerId
+}
+
+fun xmlIdentHPR(hprNummer: String): XMLIdent {
+    return XMLIdent().apply {
+        id = hprNummer
+        typeId = XMLCV().apply {
+            dn = "HPR-nummer"
+            s = "2.16.578.1.12.4.1.1.8116"
+            v = "HPR"
+        }
+    }
 }
