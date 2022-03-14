@@ -5,6 +5,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
+import io.ktor.routing.delete
 import io.ktor.routing.post
 import no.nav.syfo.log
 import no.nav.syfo.narmesteleder.NarmestelederService
@@ -25,12 +26,12 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
                 )
             )
             log.info("Opprettet nærmesteleder-kobling")
-            call.respond(HttpStatusCode.OK)
+            call.respond(HttpStatusCode.OK, "Nærmeste leder er registrert")
         } else {
             call.respond(HttpStatusCode.BadRequest, "Feil lengde på fødselsnummer eller orgnummer")
         }
     }
-    post("/narmesteleder/{orgnummer}/nullstill") {
+    delete("/narmesteleder/{orgnummer}") {
         val fnrSykmeldt = call.request.headers["Sykmeldt-Fnr"]?.takeIf { it.isNotEmpty() }
         val orgnummer = call.parameters["orgnummer"]?.takeIf { it.isNotEmpty() }
         if (fnrSykmeldt == null) {
@@ -44,7 +45,7 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
             orgnummer = orgnummer!!
         )
         log.info("Nullstilt nærmesteleder-koblinger for orgnummer $orgnummer")
-        call.respond(HttpStatusCode.OK)
+        call.respond(HttpStatusCode.OK, "Nullstilt nærmesteleder-koblinger for ansatt")
     }
 }
 

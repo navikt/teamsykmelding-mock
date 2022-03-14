@@ -17,6 +17,6 @@ fun Route.registrerLegeerklaeringApi(legeerklaeringService: LegeerklaeringServic
         legeerklaeringService.opprettLegeerklaering(request)
 
         log.info("Opprettet legeerklæring")
-        call.respond(HttpStatusCode.OK)
+        call.respond(HttpStatusCode.OK, "Opprettet legeerklæring")
     }
 }

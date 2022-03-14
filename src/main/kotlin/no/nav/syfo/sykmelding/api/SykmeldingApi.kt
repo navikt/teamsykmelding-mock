@@ -17,6 +17,6 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService) {
         sykmeldingService.opprettSykmelding(request)
 
         log.info("Opprettet sykmelding")
-        call.respond(HttpStatusCode.OK)
+        call.respond(HttpStatusCode.OK, "Opprettet sykmelding")
     }
 }

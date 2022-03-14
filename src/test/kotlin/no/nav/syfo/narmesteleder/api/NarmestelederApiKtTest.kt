@@ -103,7 +103,7 @@ class NarmestelederApiKtTest : FunSpec({
             }
             test("Deaktiverer NL-kobling") {
                 with(
-                    handleRequest(HttpMethod.Post, "/narmesteleder/$orgnummer/nullstill") {
+                    handleRequest(HttpMethod.Delete, "/narmesteleder/$orgnummer") {
                         addHeader("Sykmeldt-Fnr", ansattFnr)
                     }
                 ) {
