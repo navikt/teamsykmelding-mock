@@ -22,8 +22,8 @@ paths:
           description: Bad Request
         '500':
           description: Internal server error
-  /narmesteleder/{orgnummer}/nullstill:
-    post:
+  /narmesteleder/{orgnummer}:
+    delete:
       operationId: nullstillNarmesteleder
       tags:
         - Narmesteleder
