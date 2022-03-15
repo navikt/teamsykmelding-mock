@@ -10,6 +10,7 @@ import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import no.nav.syfo.application.HttpMessage
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
@@ -76,6 +77,7 @@ class NarmestelederApiKtTest : FunSpec({
                     }
                 ) {
                     response.status() shouldBeEqualTo HttpStatusCode.OK
+                    response.content shouldBeEqualTo objectMapper.writeValueAsString(HttpMessage("Nærmeste leder er registrert"))
                 }
                 coVerify {
                     nlResponseProducer.sendNlResponse(
