@@ -40,8 +40,9 @@ class LegeerklaeringService(
     private val connection: Connection,
     private val legeerklaeringQueue: String
 ) {
-    suspend fun opprettLegeerklaering(legeerklaeringRequest: LegeerklaeringRequest) {
-        val legeerklaering = tilLegeerklaeringXml(legeerklaeringRequest)
+    suspend fun opprettLegeerklaering(legeerklaeringRequest: LegeerklaeringRequest): String {
+        val mottakId = UUID.randomUUID().toString()
+        val legeerklaering = tilLegeerklaeringXml(legeerklaeringRequest, mottakId)
         val legeerklaeringXml = marshallLegeerklaering(legeerklaering)
 
         val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
@@ -49,9 +50,11 @@ class LegeerklaeringService(
         val pale2MqProducer = MqProducer(session, messageProducer)
 
         pale2MqProducer.send(legeerklaeringXml)
+
+        return mottakId
     }
 
-    suspend fun tilLegeerklaeringXml(legeerklaeringRequest: LegeerklaeringRequest): XMLEIFellesformat {
+    suspend fun tilLegeerklaeringXml(legeerklaeringRequest: LegeerklaeringRequest, mottakId: String): XMLEIFellesformat {
         val legeerklaeringXml = if (legeerklaeringRequest.vedlegg) {
             LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering_med_vedlegg.xml").readText(charset = Charsets.ISO_8859_1)
         } else {
@@ -75,9 +78,9 @@ class LegeerklaeringService(
         legeerklaering.pasientopplysninger = pasientopplysninger(legeerklaeringRequest.fnr, pasient)
 
         fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] = legeerklaering
-        fellesformat.get<XMLMsgHead>().msgInfo.msgId = legeerklaeringRequest.msgId
+        fellesformat.get<XMLMsgHead>().msgInfo.msgId = UUID.randomUUID().toString()
         fellesformat.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional = opprettHealthcareProfessional(legeerklaeringRequest.fnrLege, lege)
-        fellesformat.get<XMLMottakenhetBlokk>().ediLoggId = legeerklaeringRequest.mottakId
+        fellesformat.get<XMLMottakenhetBlokk>().ediLoggId = mottakId
         fellesformat.get<XMLMottakenhetBlokk>().mottattDatotid = convertToXmlGregorianCalendar(LocalDate.now())
         fellesformat.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur = legeerklaeringRequest.fnrLege
         return fellesformat

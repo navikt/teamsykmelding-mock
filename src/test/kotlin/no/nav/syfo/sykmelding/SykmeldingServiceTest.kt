@@ -13,6 +13,7 @@ import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.model.SykmeldingType
 import no.nav.syfo.util.get
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import java.time.LocalDate
 import javax.jms.Connection
 
@@ -34,9 +35,7 @@ class SykmeldingServiceTest : FunSpec({
         test("Oppretter korrekt sykmeldingXml") {
             val sykmeldingRequest = SykmeldingRequest(
                 fnr = fnr,
-                mottakId = "mottakId",
                 fnrLege = legeFnr,
-                msgId = "msgId",
                 herId = null,
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
@@ -55,22 +54,21 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false
             )
+            val mottakId = "mottakId"
 
-            val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest)
+            val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest, mottakId)
 
-            sykmeldingXml.get<XMLMsgHead>().msgInfo.msgId shouldBeEqualTo "msgId"
+            sykmeldingXml.get<XMLMsgHead>().msgInfo.msgId shouldNotBeEqualTo null
             sykmeldingXml.get<XMLMsgHead>().msgInfo.receiver.organisation.ident[0].id shouldBeEqualTo "1234556"
             sykmeldingXml.get<XMLMsgHead>().msgInfo.patient.ident[0].id shouldBeEqualTo fnr
-            sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo "mottakId"
+            sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo mottakId
             sykmeldingXml.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur shouldBeEqualTo legeFnr
             sykmeldingXml.get<XMLMsgHead>().document.size shouldBeEqualTo 1
         }
         test("Oppretter korrekt sykmeldingXml med her-id og vedlegg") {
             val sykmeldingRequest = SykmeldingRequest(
                 fnr = fnr,
-                mottakId = "mottakId",
                 fnrLege = legeFnr,
-                msgId = "msgId",
                 herId = "herId",
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
@@ -89,22 +87,21 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = true,
                 virksomhetsykmelding = false
             )
+            val mottakId = "mottakId"
 
-            val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest)
+            val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest, mottakId)
 
-            sykmeldingXml.get<XMLMsgHead>().msgInfo.msgId shouldBeEqualTo "msgId"
+            sykmeldingXml.get<XMLMsgHead>().msgInfo.msgId shouldNotBeEqualTo null
             sykmeldingXml.get<XMLMsgHead>().msgInfo.receiver.organisation.ident[0].id shouldBeEqualTo "herId"
             sykmeldingXml.get<XMLMsgHead>().msgInfo.patient.ident[0].id shouldBeEqualTo fnr
-            sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo "mottakId"
+            sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo mottakId
             sykmeldingXml.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur shouldBeEqualTo legeFnr
             sykmeldingXml.get<XMLMsgHead>().document.size shouldBeEqualTo 3
         }
         test("Oppretter korrekt virksomhetsykmeldingXml") {
             val sykmeldingRequest = SykmeldingRequest(
                 fnr = fnr,
-                mottakId = "mottakId",
                 fnrLege = legeFnr,
-                msgId = "msgId",
                 herId = null,
                 hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
@@ -123,15 +120,16 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = true
             )
+            val mottakId = "mottakId"
 
-            val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest)
+            val sykmeldingXml = sykmeldingService.tilSykmeldingXml(sykmeldingRequest, mottakId)
 
-            sykmeldingXml.get<XMLMsgHead>().msgInfo.msgId shouldBeEqualTo "msgId"
+            sykmeldingXml.get<XMLMsgHead>().msgInfo.msgId shouldNotBeEqualTo null
             sykmeldingXml.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional?.ident?.find {
                 it.typeId.v == "HPR"
             }?.id shouldBeEqualTo "hpr"
             sykmeldingXml.get<XMLMsgHead>().msgInfo.patient.ident[0].id shouldBeEqualTo fnr
-            sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo "mottakId"
+            sykmeldingXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo mottakId
             sykmeldingXml.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur shouldBeEqualTo null
             sykmeldingXml.get<XMLMottakenhetBlokk>().ebService shouldBeEqualTo "SykmeldingVirksomhet"
             sykmeldingXml.get<XMLMsgHead>().document.size shouldBeEqualTo 1

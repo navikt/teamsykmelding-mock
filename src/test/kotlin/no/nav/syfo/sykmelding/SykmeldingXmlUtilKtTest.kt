@@ -18,9 +18,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
         test("Helseopplysninger opprettes korrekt for minimal request") {
             val sykmeldingRequest = SykmeldingRequest(
                 fnr = "12345678910",
-                mottakId = "mottakId",
                 fnrLege = "10987654321",
-                msgId = "msgId",
                 herId = null,
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
@@ -60,9 +58,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
         test("Helseopplysninger opprettes korrekt for maksimal request") {
             val sykmeldingRequest = SykmeldingRequest(
                 fnr = "12345678910",
-                mottakId = "mottakId",
                 fnrLege = "10987654321",
-                msgId = "msgId",
                 herId = "herId",
                 hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
@@ -114,9 +110,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
         test("Helseopplysninger kan opprettes med tullekode som diagnosekode (teste avvist sykmelding)") {
             val sykmeldingRequest = SykmeldingRequest(
                 fnr = "12345678910",
-                mottakId = "mottakId",
                 fnrLege = "10987654321",
-                msgId = "msgId",
                 herId = null,
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
@@ -147,9 +141,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
         test("Virksomhetsykmelding får riktig behandler") {
             val sykmeldingRequest = SykmeldingRequest(
                 fnr = "12345678910",
-                mottakId = "mottakId",
                 fnrLege = "10987654321",
-                msgId = "msgId",
                 herId = null,
                 hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),

@@ -161,10 +161,6 @@ components:
       properties:
         fnr:
           type: string
-        mottakId:
-          type: string
-        msgId:
-          type: string
         fnrLege:
           type: string
           example: '01117302624'
@@ -206,8 +202,6 @@ components:
           type: boolean
       required:
         - fnr
-        - mottakId
-        - msgId
         - fnrLege
         - syketilfelleStartdato
         - diagnosekode
@@ -220,10 +214,6 @@ components:
       properties:
         fnr:
           type: string
-        mottakId:
-          type: string
-        msgId:
-          type: string
         fnrLege:
           type: string
         diagnosekode:
@@ -234,8 +224,6 @@ components:
           type: boolean
       required:
         - fnr
-        - mottakId
-        - msgId
         - fnrLege
         - diagnosekode
         - vedlegg

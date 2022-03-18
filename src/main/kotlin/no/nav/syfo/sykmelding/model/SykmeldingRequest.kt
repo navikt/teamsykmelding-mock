@@ -4,8 +4,6 @@ import java.time.LocalDate
 
 data class SykmeldingRequest(
     val fnr: String,
-    val mottakId: String,
-    val msgId: String,
     val fnrLege: String,
     val herId: String?,
     val hprNummer: String?,
