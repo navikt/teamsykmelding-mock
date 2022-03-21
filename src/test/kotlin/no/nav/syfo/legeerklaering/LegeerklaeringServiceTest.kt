@@ -35,6 +35,7 @@ class LegeerklaeringServiceTest : FunSpec({
                 fnr = fnr,
                 fnrLege = legeFnr,
                 diagnosekode = "M674",
+                diagnosekodesystem = "icd10",
                 statusPresens = null,
                 vedlegg = false
             )
@@ -58,6 +59,7 @@ class LegeerklaeringServiceTest : FunSpec({
                 fnr = fnr,
                 fnrLege = legeFnr,
                 diagnosekode = "M674",
+                diagnosekodesystem = "icd10",
                 statusPresens = "status",
                 vedlegg = true
             )

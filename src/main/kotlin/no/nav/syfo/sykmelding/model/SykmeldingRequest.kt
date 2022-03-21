@@ -9,6 +9,7 @@ data class SykmeldingRequest(
     val hprNummer: String?,
     val syketilfelleStartdato: LocalDate,
     val diagnosekode: String,
+    val diagnosekodesystem: String,
     val annenFraverGrunn: AnnenFraverGrunn?,
     val perioder: List<SykmeldingPeriode>,
     val behandletDato: LocalDate,
