@@ -12,6 +12,7 @@ import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.util.get
 import org.amshove.kluent.shouldBeEqualTo
+import org.amshove.kluent.shouldNotBeEqualTo
 import javax.jms.Connection
 
 class LegeerklaeringServiceTest : FunSpec({
@@ -32,23 +33,22 @@ class LegeerklaeringServiceTest : FunSpec({
         test("Oppretter korrekt legeerklaeringXml") {
             val legeerklaeringRequest = LegeerklaeringRequest(
                 fnr = fnr,
-                mottakId = "mottakId",
-                msgId = "msgId",
                 fnrLege = legeFnr,
                 diagnosekode = "M674",
                 statusPresens = null,
                 vedlegg = false
             )
+            val mottakId = "mottakId"
 
-            val legeerklaeringXml = legeerklaeringService.tilLegeerklaeringXml(legeerklaeringRequest)
+            val legeerklaeringXml = legeerklaeringService.tilLegeerklaeringXml(legeerklaeringRequest, mottakId)
 
             val legeerklaering = legeerklaeringXml.get<XMLMsgHead>().document[0].refDoc.content.any[0] as Legeerklaring
             legeerklaering.diagnoseArbeidsuforhet.statusPresens shouldBeEqualTo null
             legeerklaering.diagnoseArbeidsuforhet.diagnoseKodesystem.enkeltdiagnose.first().kodeverdi shouldBeEqualTo "M674"
             legeerklaering.pasientopplysninger.pasient.fodselsnummer shouldBeEqualTo fnr
 
-            legeerklaeringXml.get<XMLMsgHead>().msgInfo.msgId shouldBeEqualTo "msgId"
-            legeerklaeringXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo "mottakId"
+            legeerklaeringXml.get<XMLMsgHead>().msgInfo.msgId shouldNotBeEqualTo null
+            legeerklaeringXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo mottakId
             legeerklaeringXml.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur shouldBeEqualTo legeFnr
             legeerklaeringXml.get<XMLMsgHead>().document.size shouldBeEqualTo 1
             legeerklaeringXml.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional.ident.first().id shouldBeEqualTo legeFnr
@@ -56,23 +56,22 @@ class LegeerklaeringServiceTest : FunSpec({
         test("Oppretter korrekt legeerklaeringXml med vedlegg") {
             val legeerklaeringRequest = LegeerklaeringRequest(
                 fnr = fnr,
-                mottakId = "mottakId",
-                msgId = "msgId",
                 fnrLege = legeFnr,
                 diagnosekode = "M674",
                 statusPresens = "status",
                 vedlegg = true
             )
+            val mottakId = "mottakId"
 
-            val legeerklaeringXml = legeerklaeringService.tilLegeerklaeringXml(legeerklaeringRequest)
+            val legeerklaeringXml = legeerklaeringService.tilLegeerklaeringXml(legeerklaeringRequest, mottakId)
 
             val legeerklaering = legeerklaeringXml.get<XMLMsgHead>().document[0].refDoc.content.any[0] as Legeerklaring
             legeerklaering.diagnoseArbeidsuforhet.statusPresens shouldBeEqualTo "status"
             legeerklaering.diagnoseArbeidsuforhet.diagnoseKodesystem.enkeltdiagnose.first().kodeverdi shouldBeEqualTo "M674"
             legeerklaering.pasientopplysninger.pasient.fodselsnummer shouldBeEqualTo fnr
 
-            legeerklaeringXml.get<XMLMsgHead>().msgInfo.msgId shouldBeEqualTo "msgId"
-            legeerklaeringXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo "mottakId"
+            legeerklaeringXml.get<XMLMsgHead>().msgInfo.msgId shouldNotBeEqualTo null
+            legeerklaeringXml.get<XMLMottakenhetBlokk>().ediLoggId shouldBeEqualTo mottakId
             legeerklaeringXml.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur shouldBeEqualTo legeFnr
             legeerklaeringXml.get<XMLMsgHead>().document.size shouldBeEqualTo 3
             legeerklaeringXml.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional.ident.first().id shouldBeEqualTo legeFnr

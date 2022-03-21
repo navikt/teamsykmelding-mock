@@ -15,9 +15,9 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService) {
     post("/sykmelding/opprett") {
         val request = call.receive<SykmeldingRequest>()
 
-        sykmeldingService.opprettSykmelding(request)
+        val mottakId = sykmeldingService.opprettSykmelding(request)
 
         log.info("Opprettet sykmelding")
-        call.respond(HttpStatusCode.OK, HttpMessage("Opprettet sykmelding"))
+        call.respond(HttpStatusCode.OK, HttpMessage("Opprettet sykmelding med mottakId $mottakId"))
     }
 }

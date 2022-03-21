@@ -14,6 +14,7 @@ import no.nav.syfo.util.marshallFellesformat
 import java.io.StringReader
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
+import java.util.UUID
 import javax.jms.Connection
 import javax.jms.Session
 
@@ -22,8 +23,9 @@ class SykmeldingService(
     private val connection: Connection,
     private val sykmeldingQueue: String
 ) {
-    suspend fun opprettSykmelding(sykmeldingRequest: SykmeldingRequest) {
-        val sykmelding = tilSykmeldingXml(sykmeldingRequest)
+    suspend fun opprettSykmelding(sykmeldingRequest: SykmeldingRequest): String {
+        val mottakId = UUID.randomUUID().toString()
+        val sykmelding = tilSykmeldingXml(sykmeldingRequest, mottakId)
         val sykmeldingXml = marshallFellesformat(sykmelding)
 
         val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
@@ -31,9 +33,11 @@ class SykmeldingService(
         val syfosmmottakMqProducer = MqProducer(session, messageProducer)
 
         syfosmmottakMqProducer.send(sykmeldingXml)
+
+        return mottakId
     }
 
-    suspend fun tilSykmeldingXml(sykmeldingRequest: SykmeldingRequest): XMLEIFellesformat {
+    suspend fun tilSykmeldingXml(sykmeldingRequest: SykmeldingRequest, mottakId: String): XMLEIFellesformat {
         val sykmeldingXml = if (sykmeldingRequest.vedlegg) {
             SykmeldingService::class.java.getResource("/sykmelding/sykmelding_med_vedlegg.xml").readText(charset = Charsets.ISO_8859_1)
         } else if (sykmeldingRequest.virksomhetsykmelding) {
@@ -63,14 +67,14 @@ class SykmeldingService(
         fellesformat.get<XMLMsgHead>().msgInfo.genDate = LocalDateTime.now().format(ISO_LOCAL_DATE_TIME)
         pasient.ident.forEach { ident -> ident.id = sykmeldingRequest.fnr }
         fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] = sykmelding
-        fellesformat.get<XMLMsgHead>().msgInfo.msgId = sykmeldingRequest.msgId
+        fellesformat.get<XMLMsgHead>().msgInfo.msgId = UUID.randomUUID().toString()
         sykmeldingRequest.herId?.let {
             fellesformat.get<XMLMsgHead>().msgInfo.receiver.organisation.ident[0] = xmlIdentHerid(it)
         }
         sykmeldingRequest.hprNummer?.let {
             fellesformat.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional.ident.add(xmlIdentHPR(sykmeldingRequest.hprNummer))
         }
-        fellesformat.get<XMLMottakenhetBlokk>().ediLoggId = sykmeldingRequest.mottakId
+        fellesformat.get<XMLMottakenhetBlokk>().ediLoggId = mottakId
         fellesformat.get<XMLMottakenhetBlokk>().mottattDatotid = convertToXmlGregorianCalendar(sykmeldingRequest.behandletDato)
 
         if (!sykmeldingRequest.virksomhetsykmelding) {
