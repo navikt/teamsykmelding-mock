@@ -173,6 +173,9 @@ components:
           $ref: '#/components/schemas/Date'
         diagnosekode:
           type: string
+        diagnosekodesystem:
+          type: string
+          example: 'icd10'
         annenFraverGrunn:
           type: string
           enum:
@@ -205,6 +208,7 @@ components:
         - fnrLege
         - syketilfelleStartdato
         - diagnosekode
+        - diagnosekodesystem
         - perioder
         - behandletDato
         - vedlegg
@@ -218,6 +222,9 @@ components:
           type: string
         diagnosekode:
           type: string
+        diagnosekodesystem:
+          type: string
+          example: 'icd10'
         statusPresens:
           type: string
         vedlegg:
@@ -226,4 +233,5 @@ components:
         - fnr
         - fnrLege
         - diagnosekode
+        - diagnosekodesystem
         - vedlegg

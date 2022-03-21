@@ -58,7 +58,7 @@ fun lagHelseopplysninger(
             yrkesbetegnelse = "Pedagogisk leder"
             stillingsprosent = 100
         }
-        medisinskVurdering = medisinskVurdering(sykmeldingRequest.diagnosekode, sykmeldingRequest.annenFraverGrunn)
+        medisinskVurdering = medisinskVurdering(sykmeldingRequest.diagnosekode, sykmeldingRequest.diagnosekodesystem, sykmeldingRequest.annenFraverGrunn)
         aktivitet = HelseOpplysningerArbeidsuforhet.Aktivitet().apply {
             periode.addAll(sykmeldingRequest.perioder.map { tilPeriode(it) })
         }
@@ -124,14 +124,10 @@ fun lagHelseopplysninger(
     }
 }
 
-private fun medisinskVurdering(kode: String?, annenFraverGrunn: AnnenFraverGrunn?): HelseOpplysningerArbeidsuforhet.MedisinskVurdering {
+private fun medisinskVurdering(kode: String, system: String, annenFraverGrunn: AnnenFraverGrunn?): HelseOpplysningerArbeidsuforhet.MedisinskVurdering {
     val medisinskVurdering = HelseOpplysningerArbeidsuforhet.MedisinskVurdering().apply {
         hovedDiagnose = HelseOpplysningerArbeidsuforhet.MedisinskVurdering.HovedDiagnose().apply {
-            diagnosekode = CV().apply {
-                s = Diagnosekoder.ICD10_CODE
-                v = kode
-                dn = Diagnosekoder.icd10[kode]?.text ?: ""
-            }
+            diagnosekode = tilDiagnosekode(kode, system)
         }
         biDiagnoser = HelseOpplysningerArbeidsuforhet.MedisinskVurdering.BiDiagnoser().apply {
             diagnosekode.add(
@@ -158,6 +154,23 @@ private fun medisinskVurdering(kode: String?, annenFraverGrunn: AnnenFraverGrunn
         }
     }
     return medisinskVurdering
+}
+
+private fun tilDiagnosekode(kode: String, system: String): CV {
+    val diagnosekodesystem = if (system == "icpc2") {
+        Diagnosekoder.ICPC2_CODE
+    } else {
+        Diagnosekoder.ICD10_CODE
+    }
+    return CV().apply {
+        s = diagnosekodesystem
+        v = kode
+        dn = if (diagnosekodesystem == Diagnosekoder.ICPC2_CODE) {
+            Diagnosekoder.icpc2[kode]?.text
+        } else {
+            Diagnosekoder.icd10[kode]?.text
+        } ?: ""
+    }
 }
 
 private fun tilPeriode(periode: SykmeldingPeriode): HelseOpplysningerArbeidsuforhet.Aktivitet.Periode {

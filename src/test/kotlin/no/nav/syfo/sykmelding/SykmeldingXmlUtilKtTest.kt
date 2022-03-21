@@ -22,7 +22,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 herId = null,
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
-                diagnosekode = "M674",
+                diagnosekode = "A02",
+                diagnosekodesystem = "icpc2",
                 annenFraverGrunn = null,
                 perioder = listOf(
                     SykmeldingPeriode(
@@ -45,7 +46,9 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.pasient.fodselsnummer.id shouldBeEqualTo "12345678910"
             helseopplysninger.pasient.navn.fornavn shouldBeEqualTo "Syk"
             helseopplysninger.pasient.navn.etternavn shouldBeEqualTo "Sykestad"
-            helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.dn shouldBeEqualTo "Ganglion"
+            helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.v shouldBeEqualTo "A02"
+            helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.s shouldBeEqualTo "2.16.578.1.12.4.1.1.7170"
+            helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.dn shouldBeEqualTo "Frysninger"
             helseopplysninger.aktivitet.periode[0].periodeFOMDato shouldBeEqualTo LocalDate.now().plusDays(1)
             helseopplysninger.aktivitet.periode[0].periodeTOMDato shouldBeEqualTo LocalDate.now().plusWeeks(1)
             helseopplysninger.aktivitet.periode[0].aktivitetIkkeMulig.medisinskeArsaker.beskriv shouldBeEqualTo
@@ -63,6 +66,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
+                diagnosekodesystem = "icd10",
                 annenFraverGrunn = AnnenFraverGrunn.SMITTEFARE,
                 perioder = listOf(
                     SykmeldingPeriode(
@@ -115,6 +119,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "TULLEKODE",
+                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 perioder = listOf(
                     SykmeldingPeriode(
@@ -146,6 +151,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
+                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 perioder = listOf(
                     SykmeldingPeriode(

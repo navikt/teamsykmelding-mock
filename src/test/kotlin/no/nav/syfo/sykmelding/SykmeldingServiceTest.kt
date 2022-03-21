@@ -40,6 +40,7 @@ class SykmeldingServiceTest : FunSpec({
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
+                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 perioder = listOf(
                     SykmeldingPeriode(
@@ -73,6 +74,7 @@ class SykmeldingServiceTest : FunSpec({
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
+                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 perioder = listOf(
                     SykmeldingPeriode(
@@ -106,6 +108,7 @@ class SykmeldingServiceTest : FunSpec({
                 hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "M674",
+                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 perioder = listOf(
                     SykmeldingPeriode(
