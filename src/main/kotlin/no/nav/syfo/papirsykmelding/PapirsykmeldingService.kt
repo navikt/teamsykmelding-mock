@@ -100,9 +100,12 @@ class PapirsykmeldingService(
                     periodeTOMDato = it.tom
                     sykmeldingsgrad = "80"
                 }
-                SykmeldingType.AVVENTENDE -> aktivitetType.avventendeSykmelding = AvventendeSykmeldingType().apply {
-                    periodeFOMDato = it.fom
-                    periodeTOMDato = it.tom
+                SykmeldingType.AVVENTENDE -> {
+                    aktivitetType.avventendeSykmelding = AvventendeSykmeldingType().apply {
+                        periodeFOMDato = it.fom
+                        periodeTOMDato = it.tom
+                    }
+                    aktivitetType.innspillTilArbeidsgiver = "Masse fine innspill"
                 }
                 SykmeldingType.GRADERT_REISETILSKUDD -> aktivitetType.gradertSykmelding = GradertSykmeldingType().apply {
                     periodeFOMDato = it.fom
