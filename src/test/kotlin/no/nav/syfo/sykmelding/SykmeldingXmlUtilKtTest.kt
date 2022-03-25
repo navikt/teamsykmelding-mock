@@ -1,13 +1,13 @@
 package no.nav.syfo.sykmelding
 
 import io.kotest.core.spec.style.FunSpec
+import no.nav.syfo.model.SykmeldingPeriode
+import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
-import no.nav.syfo.sykmelding.model.SykmeldingPeriode
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
-import no.nav.syfo.sykmelding.model.SykmeldingType
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
 import java.time.LocalDate

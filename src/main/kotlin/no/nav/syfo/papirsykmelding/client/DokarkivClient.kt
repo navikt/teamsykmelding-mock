@@ -1,0 +1,81 @@
+package no.nav.syfo.papirsykmelding.client
+
+import io.ktor.client.HttpClient
+import io.ktor.client.call.receive
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.statement.HttpStatement
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.log
+
+class DokarkivClient(
+    private val url: String,
+    private val accessTokenClient: AccessTokenClient,
+    private val scope: String,
+    private val httpClient: HttpClient
+) {
+    suspend fun opprettJournalpost(
+        journalpostRequest: JournalpostRequest
+    ): String =
+        try {
+            log.info("Oppretter papirsykmelding i dokarkiv")
+            val httpResponse = httpClient.post<HttpStatement>(url) {
+                contentType(ContentType.Application.Json)
+                header("Authorization", "Bearer ${accessTokenClient.getAccessToken(scope)}")
+                header("Nav-Callid", journalpostRequest.eksternReferanseId)
+                body = journalpostRequest
+                parameter("forsoekFerdigstill", false)
+            }.execute()
+            if (httpResponse.status == HttpStatusCode.Created || httpResponse.status == HttpStatusCode.Conflict) {
+                httpResponse.call.response.receive<JournalpostResponse>().journalpostId
+            } else {
+                log.error("Mottok uventet statuskode fra dokarkiv: {}, {}", httpResponse.status)
+                throw RuntimeException("Mottok uventet statuskode fra dokarkiv: ${httpResponse.status}")
+            }
+        } catch (e: Exception) {
+            log.warn("Oppretting av journalpost feilet: ${e.message}, {}")
+            throw e
+        }
+}
+
+fun opprettJournalpostPayload(
+    fnr: String,
+    ocr: String?,
+    pdf: String,
+    metadata: String
+): JournalpostRequest {
+    val dokumentvarianter = mutableListOf(
+        Dokumentvarianter(
+            filnavn = "pdf-sykmelding",
+            filtype = "PDFA",
+            variantformat = "ARKIV",
+            fysiskDokument = pdf
+        ),
+        Dokumentvarianter(
+            filnavn = "xml-sykmeldingmetadata",
+            filtype = "XML",
+            variantformat = "SKANNING_META",
+            fysiskDokument = metadata
+        )
+    )
+    if (ocr != null) {
+        dokumentvarianter.add(
+            Dokumentvarianter(
+                filnavn = "ocr-sykmelding",
+                filtype = "XML",
+                variantformat = "ORIGINAL",
+                fysiskDokument = ocr
+            )
+        )
+    }
+    return JournalpostRequest(
+        bruker = Bruker(id = fnr),
+        dokumenter = listOf(
+            Dokument(dokumentvarianter = dokumentvarianter)
+        )
+    )
+}

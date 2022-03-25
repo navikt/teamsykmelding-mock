@@ -48,6 +48,7 @@ spec:
     outbound:
       external:
         - host: https://pdl-api.dev-fss-pub.nais.io
+        - host: https://dokarkiv.dev-fss-pub.nais.io
   envFrom:
     - secret: mockbackend-secrets
   env:
@@ -63,3 +64,7 @@ spec:
       value: MQLS03
     - name: MQ_CHANNEL_NAME
       value: Q1_SYKMELDINGMOCK
+    - name: DOKARKIV_URL
+      value: https://dokarkiv.dev-fss-pub.nais.io/rest/journalpostapi/v1/journalpost
+    - name: DOKARKIV_SCOPE
+      value: api://dev-fss.teamdokumenthandtering.dokarkiv/.default

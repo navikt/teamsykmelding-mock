@@ -16,7 +16,9 @@ data class Environment(
     override val mqGatewayName: String = getEnvVar("MQ_GATEWAY_NAME"),
     override val mqChannelName: String = getEnvVar("MQ_CHANNEL_NAME"),
     val sykmeldingQueue: String = "QA.Q1_SYFOSMMOTTAK.INPUT",
-    val legeerklaeringQueue: String = "QA.Q1_PALE.INPUT"
+    val legeerklaeringQueue: String = "QA.Q1_PALE.INPUT",
+    val dokarkivUrl: String = getEnvVar("DOKARKIV_URL"),
+    val dokarkivScope: String = getEnvVar("DOKARKIV_SCOPE")
 ) : MqConfig
 
 data class ServiceUser(

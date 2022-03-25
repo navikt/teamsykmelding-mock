@@ -5,12 +5,12 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead
+import no.nav.syfo.model.SykmeldingPeriode
+import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
-import no.nav.syfo.sykmelding.model.SykmeldingPeriode
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
-import no.nav.syfo.sykmelding.model.SykmeldingType
 import no.nav.syfo.util.get
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
