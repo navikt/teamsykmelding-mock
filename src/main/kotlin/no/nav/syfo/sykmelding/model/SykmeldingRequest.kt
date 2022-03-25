@@ -1,5 +1,6 @@
 package no.nav.syfo.sykmelding.model
 
+import no.nav.syfo.model.SykmeldingPeriode
 import java.time.LocalDate
 
 data class SykmeldingRequest(
@@ -18,26 +19,6 @@ data class SykmeldingRequest(
     val vedlegg: Boolean,
     val virksomhetsykmelding: Boolean
 )
-
-data class SykmeldingPeriode(
-    val fom: LocalDate,
-    val tom: LocalDate,
-    val type: SykmeldingType
-)
-
-enum class SykmeldingType {
-    AVVENTENDE,
-    GRADERT_20,
-    GRADERT_40,
-    GRADERT_50,
-    GRADERT_60,
-    GRADERT_80,
-    GRADERT_REISETILSKUDD,
-    HUNDREPROSENT,
-    BEHANDLINGSDAGER,
-    BEHANDLINGSDAG,
-    REISETILSKUDD
-}
 
 enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
     GODKJENT_HELSEINSTITUSJON("1", "Når vedkommende er innlagt i en godkjent helseinstitusjon"),

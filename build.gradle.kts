@@ -8,7 +8,7 @@ version = "1.0.0"
 val coroutinesVersion = "1.6.0"
 val jacksonVersion = "2.13.2"
 val kluentVersion = "1.68"
-val ktorVersion = "1.6.7"
+val ktorVersion = "1.6.8"
 val logbackVersion = "1.2.11"
 val logstashEncoderVersion = "7.0.1"
 val prometheusVersion = "0.15.0"
@@ -22,6 +22,8 @@ val fellesformatVersion = "1.c22de09"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val legeerklaeringVersion = "2019.07.29-02-53-86b22e73f7843e422ee500b486dac387a582f2d1"
+val papirsykmeldingVersion = "2019.09.09-08-50-693492ddc1d3f98e70c1638c94dcb95a66036d12"
+val javaTimeAdapterVersion = "1.1.3"
 
 tasks.withType<Jar> {
     manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
@@ -82,8 +84,10 @@ dependencies {
     implementation("no.nav.helse.xml:kith-hodemelding:$fellesformatVersion")
     implementation("no.nav.helse.xml:sm2013:$fellesformatVersion")
     implementation("no.nav.helse.xml:legeerklaering:$legeerklaeringVersion")
+    implementation ("no.nav.helse.xml:papirSykemelding:$papirsykmeldingVersion")
     implementation("javax.xml.bind:jaxb-api:$jaxbApiVersion")
     implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion")
+    implementation("com.migesok:jaxb-java-time-adapters:$javaTimeAdapterVersion")
 
     implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")

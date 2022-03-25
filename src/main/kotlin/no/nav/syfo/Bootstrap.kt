@@ -26,6 +26,8 @@ import no.nav.syfo.mq.connectionFactory
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
 import no.nav.syfo.narmesteleder.kafka.model.NlResponseKafkaMessage
+import no.nav.syfo.papirsykmelding.PapirsykmeldingService
+import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.SykmeldingService
@@ -79,6 +81,13 @@ fun main() {
     )
     val pdlPersonService = PdlPersonService(pdlClient, accessTokenClient, env.pdlScope)
 
+    val dokarkivClient = DokarkivClient(
+        url = env.dokarkivUrl,
+        accessTokenClient = accessTokenClient,
+        scope = env.dokarkivScope,
+        httpClient = httpClient
+    )
+
     val kafkaProducer = KafkaProducer<String, NlResponseKafkaMessage>(
         KafkaUtils
             .getAivenKafkaConfig()
@@ -89,13 +98,15 @@ fun main() {
     val narmestelederService = NarmestelederService(nlResponseKafkaProducer, pdlPersonService)
     val sykmeldingService = SykmeldingService(pdlPersonService, connection, env.sykmeldingQueue)
     val legeerklaeringService = LegeerklaeringService(pdlPersonService, connection, env.legeerklaeringQueue)
+    val papirsykmeldingService = PapirsykmeldingService(dokarkivClient)
 
     val applicationEngine = createApplicationEngine(
         env,
         applicationState,
         narmestelederService,
         sykmeldingService,
-        legeerklaeringService
+        legeerklaeringService,
+        papirsykmeldingService
     )
     val applicationServer = ApplicationServer(applicationEngine, applicationState)
     applicationServer.start()

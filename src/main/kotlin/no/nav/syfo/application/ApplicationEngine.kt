@@ -27,6 +27,8 @@ import no.nav.syfo.legeerklaering.api.registrerLegeerklaeringApi
 import no.nav.syfo.log
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.api.registrerNarmestelederApi
+import no.nav.syfo.papirsykmelding.PapirsykmeldingService
+import no.nav.syfo.papirsykmelding.api.registrerPapirsykmeldingApi
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.api.registrerSykmeldingApi
 import java.util.UUID
@@ -36,7 +38,8 @@ fun createApplicationEngine(
     applicationState: ApplicationState,
     narmestelederService: NarmestelederService,
     sykmeldingService: SykmeldingService,
-    legeerklaeringService: LegeerklaeringService
+    legeerklaeringService: LegeerklaeringService,
+    papirsykmeldingService: PapirsykmeldingService
 ): ApplicationEngine =
     embeddedServer(Netty, env.applicationPort) {
         install(ContentNegotiation) {
@@ -66,6 +69,7 @@ fun createApplicationEngine(
             registrerNarmestelederApi(narmestelederService)
             registrerSykmeldingApi(sykmeldingService)
             registrerLegeerklaeringApi(legeerklaeringService)
+            registrerPapirsykmeldingApi(papirsykmeldingService)
         }
         intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests())
     }

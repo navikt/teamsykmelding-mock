@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skanningmetadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="skanning_meta.xsd">
+    <sykemeldinger>
+        <syketilfelleStartDato>2019-08-15</syketilfelleStartDato>
+        <pasient>
+            <fnr>12345678910</fnr>
+        </pasient>
+        <arbeidsgiver>
+            <harArbeidsgiver>En arbeidsgiver</harArbeidsgiver>
+            <navnArbeidsgiver>Langtvekkistan politidistrikt</navnArbeidsgiver>
+            <yrkesbetegnelse>Politi</yrkesbetegnelse>
+            <stillingsprosent>100</stillingsprosent>
+        </arbeidsgiver>
+        <medisinskVurdering>
+            <hovedDiagnose>
+                <diagnosekode></diagnosekode>
+                <diagnose></diagnose>
+            </hovedDiagnose>
+        </medisinskVurdering>
+        <aktivitet>
+            <aktivitetIkkeMulig>
+                <periodeFOMDato>2019-08-15</periodeFOMDato>
+                <periodeTOMDato>2019-09-30</periodeTOMDato>
+                <medisinskeArsaker>
+                    <medArsakerHindrer>1</medArsakerHindrer>
+                </medisinskeArsaker>
+                <arbeidsplassen>
+                    <arbeidsplassenHindrer>1</arbeidsplassenHindrer>
+                </arbeidsplassen>
+            </aktivitetIkkeMulig>
+        </aktivitet>
+        <meldingTilNAV>
+            <bistandNAVUmiddelbart>1</bistandNAVUmiddelbart>
+        </meldingTilNAV>
+        <behandler>
+            <HPR>10052512</HPR>
+        </behandler>
+    </sykemeldinger>
+</skanningmetadata>

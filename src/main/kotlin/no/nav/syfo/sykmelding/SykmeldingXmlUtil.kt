@@ -12,12 +12,12 @@ import no.nav.helse.sm2013.Ident
 import no.nav.helse.sm2013.NavnType
 import no.nav.helse.sm2013.TeleCom
 import no.nav.helse.sm2013.URL
+import no.nav.syfo.model.SykmeldingPeriode
+import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
-import no.nav.syfo.sykmelding.model.SykmeldingPeriode
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
-import no.nav.syfo.sykmelding.model.SykmeldingType
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.GregorianCalendar

@@ -1,0 +1,143 @@
+package no.nav.syfo.papirsykmelding
+
+import com.migesok.jaxb.adapter.javatime.LocalDateXmlAdapter
+import no.nav.helse.sykSkanningMeta.AktivitetIkkeMuligType
+import no.nav.helse.sykSkanningMeta.AktivitetType
+import no.nav.helse.sykSkanningMeta.AvventendeSykmeldingType
+import no.nav.helse.sykSkanningMeta.BehandlingsdagerType
+import no.nav.helse.sykSkanningMeta.GradertSykmeldingType
+import no.nav.helse.sykSkanningMeta.HovedDiagnoseType
+import no.nav.helse.sykSkanningMeta.ReisetilskuddType
+import no.nav.helse.sykSkanningMeta.Skanningmetadata
+import no.nav.syfo.model.SykmeldingPeriode
+import no.nav.syfo.model.SykmeldingType
+import no.nav.syfo.papirsykmelding.client.DokarkivClient
+import no.nav.syfo.papirsykmelding.client.opprettJournalpostPayload
+import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
+import no.nav.syfo.util.XMLDateAdapter
+import no.nav.syfo.util.jaxbContextSkanningmetadata
+import java.io.ByteArrayOutputStream
+import java.io.StringReader
+import java.math.BigInteger
+import java.util.Base64
+import javax.xml.bind.Marshaller
+import javax.xml.bind.Unmarshaller
+
+class PapirsykmeldingService(
+    private val dokarkivClient: DokarkivClient
+) {
+    private val defaultPdf = PapirsykmeldingService::class.java.getResource("/papirsykmelding/base64Papirsykmelding").readText(charset = Charsets.ISO_8859_1)
+    private val defaultMetadata = "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c2thbm5pbmdtZXRhZGF0YSB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hLWluc3RhbmNlIiB4c2k6bm9OYW1lc3BhY2VTY2hlbWFMb2NhdGlvbj0ic2thbm5pbmdfbWV0YS54c2QiPgogICA8c3lrZW1lbGRpbmdlcj4KICAgICAgPHBhc2llbnQ+CiAgICAgICAgIDxmbnI+MDQwNTkwMzIxMzA8L2Zucj4KICAgICAgPC9wYXNpZW50PgogICAgICA8bWVkaXNpbnNrVnVyZGVyaW5nPgogICAgICAgICA8aG92ZWREaWFnbm9zZT4KICAgICAgICAgICAgPGRpYWdub3Nla29kZT45MTMuNDwvZGlhZ25vc2Vrb2RlPgogICAgICAgICAgICA8ZGlhZ25vc2U+Rm9yc3R1dmluZyBvZyBmb3JzdHJla2tpbmcgaSBjZXJ2aWthbGtvbHVtbmE8L2RpYWdub3NlPgogICAgICAgICA8L2hvdmVkRGlhZ25vc2U+CiAgICAgIDwvbWVkaXNpbnNrVnVyZGVyaW5nPgogICAgICA8YWt0aXZpdGV0PgogICAgICAgICA8YWt0aXZpdGV0SWtrZU11bGlnPgogICAgICAgICAgICA8cGVyaW9kZUZPTURhdG8+MjAxOS0wMS0xMDwvcGVyaW9kZUZPTURhdG8+CiAgICAgICAgICAgIDxwZXJpb2RlVE9NRGF0bz4yMDE5LTAxLTE0PC9wZXJpb2RlVE9NRGF0bz4KICAgICAgICAgICAgPG1lZGlzaW5za2VBcnNha2VyPgogICAgICAgICAgICAgICA8bWVkQXJzYWtlckhpbmRyZXI+MTwvbWVkQXJzYWtlckhpbmRyZXI+CiAgICAgICAgICAgIDwvbWVkaXNpbnNrZUFyc2FrZXI+CiAgICAgICAgIDwvYWt0aXZpdGV0SWtrZU11bGlnPgogICAgICA8L2FrdGl2aXRldD4KICAgICAgPHRpbGJha2VkYXRlcmluZz4KICAgICAgICAgPHRpbGJha2ViZWdydW5uZWxzZT5Ta2FkZWxlZ2V2YWt0ZW4KT3J0b3BlZGlzayBhdmRlbGluZzwvdGlsYmFrZWJlZ3J1bm5lbHNlPgogICAgICA8L3RpbGJha2VkYXRlcmluZz4KICAgICAgPGtvbnRha3RNZWRQYXNpZW50PgogICAgICAgICA8YmVoYW5kbGV0RGF0bz4yMDE5LTAxLTExPC9iZWhhbmRsZXREYXRvPgogICAgICA8L2tvbnRha3RNZWRQYXNpZW50PgogICAgICA8YmVoYW5kbGVyPgogICAgICAgICA8SFBSPjEwMDIzMjQ1PC9IUFI+CiAgICAgIDwvYmVoYW5kbGVyPgogICA8L3N5a2VtZWxkaW5nZXI+Cjwvc2thbm5pbmdtZXRhZGF0YT4="
+
+    suspend fun opprettPapirsykmelding(papirsykmeldingRequest: PapirsykmeldingRequest): String {
+        val ocr = if (papirsykmeldingRequest.utenOcr) {
+            null
+        } else {
+            val skanningmetadata = tilSkanningmetadata(papirsykmeldingRequest)
+            Base64.getEncoder().encodeToString(skanningmetadataTilByteArray(skanningmetadata))
+        }
+        return dokarkivClient.opprettJournalpost(
+            opprettJournalpostPayload(
+                fnr = papirsykmeldingRequest.fnr,
+                ocr = ocr,
+                pdf = defaultPdf,
+                metadata = defaultMetadata
+            )
+        )
+    }
+
+    fun tilSkanningmetadata(papirsykmeldingRequest: PapirsykmeldingRequest): Skanningmetadata {
+        val skanningmetadataUnmarshaller: Unmarshaller = jaxbContextSkanningmetadata.createUnmarshaller().apply {
+            setAdapter(LocalDateXmlAdapter::class.java, XMLDateAdapter())
+        }
+
+        val skanningmetadataXml = PapirsykmeldingService::class.java.getResource("/papirsykmelding/skanningmetadata.xml").readText(charset = Charsets.ISO_8859_1)
+        val skanningmetadata = skanningmetadataUnmarshaller.unmarshal(StringReader(skanningmetadataXml)) as Skanningmetadata
+
+        skanningmetadata.sykemeldinger.pasient.fnr = papirsykmeldingRequest.fnr
+        skanningmetadata.sykemeldinger.syketilfelleStartDato = papirsykmeldingRequest.syketilfelleStartdato
+        skanningmetadata.sykemeldinger.behandler.hpr = papirsykmeldingRequest.hprNummer.toInt().toBigInteger()
+        val hoveddiagnose = HovedDiagnoseType()
+        hoveddiagnose.diagnosekode = papirsykmeldingRequest.diagnosekode
+        hoveddiagnose.diagnosekodeSystem = papirsykmeldingRequest.diagnosekodesystem
+        skanningmetadata.sykemeldinger.medisinskVurdering.hovedDiagnose.clear()
+        skanningmetadata.sykemeldinger.medisinskVurdering.hovedDiagnose.add(hoveddiagnose)
+        skanningmetadata.sykemeldinger.aktivitet = tilAktivitet(papirsykmeldingRequest.perioder)
+
+        return skanningmetadata
+    }
+
+    private fun tilAktivitet(perioder: List<SykmeldingPeriode>): AktivitetType {
+        val aktivitetType = AktivitetType()
+        perioder.forEach {
+            when (it.type) {
+                SykmeldingType.HUNDREPROSENT -> aktivitetType.aktivitetIkkeMulig = AktivitetIkkeMuligType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                }
+                SykmeldingType.GRADERT_20 -> aktivitetType.gradertSykmelding = GradertSykmeldingType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    sykmeldingsgrad = "20"
+                }
+                SykmeldingType.GRADERT_40 -> aktivitetType.gradertSykmelding = GradertSykmeldingType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    sykmeldingsgrad = "40"
+                }
+                SykmeldingType.GRADERT_50 -> aktivitetType.gradertSykmelding = GradertSykmeldingType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    sykmeldingsgrad = "50"
+                }
+                SykmeldingType.GRADERT_60 -> aktivitetType.gradertSykmelding = GradertSykmeldingType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    sykmeldingsgrad = "60"
+                }
+                SykmeldingType.GRADERT_80 -> aktivitetType.gradertSykmelding = GradertSykmeldingType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    sykmeldingsgrad = "80"
+                }
+                SykmeldingType.AVVENTENDE -> {
+                    aktivitetType.avventendeSykmelding = AvventendeSykmeldingType().apply {
+                        periodeFOMDato = it.fom
+                        periodeTOMDato = it.tom
+                    }
+                    aktivitetType.innspillTilArbeidsgiver = "Masse fine innspill"
+                }
+                SykmeldingType.GRADERT_REISETILSKUDD -> aktivitetType.gradertSykmelding = GradertSykmeldingType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    sykmeldingsgrad = "60"
+                    isReisetilskudd = true
+                }
+                SykmeldingType.BEHANDLINGSDAGER -> aktivitetType.behandlingsdager = BehandlingsdagerType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    antallBehandlingsdager = BigInteger.valueOf(4)
+                }
+                SykmeldingType.BEHANDLINGSDAG -> aktivitetType.behandlingsdager = BehandlingsdagerType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                    antallBehandlingsdager = BigInteger.valueOf(1)
+                }
+                SykmeldingType.REISETILSKUDD -> aktivitetType.reisetilskudd = ReisetilskuddType().apply {
+                    periodeFOMDato = it.fom
+                    periodeTOMDato = it.tom
+                }
+            }
+        }
+        return aktivitetType
+    }
+
+    private fun skanningmetadataTilByteArray(skanningmetadata: Skanningmetadata): ByteArray {
+        val sykmeldingMarshaller: Marshaller = jaxbContextSkanningmetadata.createMarshaller()
+            .apply { setProperty(Marshaller.JAXB_ENCODING, "UTF-8") }
+        return ByteArrayOutputStream().use {
+            sykmeldingMarshaller.marshal(skanningmetadata, it)
+            it
+        }.toByteArray()
+    }
+}

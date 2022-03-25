@@ -64,6 +64,19 @@ paths:
           description: Ok
         '500':
           description: Internal server error
+  /papirsykmelding/opprett:
+    post:
+      operationId: opprettPapirsykmelding
+      tags:
+        - Papirsykmelding
+      summary: Opprett papirsykmelding
+      requestBody:
+        $ref: '#/components/requestBodies/PapirsykmeldingRequestBody'
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Internal server error
 
 components:
   requestBodies:
@@ -85,6 +98,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/LegeerklaeringRequest'
+    PapirsykmeldingRequestBody:
+      description: "Opprett papirsykmelding"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PapirsykmeldingRequest'
   parameters:
     Orgnummer:
       description: Bedriftens orgnummer
@@ -235,3 +254,32 @@ components:
         - diagnosekode
         - diagnosekodesystem
         - vedlegg
+    PapirsykmeldingRequest:
+      type: object
+      properties:
+        fnr:
+          type: string
+        hprNummer:
+          type: string
+          example: '7125186'
+        syketilfelleStartdato:
+          $ref: '#/components/schemas/Date'
+        diagnosekode:
+          type: string
+        diagnosekodesystem:
+          type: string
+          example: 'icd10'
+        perioder:
+          type: array
+          items:
+            $ref: '#/components/schemas/SykmeldingPeriode'
+        utenOcr:
+          type: boolean
+      required:
+        - fnr
+        - hprNummer
+        - syketilfelleStartdato
+        - diagnosekode
+        - diagnosekodesystem
+        - perioder
+        - utenOcr
