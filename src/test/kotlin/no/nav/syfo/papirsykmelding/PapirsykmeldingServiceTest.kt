@@ -24,6 +24,7 @@ class PapirsykmeldingServiceTest : FunSpec({
             fnr = fnr,
             hprNummer = "7125186",
             syketilfelleStartdato = LocalDate.now().minusWeeks(1),
+            behandletDato = LocalDate.now(),
             perioder = listOf(
                 SykmeldingPeriode(
                     fom = LocalDate.now().minusWeeks(1),
@@ -58,6 +59,7 @@ class PapirsykmeldingServiceTest : FunSpec({
             skanningmetadata.sykemeldinger.aktivitet.avventendeSykmelding shouldBeEqualTo null
             skanningmetadata.sykemeldinger.aktivitet.behandlingsdager shouldBeEqualTo null
             skanningmetadata.sykemeldinger.aktivitet.reisetilskudd shouldBeEqualTo null
+            skanningmetadata.sykemeldinger.kontaktMedPasient.behandletDato shouldBeEqualTo LocalDate.now()
         }
         test("opprettPapirsykmelding oppretter journalpost med ocr") {
             papirsykmeldingService.opprettPapirsykmelding(papirsykmeldingRequest)

@@ -264,6 +264,8 @@ components:
           example: '7125186'
         syketilfelleStartdato:
           $ref: '#/components/schemas/Date'
+        behandletDato:
+          $ref: '#/components/schemas/Date'
         diagnosekode:
           type: string
         diagnosekodesystem:
@@ -279,6 +281,7 @@ components:
         - fnr
         - hprNummer
         - syketilfelleStartdato
+        - behandletDato
         - diagnosekode
         - diagnosekodesystem
         - perioder
