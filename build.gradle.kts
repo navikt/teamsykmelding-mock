@@ -7,6 +7,8 @@ version = "1.0.0"
 
 val coroutinesVersion = "1.6.0"
 val jacksonVersion = "2.13.2"
+val jacksonPatchVersion = "2.13.2.1"
+val jacksonBomVersion = "2.13.2.20220324"
 val kluentVersion = "1.68"
 val ktorVersion = "1.6.8"
 val logbackVersion = "1.2.11"
@@ -93,6 +95,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonPatchVersion")
+    implementation ("com.fasterxml.jackson:jackson-bom:$jacksonBomVersion")
 
     swaggerUI( "org.webjars:swagger-ui:$swaggerUiVersion")
 

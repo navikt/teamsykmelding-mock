@@ -36,7 +36,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
-                virksomhetsykmelding = false
+                virksomhetsykmelding = false,
+                utenUtdypendeOpplysninger = true
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -56,7 +57,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.kontaktMedPasient.behandletDato shouldBeEqualTo LocalDate.now().atStartOfDay()
             helseopplysninger.kontaktMedPasient.kontaktDato shouldBeEqualTo null
             helseopplysninger.behandler.id[0].id shouldBeEqualTo "10987654321"
-            helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmSvar.size shouldBeEqualTo 4
+            helseopplysninger.utdypendeOpplysninger shouldBeEqualTo null
         }
         test("Helseopplysninger opprettes korrekt for maksimal request") {
             val sykmeldingRequest = SykmeldingRequest(
@@ -84,7 +85,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 kontaktDato = LocalDate.now().minusDays(2),
                 begrunnIkkeKontakt = "Hadde ikke tid",
                 vedlegg = false,
-                virksomhetsykmelding = false
+                virksomhetsykmelding = false,
+                utenUtdypendeOpplysninger = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -132,7 +134,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
-                virksomhetsykmelding = false
+                virksomhetsykmelding = false,
+                utenUtdypendeOpplysninger = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -164,7 +167,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
-                virksomhetsykmelding = true
+                virksomhetsykmelding = true,
+                utenUtdypendeOpplysninger = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))

@@ -7,6 +7,7 @@ import no.nav.helse.sykSkanningMeta.AvventendeSykmeldingType
 import no.nav.helse.sykSkanningMeta.BehandlingsdagerType
 import no.nav.helse.sykSkanningMeta.GradertSykmeldingType
 import no.nav.helse.sykSkanningMeta.HovedDiagnoseType
+import no.nav.helse.sykSkanningMeta.KontaktMedPasientType
 import no.nav.helse.sykSkanningMeta.ReisetilskuddType
 import no.nav.helse.sykSkanningMeta.Skanningmetadata
 import no.nav.syfo.model.SykmeldingPeriode
@@ -63,6 +64,7 @@ class PapirsykmeldingService(
         skanningmetadata.sykemeldinger.medisinskVurdering.hovedDiagnose.clear()
         skanningmetadata.sykemeldinger.medisinskVurdering.hovedDiagnose.add(hoveddiagnose)
         skanningmetadata.sykemeldinger.aktivitet = tilAktivitet(papirsykmeldingRequest.perioder)
+        skanningmetadata.sykemeldinger.kontaktMedPasient = KontaktMedPasientType().apply { behandletDato = papirsykmeldingRequest.behandletDato }
 
         return skanningmetadata
     }

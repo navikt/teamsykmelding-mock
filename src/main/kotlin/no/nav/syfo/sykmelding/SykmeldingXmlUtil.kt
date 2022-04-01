@@ -82,8 +82,12 @@ fun lagHelseopplysninger(
             begrunnIkkeKontakt = sykmeldingRequest.begrunnIkkeKontakt
             behandletDato = sykmeldingRequest.behandletDato.atStartOfDay()
         }
-        utdypendeOpplysninger = HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger().apply {
-            spmGruppe.addAll(tilSpmGruppe())
+        utdypendeOpplysninger = if (sykmeldingRequest.utenUtdypendeOpplysninger) {
+            null
+        } else {
+            HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger().apply {
+                spmGruppe.addAll(tilSpmGruppe())
+            }
         }
         behandler = HelseOpplysningerArbeidsuforhet.Behandler().apply {
             navn = NavnType().apply {

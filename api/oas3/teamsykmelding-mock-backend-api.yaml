@@ -222,6 +222,8 @@ components:
           type: boolean
         virksomhetsykmelding:
           type: boolean
+        utenUtdypendeOpplysninger:
+          type: boolean
       required:
         - fnr
         - fnrLege
@@ -232,6 +234,7 @@ components:
         - behandletDato
         - vedlegg
         - virksomhetsykmelding
+        - utenUtdypendeOpplysninger
     LegeerklaeringRequest:
       type: object
       properties:
@@ -264,6 +267,8 @@ components:
           example: '7125186'
         syketilfelleStartdato:
           $ref: '#/components/schemas/Date'
+        behandletDato:
+          $ref: '#/components/schemas/Date'
         diagnosekode:
           type: string
         diagnosekodesystem:
@@ -279,6 +284,7 @@ components:
         - fnr
         - hprNummer
         - syketilfelleStartdato
+        - behandletDato
         - diagnosekode
         - diagnosekodesystem
         - perioder
