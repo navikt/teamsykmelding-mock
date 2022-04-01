@@ -17,7 +17,8 @@ data class SykmeldingRequest(
     val kontaktDato: LocalDate?,
     val begrunnIkkeKontakt: String?,
     val vedlegg: Boolean,
-    val virksomhetsykmelding: Boolean
+    val virksomhetsykmelding: Boolean,
+    val utenUtdypendeOpplysninger: Boolean
 )
 
 enum class AnnenFraverGrunn(val codeValue: String, val text: String) {

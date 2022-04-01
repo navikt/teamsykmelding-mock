@@ -222,6 +222,8 @@ components:
           type: boolean
         virksomhetsykmelding:
           type: boolean
+        utenUtdypendeOpplysninger:
+          type: boolean
       required:
         - fnr
         - fnrLege
@@ -232,6 +234,7 @@ components:
         - behandletDato
         - vedlegg
         - virksomhetsykmelding
+        - utenUtdypendeOpplysninger
     LegeerklaeringRequest:
       type: object
       properties:
