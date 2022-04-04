@@ -51,6 +51,22 @@ paths:
           description: Ok
         '500':
           description: Internal server error
+  /sykmelding/{sykmeldingId}:
+    delete:
+      operationId: slettSykmelding
+      tags:
+        - Sykmelding
+      summary: Slett sykmelding
+      parameters:
+        - $ref: '#/components/parameters/SykmeldingId'
+        - $ref: '#/components/parameters/SykmeldtFnr'
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal server error
   /legeerklaering/opprett:
     post:
       operationId: opprettLegeerklaering
@@ -117,6 +133,13 @@ components:
       description: fnr for den sykmeldte
       name: Sykmeldt-Fnr
       in: header
+      required: true
+      schema:
+        type: string
+    SykmeldingId:
+      description: SykmeldingId
+      name: sykmeldingId
+      in: path
       required: true
       schema:
         type: string

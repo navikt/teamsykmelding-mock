@@ -18,7 +18,10 @@ data class Environment(
     val sykmeldingQueue: String = "QA.Q1_SYFOSMMOTTAK.INPUT",
     val legeerklaeringQueue: String = "QA.Q1_PALE.INPUT",
     val dokarkivUrl: String = getEnvVar("DOKARKIV_URL"),
-    val dokarkivScope: String = getEnvVar("DOKARKIV_SCOPE")
+    val dokarkivScope: String = getEnvVar("DOKARKIV_SCOPE"),
+    val papirSmRegistreringTopic: String = "teamsykmelding.papir-sm-registering",
+    val manuellTopic: String = "teamsykmelding.sykmelding-manuell",
+    val sykmeldingStatusTopic: String = "teamsykmelding.sykmeldingstatus-leesah"
 ) : MqConfig
 
 data class ServiceUser(

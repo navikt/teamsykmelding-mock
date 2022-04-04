@@ -81,6 +81,7 @@ dependencies {
     implementation("no.nav.helse:syfosm-common-kafka:$smCommonVersion")
     implementation("no.nav.helse:syfosm-common-mq:$smCommonVersion")
     implementation("no.nav.helse:syfosm-common-diagnosis-codes:$smCommonVersion")
+    implementation("no.nav.helse:syfosm-common-models:$smCommonVersion")
 
     implementation("no.nav.helse.xml:xmlfellesformat:$fellesformatVersion")
     implementation("no.nav.helse.xml:kith-hodemelding:$fellesformatVersion")

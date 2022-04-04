@@ -30,8 +30,12 @@ import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
+import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
+import no.nav.syfo.sykmelding.kafka.SykmeldingStatusKafkaProducer
+import no.nav.syfo.sykmelding.kafka.TombstoneKafkaProducer
 import no.nav.syfo.util.JacksonKafkaSerializer
+import no.nav.syfo.util.JacksonNullableKafkaSerializer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.common.serialization.StringSerializer
 import org.slf4j.Logger
@@ -88,14 +92,23 @@ fun main() {
         httpClient = httpClient
     )
 
-    val kafkaProducer = KafkaProducer<String, NlResponseKafkaMessage>(
-        KafkaUtils
-            .getAivenKafkaConfig()
-            .toProducerConfig("${env.applicationName}-producer", JacksonKafkaSerializer::class, StringSerializer::class)
-    )
+    val producerProperties = KafkaUtils
+        .getAivenKafkaConfig()
+        .toProducerConfig("${env.applicationName}-producer", JacksonKafkaSerializer::class, StringSerializer::class)
+
+    val kafkaProducer = KafkaProducer<String, NlResponseKafkaMessage>(producerProperties)
     val nlResponseKafkaProducer = NlResponseProducer(kafkaProducer, env.narmestelederTopic)
 
+    val tombstoneProducer = KafkaProducer<String, Any?>(
+        KafkaUtils
+            .getAivenKafkaConfig()
+            .toProducerConfig("${env.applicationName}-tombstone-producer", JacksonNullableKafkaSerializer::class)
+    )
+    val tombstoneKafkaProducer = TombstoneKafkaProducer(tombstoneProducer, listOf(env.papirSmRegistreringTopic, env.manuellTopic))
+    val sykmeldingStatusKafkaProducer = SykmeldingStatusKafkaProducer(KafkaProducer(producerProperties), env.sykmeldingStatusTopic)
+
     val narmestelederService = NarmestelederService(nlResponseKafkaProducer, pdlPersonService)
+    val slettSykmeldingService = SlettSykmeldingService(sykmeldingStatusKafkaProducer, tombstoneKafkaProducer)
     val sykmeldingService = SykmeldingService(pdlPersonService, connection, env.sykmeldingQueue)
     val legeerklaeringService = LegeerklaeringService(pdlPersonService, connection, env.legeerklaeringQueue)
     val papirsykmeldingService = PapirsykmeldingService(dokarkivClient)
@@ -105,6 +118,7 @@ fun main() {
         applicationState,
         narmestelederService,
         sykmeldingService,
+        slettSykmeldingService,
         legeerklaeringService,
         papirsykmeldingService
     )

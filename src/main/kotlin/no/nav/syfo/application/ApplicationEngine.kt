@@ -29,6 +29,7 @@ import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.api.registrerNarmestelederApi
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.api.registrerPapirsykmeldingApi
+import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.api.registrerSykmeldingApi
 import java.util.UUID
@@ -38,6 +39,7 @@ fun createApplicationEngine(
     applicationState: ApplicationState,
     narmestelederService: NarmestelederService,
     sykmeldingService: SykmeldingService,
+    slettSykmeldingService: SlettSykmeldingService,
     legeerklaeringService: LegeerklaeringService,
     papirsykmeldingService: PapirsykmeldingService
 ): ApplicationEngine =
@@ -67,7 +69,7 @@ fun createApplicationEngine(
             registerNaisApi(applicationState)
             setupSwaggerDocApi()
             registrerNarmestelederApi(narmestelederService)
-            registrerSykmeldingApi(sykmeldingService)
+            registrerSykmeldingApi(sykmeldingService, slettSykmeldingService)
             registrerLegeerklaeringApi(legeerklaeringService)
             registrerPapirsykmeldingApi(papirsykmeldingService)
         }
