@@ -14,7 +14,7 @@ class SykmeldingStatusKafkaProducer(
     private val statusTopic: String
 ) {
     fun send(sykmeldingStatusKafkaEventDTO: SykmeldingStatusKafkaEventDTO, fnr: String) {
-        log.info("Skriver slettet-status for sykmelding med id $sykmeldingStatusKafkaEventDTO.sykmeldingId")
+        log.info("Skriver slettet-status for sykmelding med id ${sykmeldingStatusKafkaEventDTO.sykmeldingId}")
         val metadataDTO = KafkaMetadataDTO(
             sykmeldingId = sykmeldingStatusKafkaEventDTO.sykmeldingId,
             timestamp = OffsetDateTime.now(
