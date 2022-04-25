@@ -120,6 +120,14 @@ class NarmestelederApiKtTest : FunSpec({
                     )
                 }
             }
+            test("Deaktivering gir 400 hvis fnr mangler") {
+                with(
+                    handleRequest(HttpMethod.Delete, "/narmesteleder/$orgnummer")
+                ) {
+                    response.status() shouldBeEqualTo HttpStatusCode.BadRequest
+                }
+                coVerify(exactly = 0) { nlResponseProducer.sendNlResponse(any(), any()) }
+            }
         }
     }
 })

@@ -37,13 +37,15 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
         val orgnummer = call.parameters["orgnummer"]?.takeIf { it.isNotEmpty() }
         if (fnrSykmeldt == null) {
             call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler"))
+            return@delete
         }
         if (orgnummer == null) {
             call.respond(HttpStatusCode.BadRequest, HttpMessage("Orgnummer mangler"))
+            return@delete
         }
         narmestelederService.nullstillNarmesteleder(
-            sykmeldtFnr = fnrSykmeldt!!,
-            orgnummer = orgnummer!!
+            sykmeldtFnr = fnrSykmeldt,
+            orgnummer = orgnummer
         )
         log.info("Nullstilt nærmesteleder-koblinger for orgnummer $orgnummer")
         call.respond(HttpStatusCode.OK, HttpMessage("Nullstilt nærmesteleder-koblinger for ansatt"))

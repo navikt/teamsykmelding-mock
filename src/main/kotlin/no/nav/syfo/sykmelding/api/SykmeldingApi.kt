@@ -29,14 +29,16 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykm
         val fnr = call.request.headers["Sykmeldt-Fnr"]
         if (fnr == null || fnr.length != 11) {
             call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde"))
+            return@delete
         }
         try {
             UUID.fromString(sykmeldingId)
         } catch (e: Exception) {
             log.error("SykmeldingId er ikke en uuid: $sykmeldingId")
             call.respond(HttpStatusCode.BadRequest, HttpMessage("SykmeldingId må være en UUID"))
+            return@delete
         }
-        slettSykmeldingService.slettSykmelding(sykmeldingId = sykmeldingId!!, fnr = fnr!!)
+        slettSykmeldingService.slettSykmelding(sykmeldingId = sykmeldingId!!, fnr = fnr)
         log.info("Slettet sykmelding med id $sykmeldingId")
         call.respond(HttpStatusCode.OK, HttpMessage("Slettet sykmelding med id $sykmeldingId"))
     }
