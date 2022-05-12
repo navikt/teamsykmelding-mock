@@ -71,5 +71,10 @@ class PapirsykmeldingServiceTest : FunSpec({
 
             coVerify { dokarkivClient.opprettJournalpost(match { it.dokumenter[0].dokumentvarianter.size == 2 }) }
         }
+        test("opprettUtenlandskPapirsykmelding oppretter journalpost med riktig brevkode") {
+            papirsykmeldingService.opprettUtenlandskPapirsykmelding(fnr)
+
+            coVerify { dokarkivClient.opprettJournalpost(match { it.dokumenter[0].dokumentvarianter.size == 2 && it.dokumenter[0].brevkode == "900023" }) }
+        }
     }
 })

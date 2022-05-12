@@ -1,12 +1,12 @@
 package no.nav.syfo.sykmelding.api
 
-import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.Route
-import io.ktor.routing.delete
-import io.ktor.routing.post
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.post
 import no.nav.syfo.application.HttpMessage
 import no.nav.syfo.log
 import no.nav.syfo.sykmelding.SlettSykmeldingService
