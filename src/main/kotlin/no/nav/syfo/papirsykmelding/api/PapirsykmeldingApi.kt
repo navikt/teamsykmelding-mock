@@ -20,4 +20,18 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
         log.info("Opprettet papirsykmelding med journalpostId $journalpostId")
         call.respond(HttpStatusCode.OK, HttpMessage("Opprettet papirsykmelding med journalpostId $journalpostId"))
     }
+
+    post("/papirsykmelding/utenlandsk/opprett") {
+        val fnrSykmeldt = call.request.headers["Sykmeldt-Fnr"]
+
+        if (fnrSykmeldt == null) {
+            call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler"))
+            return@post
+        }
+
+        val journalpostId = papirsykmeldingService.opprettUtenlandskPapirsykmelding(fnrSykmeldt)
+
+        log.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
+        call.respond(HttpStatusCode.OK, HttpMessage("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId"))
+    }
 }

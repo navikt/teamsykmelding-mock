@@ -79,3 +79,34 @@ fun opprettJournalpostPayload(
         )
     )
 }
+
+fun opprettUtenlandskJournalpostPayload(
+    fnr: String,
+    pdf: String,
+    metadata: String
+): JournalpostRequest {
+    val dokumentvarianter = mutableListOf(
+        Dokumentvarianter(
+            filnavn = "pdf-sykmelding",
+            filtype = "PDFA",
+            variantformat = "ARKIV",
+            fysiskDokument = pdf
+        ),
+        Dokumentvarianter(
+            filnavn = "xml-sykmeldingmetadata",
+            filtype = "XML",
+            variantformat = "SKANNING_META",
+            fysiskDokument = metadata
+        )
+    )
+    return JournalpostRequest(
+        bruker = Bruker(id = fnr),
+        dokumenter = listOf(
+            Dokument(
+                brevkode = "900023",
+                dokumentvarianter = dokumentvarianter
+            )
+        ),
+        tittel = "Utenlandsk papirsykmelding"
+    )
+}
