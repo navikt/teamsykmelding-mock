@@ -1,10 +1,10 @@
 package no.nav.syfo.application.api
 
-import io.ktor.http.content.defaultResource
-import io.ktor.http.content.resources
-import io.ktor.http.content.static
-import io.ktor.routing.Route
-import io.ktor.routing.route
+import io.ktor.server.http.content.defaultResource
+import io.ktor.server.http.content.resources
+import io.ktor.server.http.content.static
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.route
 
 fun Route.setupSwaggerDocApi() {
     route("/api/v1/docs/") {
