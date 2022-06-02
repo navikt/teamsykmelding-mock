@@ -29,8 +29,8 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykm
             call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde"))
             return@delete
         }
-        val anttalSlettede = slettSykmeldingService.slettAlleSykmeldinger(fnr = fnr)
-        log.info("Slettet $anttalSlettede sykmeldinger")
-        call.respond(HttpStatusCode.OK, HttpMessage("Slettet $anttalSlettede sykmeldinger"))
+        val antallSlettede = slettSykmeldingService.slettAlleSykmeldinger(fnr = fnr)
+        log.info("Slettet $antallSlettede sykmeldinger")
+        call.respond(HttpStatusCode.OK, HttpMessage("Slettet $antallSlettede sykmeldinger"))
     }
 }
