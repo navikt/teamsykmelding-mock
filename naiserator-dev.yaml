@@ -49,6 +49,7 @@ spec:
       external:
         - host: https://pdl-api.dev-fss-pub.nais.io
         - host: https://dokarkiv.dev-fss-pub.nais.io
+        - host: https://syfosmregister.dev-fss-pub.nais.io
   envFrom:
     - secret: mockbackend-secrets
   env:
@@ -68,3 +69,7 @@ spec:
       value: https://dokarkiv.dev-fss-pub.nais.io/rest/journalpostapi/v1/journalpost
     - name: DOKARKIV_SCOPE
       value: api://dev-fss.teamdokumenthandtering.dokarkiv-q1/.default
+    - name: SYFOSMREGISTER_URL
+      value: https://syfosmregister.dev-fss-pub.nais.io
+    - name: SYFOSMREGISTER_SCOPE
+      value: api://dev-fss.teamsykmelding.syfosmregister/.default

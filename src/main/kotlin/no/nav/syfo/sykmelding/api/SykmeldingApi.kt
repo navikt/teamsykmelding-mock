@@ -12,7 +12,6 @@ import no.nav.syfo.log
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
-import java.util.UUID
 
 fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykmeldingService: SlettSykmeldingService) {
     post("/sykmelding/opprett") {
@@ -24,22 +23,14 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykm
         call.respond(HttpStatusCode.OK, HttpMessage("Opprettet sykmelding med mottakId $mottakId"))
     }
 
-    delete("/sykmelding/{sykmeldingId}") {
-        val sykmeldingId = call.parameters["sykmeldingId"]
+    delete("/sykmeldinger") {
         val fnr = call.request.headers["Sykmeldt-Fnr"]
         if (fnr == null || fnr.length != 11) {
             call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde"))
             return@delete
         }
-        try {
-            UUID.fromString(sykmeldingId)
-        } catch (e: Exception) {
-            log.error("SykmeldingId er ikke en uuid: $sykmeldingId")
-            call.respond(HttpStatusCode.BadRequest, HttpMessage("SykmeldingId må være en UUID"))
-            return@delete
-        }
-        slettSykmeldingService.slettSykmelding(sykmeldingId = sykmeldingId!!, fnr = fnr)
-        log.info("Slettet sykmelding med id $sykmeldingId")
-        call.respond(HttpStatusCode.OK, HttpMessage("Slettet sykmelding med id $sykmeldingId"))
+        val anttalSlettede = slettSykmeldingService.slettAlleSykmeldinger(fnr = fnr)
+        log.info("Slettet $anttalSlettede sykmeldinger")
+        call.respond(HttpStatusCode.OK, HttpMessage("Slettet $anttalSlettede sykmeldinger"))
     }
 }
