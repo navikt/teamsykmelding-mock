@@ -21,7 +21,9 @@ data class Environment(
     val dokarkivScope: String = getEnvVar("DOKARKIV_SCOPE"),
     val papirSmRegistreringTopic: String = "teamsykmelding.papir-sm-registering",
     val manuellTopic: String = "teamsykmelding.sykmelding-manuell",
-    val sykmeldingStatusTopic: String = "teamsykmelding.sykmeldingstatus-leesah"
+    val sykmeldingStatusTopic: String = "teamsykmelding.sykmeldingstatus-leesah",
+    val syfosmregisterUrl: String = getEnvVar("SYFOSMREGISTER_URL"),
+    val syfosmregisterScope: String = getEnvVar("SYFOSMREGISTER_SCOPE")
 ) : MqConfig
 
 data class ServiceUser(
