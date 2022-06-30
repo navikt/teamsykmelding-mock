@@ -147,6 +147,7 @@ fun lagHelseopplysninger(
                 }
             )
         }
+        regelSettVersjon = sykmeldingRequest.regelsettVersjon
         strekkode = "00170272416462604201615322390000011"
         avsenderSystem = HelseOpplysningerArbeidsuforhet.AvsenderSystem().apply {
             systemNavn = "System X"

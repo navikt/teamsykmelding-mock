@@ -120,6 +120,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"
             helseopplysninger.prognose.erIArbeid shouldNotBeEqualTo null
             helseopplysninger.tiltak shouldNotBeEqualTo null
+            helseopplysninger.regelSettVersjon shouldBeEqualTo "2"
         }
         test("Helseopplysninger opprettes korrekt for maksimal request og regelsettversjon 3") {
             val sykmeldingRequest = SykmeldingRequest(
@@ -181,6 +182,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"
             helseopplysninger.prognose.erIArbeid shouldBeEqualTo null
             helseopplysninger.tiltak shouldBeEqualTo null
+            helseopplysninger.regelSettVersjon shouldBeEqualTo "3"
         }
         test("Helseopplysninger kan opprettes med tullekode som diagnosekode (teste avvist sykmelding)") {
             val sykmeldingRequest = SykmeldingRequest(
