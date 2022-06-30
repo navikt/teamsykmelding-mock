@@ -47,7 +47,11 @@ fun lagHelseopplysninger(
                     v = "FNR"
                 }
             }
-            navnFastlege = "Victor Frankenstein"
+            navnFastlege = if (sykmeldingRequest.regelsettVersjon == 3) {
+                null
+            } else {
+                "Victor Frankenstein"
+            }
         }
         arbeidsgiver = HelseOpplysningerArbeidsuforhet.Arbeidsgiver().apply {
             harArbeidsgiver = CS().apply {
@@ -65,18 +69,37 @@ fun lagHelseopplysninger(
         prognose = HelseOpplysningerArbeidsuforhet.Prognose().apply {
             isArbeidsforEtterEndtPeriode = true
             beskrivHensynArbeidsplassen = "Må ta det pent"
-            erIArbeid = HelseOpplysningerArbeidsuforhet.Prognose.ErIArbeid().apply {
-                isEgetArbeidPaSikt = true
-                isAnnetArbeidPaSikt = false
-                arbeidFraDato = sykmeldingRequest.perioder.maxOf { it.tom }
-                vurderingDato = sykmeldingRequest.perioder.minOf { it.fom }
+            erIArbeid = if (sykmeldingRequest.regelsettVersjon == 3) {
+                null
+            } else {
+                HelseOpplysningerArbeidsuforhet.Prognose.ErIArbeid().apply {
+                    isEgetArbeidPaSikt = true
+                    isAnnetArbeidPaSikt = false
+                    arbeidFraDato = sykmeldingRequest.perioder.maxOf { it.tom }
+                    vurderingDato = sykmeldingRequest.perioder.minOf { it.fom }
+                }
             }
         }
-        tiltak = HelseOpplysningerArbeidsuforhet.Tiltak().apply {
-            tiltakArbeidsplassen = "Fortsett som sist."
-            tiltakNAV = "Pasienten har plager som er kommet tilbake etter operasjon. Det er nylig tatt MR bildet som " +
-                "viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykmeldeingen vil vare utover aktuell sm periode. "
+        tiltak = if (sykmeldingRequest.regelsettVersjon == 3) {
+            null
+        } else {
+            HelseOpplysningerArbeidsuforhet.Tiltak().apply {
+                tiltakArbeidsplassen = "Fortsett som sist."
+                tiltakNAV = "Pasienten har plager som er kommet tilbake etter operasjon. Det er nylig tatt MR bildet som " +
+                    "viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykmeldeingen vil vare utover aktuell sm periode. "
+            }
         }
+        meldingTilNav = if (sykmeldingRequest.regelsettVersjon == 3) {
+            HelseOpplysningerArbeidsuforhet.MeldingTilNav().apply {
+                beskrivBistandNAV = "Trenger bistand"
+            }
+        } else {
+            HelseOpplysningerArbeidsuforhet.MeldingTilNav().apply {
+                isBistandNAVUmiddelbart = true
+                beskrivBistandNAV = "Trenger bistand"
+            }
+        }
+        meldingTilArbeidsgiver = "Melding til arbeidsgiver"
         kontaktMedPasient = HelseOpplysningerArbeidsuforhet.KontaktMedPasient().apply {
             kontaktDato = sykmeldingRequest.kontaktDato
             begrunnIkkeKontakt = sykmeldingRequest.begrunnIkkeKontakt
@@ -84,6 +107,10 @@ fun lagHelseopplysninger(
         }
         utdypendeOpplysninger = if (sykmeldingRequest.utenUtdypendeOpplysninger) {
             null
+        } else if (sykmeldingRequest.regelsettVersjon == 3) {
+            HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger().apply {
+                spmGruppe.addAll(tilSpmGruppeRegelsett3())
+            }
         } else {
             HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger().apply {
                 spmGruppe.addAll(tilSpmGruppe())
@@ -328,6 +355,65 @@ fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.S
         HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe().apply {
             spmGruppeId = "6.2"
             spmGruppeTekst = "Utdypende opplysninger ved 7/8,17 og 39 uker"
+            spmSvar.addAll(listeDynaSvarType)
+        }
+    )
+    return spmGruppe
+}
+
+fun tilSpmGruppeRegelsett3(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe> {
+    val listeDynaSvarType = ArrayList<DynaSvarType>()
+
+    listeDynaSvarType.add(
+        DynaSvarType().apply {
+            spmId = "6.5.1"
+            spmTekst = "Beskriv kort sykdomsutviklingen, symptomer og funn. Hvordan påvirker helsetilstanden funksjonen i arbeid og dagligliv?"
+            restriksjon = DynaSvarType.Restriksjon().apply {
+                restriksjonskode.add(
+                    CS().apply {
+                        v = "A"
+                        dn = "Informasjonen skal ikke vises arbeidsgiver"
+                    }
+                )
+            }
+            svarTekst = "Har ikke blitt noe bedre. Klarer ikke å jobbe eller drive med aktiviteter"
+        }
+    )
+    listeDynaSvarType.add(
+        DynaSvarType().apply {
+            spmId = "6.5.2"
+            spmTekst = "Beskriv pågående og planlagt utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?"
+            restriksjon = DynaSvarType.Restriksjon().apply {
+                restriksjonskode.add(
+                    CS().apply {
+                        v = "A"
+                        dn = "Informasjonen skal ikke vises arbeidsgiver"
+                    }
+                )
+            }
+            svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
+        }
+    )
+    listeDynaSvarType.add(
+        DynaSvarType().apply {
+            spmId = "6.5.3"
+            spmTekst = "Kan arbeidsevnen bedres gjennom medisinsk behandling og/eller arbeidsrelatert aktivitet? I så fall hvordan? Angi tidsperspektiv"
+            restriksjon = DynaSvarType.Restriksjon().apply {
+                restriksjonskode.add(
+                    CS().apply {
+                        v = "A"
+                        dn = "Informasjonen skal ikke vises arbeidsgiver"
+                    }
+                )
+            }
+            svarTekst = "Nei"
+        }
+    )
+
+    val spmGruppe = listOf(
+        HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe().apply {
+            spmGruppeId = "6.5"
+            spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
             spmSvar.addAll(listeDynaSvarType)
         }
     )
