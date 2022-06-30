@@ -114,7 +114,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.kontaktMedPasient.kontaktDato shouldBeEqualTo LocalDate.now().minusDays(2)
             helseopplysninger.kontaktMedPasient.begrunnIkkeKontakt shouldBeEqualTo "Hadde ikke tid"
             helseopplysninger.behandler.id[0].id shouldBeEqualTo "10987654321"
-            helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmSvar.size shouldBeEqualTo 4
+            helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmSvar.size shouldBeEqualTo 3
+            helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmGruppeId shouldBeEqualTo "6.4"
             helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo "Melding til arbeidsgiver"
             helseopplysninger.meldingTilNav.isBistandNAVUmiddelbart shouldBeEqualTo true
             helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"
@@ -177,6 +178,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.kontaktMedPasient.begrunnIkkeKontakt shouldBeEqualTo "Hadde ikke tid"
             helseopplysninger.behandler.id[0].id shouldBeEqualTo "10987654321"
             helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmSvar.size shouldBeEqualTo 3
+            helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmGruppeId shouldBeEqualTo "6.5"
             helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo "Melding til arbeidsgiver"
             helseopplysninger.meldingTilNav.isBistandNAVUmiddelbart shouldBeEqualTo null
             helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"

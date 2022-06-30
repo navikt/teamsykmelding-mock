@@ -293,7 +293,7 @@ fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.S
 
     listeDynaSvarType.add(
         DynaSvarType().apply {
-            spmId = "6.2.1"
+            spmId = "6.4.1"
             spmTekst = "Beskriv kort sykehistorie, symptomer og funn i dagens situasjon."
             restriksjon = DynaSvarType.Restriksjon().apply {
                 restriksjonskode.add(
@@ -308,8 +308,8 @@ fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.S
     )
     listeDynaSvarType.add(
         DynaSvarType().apply {
-            spmId = "6.2.2"
-            spmTekst = "Hvordan påvirker sykdommen arbeidsevnen?"
+            spmId = "6.4.2"
+            spmTekst = "Beskriv pågående og planlagt henvisning, utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?"
             restriksjon = DynaSvarType.Restriksjon().apply {
                 restriksjonskode.add(
                     CS().apply {
@@ -323,8 +323,8 @@ fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.S
     )
     listeDynaSvarType.add(
         DynaSvarType().apply {
-            spmId = "6.2.3"
-            spmTekst = "Har behandlingen frem til nå bedret arbeidsevnen?"
+            spmId = "6.4.3"
+            spmTekst = "Hva mener du skal til for at pasienten kan komme tilbake i eget eller annet arbeid?"
             restriksjon = DynaSvarType.Restriksjon().apply {
                 restriksjonskode.add(
                     CS().apply {
@@ -333,29 +333,14 @@ fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.S
                     }
                 )
             }
-            svarTekst = "Nei"
-        }
-    )
-    listeDynaSvarType.add(
-        DynaSvarType().apply {
-            spmId = "6.2.4"
-            spmTekst = "Beskriv pågående og planlagt henvisning,utredning og/eller behandling."
-            restriksjon = DynaSvarType.Restriksjon().apply {
-                restriksjonskode.add(
-                    CS().apply {
-                        v = "A"
-                        dn = "Informasjonen skal ikke vises arbeidsgiver"
-                    }
-                )
-            }
-            svarTekst = "Henvist til fysio"
+            svarTekst = "Videre utredning"
         }
     )
 
     val spmGruppe = listOf(
         HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe().apply {
-            spmGruppeId = "6.2"
-            spmGruppeTekst = "Utdypende opplysninger ved 7/8,17 og 39 uker"
+            spmGruppeId = "6.4"
+            spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
             spmSvar.addAll(listeDynaSvarType)
         }
     )
