@@ -47,7 +47,7 @@ fun lagHelseopplysninger(
                     v = "FNR"
                 }
             }
-            navnFastlege = if (sykmeldingRequest.regelsettVersjon == 3) {
+            navnFastlege = if (sykmeldingRequest.regelsettVersjon == "3") {
                 null
             } else {
                 "Victor Frankenstein"
@@ -69,7 +69,7 @@ fun lagHelseopplysninger(
         prognose = HelseOpplysningerArbeidsuforhet.Prognose().apply {
             isArbeidsforEtterEndtPeriode = true
             beskrivHensynArbeidsplassen = "Må ta det pent"
-            erIArbeid = if (sykmeldingRequest.regelsettVersjon == 3) {
+            erIArbeid = if (sykmeldingRequest.regelsettVersjon == "3") {
                 null
             } else {
                 HelseOpplysningerArbeidsuforhet.Prognose.ErIArbeid().apply {
@@ -80,7 +80,7 @@ fun lagHelseopplysninger(
                 }
             }
         }
-        tiltak = if (sykmeldingRequest.regelsettVersjon == 3) {
+        tiltak = if (sykmeldingRequest.regelsettVersjon == "3") {
             null
         } else {
             HelseOpplysningerArbeidsuforhet.Tiltak().apply {
@@ -89,7 +89,7 @@ fun lagHelseopplysninger(
                     "viser forandringer i hånd som mulig må opereres. Venter på time. Det er mulig sykmeldeingen vil vare utover aktuell sm periode. "
             }
         }
-        meldingTilNav = if (sykmeldingRequest.regelsettVersjon == 3) {
+        meldingTilNav = if (sykmeldingRequest.regelsettVersjon == "3") {
             HelseOpplysningerArbeidsuforhet.MeldingTilNav().apply {
                 beskrivBistandNAV = "Trenger bistand"
             }
@@ -107,7 +107,7 @@ fun lagHelseopplysninger(
         }
         utdypendeOpplysninger = if (sykmeldingRequest.utenUtdypendeOpplysninger) {
             null
-        } else if (sykmeldingRequest.regelsettVersjon == 3) {
+        } else if (sykmeldingRequest.regelsettVersjon == "3") {
             HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger().apply {
                 spmGruppe.addAll(tilSpmGruppeRegelsett3())
             }

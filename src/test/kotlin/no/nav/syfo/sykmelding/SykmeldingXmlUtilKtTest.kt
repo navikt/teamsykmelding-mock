@@ -38,7 +38,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = true,
-                regelsettVersjon = 2
+                regelsettVersjon = "2"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -88,7 +88,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = 2
+                regelsettVersjon = "2"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -149,7 +149,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = 3
+                regelsettVersjon = "3"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -205,7 +205,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = 2
+                regelsettVersjon = "2"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -239,7 +239,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = true,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = 2
+                regelsettVersjon = "2"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))

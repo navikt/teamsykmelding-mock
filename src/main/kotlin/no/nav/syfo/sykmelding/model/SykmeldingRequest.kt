@@ -19,7 +19,7 @@ data class SykmeldingRequest(
     val vedlegg: Boolean,
     val virksomhetsykmelding: Boolean,
     val utenUtdypendeOpplysninger: Boolean,
-    val regelsettVersjon: Int?
+    val regelsettVersjon: String?
 )
 
 enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
