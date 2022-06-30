@@ -254,6 +254,8 @@ components:
           type: boolean
         utenUtdypendeOpplysninger:
           type: boolean
+        regelsettVersjon:
+          type: string
       required:
         - fnr
         - fnrLege
