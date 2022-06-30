@@ -20,6 +20,7 @@ import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.GregorianCalendar
 import java.util.UUID
 import javax.xml.datatype.DatatypeConfigurationException
@@ -234,10 +235,10 @@ private fun tilPeriode(periode: SykmeldingPeriode): HelseOpplysningerArbeidsufor
         }
         behandlingsdager = when (periode.type) {
             SykmeldingType.BEHANDLINGSDAGER -> {
-                behandlingsdager(4)
+                behandlingsdager(finnAntallBehandlingsdager(periode.fom, periode.tom) + 1)
             }
             SykmeldingType.BEHANDLINGSDAG -> {
-                behandlingsdager(1)
+                behandlingsdager(finnAntallBehandlingsdager(periode.fom, periode.tom))
             }
             else -> null
         }
@@ -286,6 +287,11 @@ private fun behandlingsdager(antallBehandlingsdager: Int): HelseOpplysningerArbe
     return HelseOpplysningerArbeidsuforhet.Aktivitet.Periode.Behandlingsdager().apply {
         antallBehandlingsdagerUke = antallBehandlingsdager
     }
+}
+
+private fun finnAntallBehandlingsdager(fom: LocalDate, tom: LocalDate): Int {
+    val range = fom.rangeTo(tom)
+    return ChronoUnit.WEEKS.between(range.start, range.endInclusive).toInt() + 1
 }
 
 fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe> {
