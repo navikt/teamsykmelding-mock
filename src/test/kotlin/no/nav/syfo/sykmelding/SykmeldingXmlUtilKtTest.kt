@@ -252,5 +252,73 @@ class SykmeldingXmlUtilKtTest : FunSpec({
 
             helseopplysninger.behandler.id[0].id shouldBeEqualTo "10987654321"
         }
+        test("BEHANDLINGSDAG gir en behandlingsdag pr uke") {
+            val sykmeldingRequest = SykmeldingRequest(
+                fnr = "12345678910",
+                fnrLege = "10987654321",
+                herId = null,
+                hprNummer = null,
+                syketilfelleStartdato = LocalDate.now().minusDays(1),
+                diagnosekode = "A02",
+                diagnosekodesystem = "icpc2",
+                annenFraverGrunn = null,
+                perioder = listOf(
+                    SykmeldingPeriode(
+                        fom = LocalDate.now(),
+                        tom = LocalDate.now().plusDays(10),
+                        type = SykmeldingType.BEHANDLINGSDAG
+                    )
+                ),
+                behandletDato = LocalDate.now(),
+                kontaktDato = null,
+                begrunnIkkeKontakt = null,
+                vedlegg = false,
+                virksomhetsykmelding = false,
+                utenUtdypendeOpplysninger = true,
+                regelsettVersjon = "2"
+            )
+            val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
+            val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
+
+            val helseopplysninger = lagHelseopplysninger(sykmeldingRequest, sykmeldt, lege)
+
+            helseopplysninger.aktivitet.periode[0].periodeFOMDato shouldBeEqualTo LocalDate.now()
+            helseopplysninger.aktivitet.periode[0].periodeTOMDato shouldBeEqualTo LocalDate.now().plusDays(10)
+            helseopplysninger.aktivitet.periode[0].behandlingsdager.antallBehandlingsdagerUke shouldBeEqualTo 2
+        }
+        test("BEHANDLINGSDAGER gir en behandlingsdag pr uke pluss en") {
+            val sykmeldingRequest = SykmeldingRequest(
+                fnr = "12345678910",
+                fnrLege = "10987654321",
+                herId = null,
+                hprNummer = null,
+                syketilfelleStartdato = LocalDate.now().minusDays(1),
+                diagnosekode = "A02",
+                diagnosekodesystem = "icpc2",
+                annenFraverGrunn = null,
+                perioder = listOf(
+                    SykmeldingPeriode(
+                        fom = LocalDate.now(),
+                        tom = LocalDate.now().plusDays(10),
+                        type = SykmeldingType.BEHANDLINGSDAGER
+                    )
+                ),
+                behandletDato = LocalDate.now(),
+                kontaktDato = null,
+                begrunnIkkeKontakt = null,
+                vedlegg = false,
+                virksomhetsykmelding = false,
+                utenUtdypendeOpplysninger = true,
+                regelsettVersjon = "2"
+            )
+            val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
+            val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
+
+            val helseopplysninger = lagHelseopplysninger(sykmeldingRequest, sykmeldt, lege)
+
+            helseopplysninger.aktivitet.periode[0].periodeFOMDato shouldBeEqualTo LocalDate.now()
+            helseopplysninger.aktivitet.periode[0].periodeTOMDato shouldBeEqualTo LocalDate.now().plusDays(10)
+            helseopplysninger.aktivitet.periode[0].behandlingsdager.antallBehandlingsdagerUke shouldBeEqualTo 3
+        }
     }
 })
