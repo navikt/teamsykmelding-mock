@@ -53,4 +53,9 @@ Creating a docker image should be as simple as `docker build -t "no.nav.syfo" .`
 #### Running a docker image
 `docker run --rm -it -p 8080:8080 "no.nav.syfo"`
 
+## Oppgradering av gradle wrapper
+Finn nyeste versjon av gradle her: https://gradle.org/releases/
+
+```./gradlew wrapper --gradle-version $gradleVersjon```
+
 #### Tldr
