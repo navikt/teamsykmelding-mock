@@ -48,14 +48,22 @@ To build locally and run the integration tests you can simply run `./gradlew sha
 `gradlew.bat shadowJar`
 
 #### Creating a docker image
-Creating a docker image should be as simple as `docker build -t "no.nav.syfo" .`
+Creating a docker image should be as simple as `docker build -t teamsykmelding-mock-backend .`
 
 #### Running a docker image
-`docker run --rm -it -p 8080:8080 "no.nav.syfo"`
+`docker run --rm -it -p 8080:8080 teamsykmelding-mock-backend`
 
 ## Oppgradering av gradle wrapper
 Finn nyeste versjon av gradle her: https://gradle.org/releases/
 
 ```./gradlew wrapper --gradle-version $gradleVersjon```
 
-#### Tldr
+
+### Kontakt
+
+Dette prosjektet er vedlikeholdt av navikt/teamsykmelding
+
+Spørsmål og/eller forbedrings ønsker? Gjerne lag ein [issue](https://github.com/navikt/teamsykmelding-mock-backend/issues).
+
+Dersom du jobber i NAV [@navikt](https://github.com/navikt) kan du nå oss på slack 
+kanalen [#team-sykmelding](https://nav-it.slack.com/archives/CMA3XV997).

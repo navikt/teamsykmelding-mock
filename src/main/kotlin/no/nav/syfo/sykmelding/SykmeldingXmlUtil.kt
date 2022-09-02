@@ -132,6 +132,14 @@ fun lagHelseopplysninger(
                             s = "2.16.578.1.12.4.1.1.8327"
                             v = "FNR"
                         }
+                    },
+                    Ident().apply {
+                        id = sykmeldingRequest.hprNummer
+                        typeId = CV().apply {
+                            dn = "HPR-nummer"
+                            s = "2.16.578.1.12.4.1.1.8116"
+                            v = "HPR"
+                        }
                     }
                 )
             )
