@@ -56,7 +56,10 @@ fun main() {
     DefaultExports.initialize()
     val applicationState = ApplicationState()
 
-    val connection = connectionFactory(env).createConnection(serviceUser.username, serviceUser.password)
+    val connection = connectionFactory(env).apply {
+        sslSocketFactory = null
+        sslCipherSuite = null
+    }.createConnection(serviceUser.username, serviceUser.password)
     connection.start()
 
     val config: HttpClientConfig<ApacheEngineConfig>.() -> Unit = {
