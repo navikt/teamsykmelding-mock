@@ -5,19 +5,19 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val coroutinesVersion = "1.6.2"
-val jacksonVersion = "2.13.3"
+val coroutinesVersion = "1.6.4"
+val jacksonVersion = "2.13.4"
 val kluentVersion = "1.68"
-val ktorVersion = "2.1.0"
-val logbackVersion = "1.2.11"
+val ktorVersion = "2.1.1"
+val logbackVersion = "1.4.0"
 val logstashEncoderVersion = "7.2"
-val prometheusVersion = "0.15.0"
-val smCommonVersion = "1.f132f2b"
-val mockkVersion = "1.12.4"
-val testContainerKafkaVersion = "1.17.2"
+val prometheusVersion = "0.16.0"
+val smCommonVersion = "1.069b5f9"
+val mockkVersion = "1.12.7"
+val testContainerKafkaVersion = "1.17.3"
 val kotlinVersion = "1.7.10"
-val kotestVersion = "5.3.1"
-val swaggerUiVersion = "4.11.1"
+val kotestVersion = "5.4.2"
+val swaggerUiVersion = "4.14.0"
 val fellesformatVersion = "1.e6fcef8"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
@@ -35,7 +35,6 @@ plugins {
     id("com.diffplug.spotless") version "6.5.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
-    jacoco
 }
 
 buildscript {
@@ -87,7 +86,7 @@ dependencies {
     implementation("no.nav.helse.xml:kith-hodemelding:$fellesformatVersion")
     implementation("no.nav.helse.xml:sm2013:$fellesformatVersion")
     implementation("no.nav.helse.xml:legeerklaering:$legeerklaeringVersion")
-    implementation ("no.nav.helse.xml:papirSykemelding:$papirsykmeldingVersion")
+    implementation("no.nav.helse.xml:papirSykemelding:$papirsykmeldingVersion")
     implementation("javax.xml.bind:jaxb-api:$jaxbApiVersion")
     implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion")
     implementation("com.migesok:jaxb-java-time-adapters:$javaTimeAdapterVersion")
@@ -97,25 +96,19 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
-    swaggerUI( "org.webjars:swagger-ui:$swaggerUiVersion")
+    swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 
-    testImplementation("org.amshove.kluent:kluent:$kluentVersion") 
+    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:kafka:$testContainerKafkaVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
-        exclude(group = "org.eclipse.jetty") 
+        exclude(group = "org.eclipse.jetty")
     }
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")
 }
 
-tasks.jacocoTestReport {
-    reports {
-        xml.isEnabled = true
-        html.isEnabled = true
-    }
-}
 
 swaggerSources {
     create("teamsykmelding-mock-backend").apply {
@@ -133,13 +126,6 @@ tasks {
         kotlinOptions.jvmTarget = "17"
     }
 
-    withType<JacocoReport> {
-        classDirectories.setFrom(
-                sourceSets.main.get().output.asFileTree.matching {
-                    exclude()
-                }
-        )
-    }
 
     withType<org.hidetake.gradle.swagger.generator.GenerateSwaggerUI> {
         outputDir = File(buildDir.path + "/resources/main/api")
