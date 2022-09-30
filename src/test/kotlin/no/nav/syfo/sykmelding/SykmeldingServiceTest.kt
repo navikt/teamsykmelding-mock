@@ -55,7 +55,8 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val mottakId = "mottakId"
 
@@ -91,7 +92,8 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = true,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val mottakId = "mottakId"
 
@@ -127,7 +129,8 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = true,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val mottakId = "mottakId"
 

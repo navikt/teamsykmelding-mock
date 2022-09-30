@@ -7,6 +7,7 @@ data class SykmeldingRequest(
     val fnr: String,
     val fnrLege: String,
     val herId: String?,
+    val meldingTilArbeidsgiver: String?,
     val hprNummer: String?,
     val syketilfelleStartdato: LocalDate,
     val diagnosekode: String,

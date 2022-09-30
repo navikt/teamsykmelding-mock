@@ -100,7 +100,9 @@ fun lagHelseopplysninger(
                 beskrivBistandNAV = "Trenger bistand"
             }
         }
-        meldingTilArbeidsgiver = "Melding til arbeidsgiver"
+        if (!sykmeldingRequest.meldingTilArbeidsgiver.isNullOrEmpty()) {
+            meldingTilArbeidsgiver = sykmeldingRequest.meldingTilArbeidsgiver
+        }
         kontaktMedPasient = HelseOpplysningerArbeidsuforhet.KontaktMedPasient().apply {
             kontaktDato = sykmeldingRequest.kontaktDato
             begrunnIkkeKontakt = sykmeldingRequest.begrunnIkkeKontakt

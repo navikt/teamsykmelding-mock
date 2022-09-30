@@ -38,7 +38,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = true,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -88,7 +89,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = "Melding til arbeidsgiver"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -151,7 +153,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "3"
+                regelsettVersjon = "3",
+                meldingTilArbeidsgiver = "Viktig melding til arbeidsgiver"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -179,7 +182,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.behandler.id[0].id shouldBeEqualTo "10987654321"
             helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmSvar.size shouldBeEqualTo 3
             helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmGruppeId shouldBeEqualTo "6.5"
-            helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo "Melding til arbeidsgiver"
+            helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo "Viktig melding til arbeidsgiver"
             helseopplysninger.meldingTilNav.isBistandNAVUmiddelbart shouldBeEqualTo null
             helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"
             helseopplysninger.prognose.erIArbeid shouldBeEqualTo null
@@ -209,7 +212,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -243,7 +247,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = true,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -275,7 +280,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = true,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -309,7 +315,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = true,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
