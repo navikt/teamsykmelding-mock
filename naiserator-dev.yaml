@@ -49,6 +49,11 @@ spec:
       external:
         - host: https://pdl-api.dev-fss-pub.nais.io
         - host: https://dokarkiv.dev-fss-pub.nais.io
+    inbound:
+      rules:
+        - application: teamsykmelding-mock
+          namespace: teamsykmelding
+          cluster: dev-gcp
   envFrom:
     - secret: mockbackend-secrets
   env:
