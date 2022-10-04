@@ -142,7 +142,11 @@ tasks {
     withType<Test> {
         useJUnitPlatform {
         }
-        testLogging.showStandardStreams = true
+        testLogging {
+            events("skipped", "failed")
+            showStackTraces = true
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        }
     }
 
     "check" {

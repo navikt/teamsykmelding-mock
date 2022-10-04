@@ -17,6 +17,7 @@ import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
+import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import java.time.LocalDate
 import java.time.ZoneId
@@ -63,7 +64,7 @@ fun lagHelseopplysninger(
             yrkesbetegnelse = "Pedagogisk leder"
             stillingsprosent = 100
         }
-        medisinskVurdering = medisinskVurdering(sykmeldingRequest.diagnosekode, sykmeldingRequest.diagnosekodesystem, sykmeldingRequest.annenFraverGrunn)
+        medisinskVurdering = medisinskVurdering(sykmeldingRequest.diagnosekode, sykmeldingRequest.diagnosekodesystem, sykmeldingRequest.annenFraverGrunn, sykmeldingRequest.bidiagnoser)
         aktivitet = HelseOpplysningerArbeidsuforhet.Aktivitet().apply {
             periode.addAll(sykmeldingRequest.perioder.map { tilPeriode(it) })
         }
@@ -167,19 +168,15 @@ fun lagHelseopplysninger(
     }
 }
 
-private fun medisinskVurdering(kode: String, system: String, annenFraverGrunn: AnnenFraverGrunn?): HelseOpplysningerArbeidsuforhet.MedisinskVurdering {
+private fun medisinskVurdering(kode: String, system: String, annenFraverGrunn: AnnenFraverGrunn?, bidiagnose: List<Diagnoser>?): HelseOpplysningerArbeidsuforhet.MedisinskVurdering {
     val medisinskVurdering = HelseOpplysningerArbeidsuforhet.MedisinskVurdering().apply {
         hovedDiagnose = HelseOpplysningerArbeidsuforhet.MedisinskVurdering.HovedDiagnose().apply {
             diagnosekode = tilDiagnosekode(kode, system)
         }
-        biDiagnoser = HelseOpplysningerArbeidsuforhet.MedisinskVurdering.BiDiagnoser().apply {
-            diagnosekode.add(
-                CV().apply {
-                    s = Diagnosekoder.ICD10_CODE
-                    v = "M674"
-                    dn = Diagnosekoder.icd10["M674"]?.text ?: ""
-                }
-            )
+        if (!bidiagnose.isNullOrEmpty()) {
+            biDiagnoser = HelseOpplysningerArbeidsuforhet.MedisinskVurdering.BiDiagnoser().apply {
+                diagnosekode.addAll(bidiagnose.map { tilDiagnosekode(it) })
+            }
         }
         isYrkesskade = false
         yrkesskadeDato = null
@@ -197,6 +194,23 @@ private fun medisinskVurdering(kode: String, system: String, annenFraverGrunn: A
         }
     }
     return medisinskVurdering
+}
+
+private fun tilDiagnosekode(bidiagnoser: Diagnoser): CV {
+    val diagnosekodesystem = if (bidiagnoser.code == "icpc2") {
+        Diagnosekoder.ICPC2_CODE
+    } else {
+        Diagnosekoder.ICD10_CODE
+    }
+    return CV().apply {
+        s = bidiagnoser.system
+        v = bidiagnoser.code
+        dn = if (diagnosekodesystem == Diagnosekoder.ICPC2_CODE) {
+            Diagnosekoder.icpc2[bidiagnoser.code]?.text
+        } else {
+            Diagnosekoder.icd10[bidiagnoser.code]?.text
+        } ?: ""
+    }
 }
 
 private fun tilDiagnosekode(kode: String, system: String): CV {

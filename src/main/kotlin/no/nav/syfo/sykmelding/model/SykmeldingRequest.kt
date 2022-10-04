@@ -20,7 +20,8 @@ data class SykmeldingRequest(
     val vedlegg: Boolean,
     val virksomhetsykmelding: Boolean,
     val utenUtdypendeOpplysninger: Boolean,
-    val regelsettVersjon: String?
+    val regelsettVersjon: String?,
+    val bidiagnoser: List<Diagnoser>?
 )
 
 enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
@@ -35,3 +36,9 @@ enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
     DONOR("9", "Når vedkommende er donor eller er under vurdering som donor"),
     BEHANDLING_STERILISERING("10", "Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering")
 }
+
+data class Diagnoser(
+    val code: String,
+    val system: String,
+    val text: String
+)
