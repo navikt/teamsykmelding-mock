@@ -66,7 +66,8 @@ class SykmeldingApiTest : FunSpec({
                                 "    }\n" +
                                 "  ],\n" +
                                 "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                                "  \"diagnosekode\": \"A90\"\n" +
+                                "  \"diagnosekode\": \"A90\",\n" +
+                                "  \"arbeidsgiverNavn\": null\n" +
                                 "}"
                         )
                     }
@@ -110,7 +111,8 @@ class SykmeldingApiTest : FunSpec({
                                 "  \"kontaktDato\": null,\n" +
                                 "  \"bidiagnoser\": [],\n" +
                                 "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                                "  \"diagnosekode\": \"A90\"\n" +
+                                "  \"diagnosekode\": \"A90\",\n" +
+                                "  \"arbeidsgiverNavn\": \"NAV\"\n" +
                                 "}"
                         )
                     }

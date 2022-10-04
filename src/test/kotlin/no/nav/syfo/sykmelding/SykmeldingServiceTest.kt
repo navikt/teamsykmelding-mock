@@ -19,7 +19,7 @@ import java.time.LocalDate
 import javax.jms.Connection
 
 class SykmeldingServiceTest : FunSpec({
-    val pdlPersonService: PdlPersonService = mockk<PdlPersonService>()
+    val pdlPersonService = mockk<PdlPersonService>()
     val connection = mockk<Connection>()
     val sykmeldingService = SykmeldingService(pdlPersonService, connection, "syfosmmottak")
     val fnr = "12345678910"
@@ -58,7 +58,8 @@ class SykmeldingServiceTest : FunSpec({
                 utenUtdypendeOpplysninger = false,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = null
+                bidiagnoser = null,
+                arbeidsgiverNavn = null
             )
             val mottakId = "mottakId"
 
@@ -96,7 +97,8 @@ class SykmeldingServiceTest : FunSpec({
                 utenUtdypendeOpplysninger = false,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = emptyList()
+                bidiagnoser = emptyList(),
+                arbeidsgiverNavn = null
             )
             val mottakId = "mottakId"
 
@@ -140,7 +142,8 @@ class SykmeldingServiceTest : FunSpec({
                         system = "icd10",
                         text = "Ein viktig diagnose"
                     )
-                )
+                ),
+                arbeidsgiverNavn = null
             )
             val mottakId = "mottakId"
 

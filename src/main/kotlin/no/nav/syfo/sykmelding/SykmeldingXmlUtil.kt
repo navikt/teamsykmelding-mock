@@ -55,14 +55,26 @@ fun lagHelseopplysninger(
                 "Victor Frankenstein"
             }
         }
-        arbeidsgiver = HelseOpplysningerArbeidsuforhet.Arbeidsgiver().apply {
-            harArbeidsgiver = CS().apply {
-                dn = "Én arbeidsgiver"
-                v = "1"
+        if (sykmeldingRequest.arbeidsgiverNavn.isNullOrEmpty()) {
+            arbeidsgiver = HelseOpplysningerArbeidsuforhet.Arbeidsgiver().apply {
+                harArbeidsgiver = CS().apply {
+                    dn = "Én arbeidsgiver"
+                    v = "1"
+                }
+                navnArbeidsgiver = "LOMMEN BARNEHAVE"
+                yrkesbetegnelse = "Pedagogisk leder"
+                stillingsprosent = 100
             }
-            navnArbeidsgiver = "LOMMEN BARNEHAVE"
-            yrkesbetegnelse = "Pedagogisk leder"
-            stillingsprosent = 100
+        } else {
+            arbeidsgiver = HelseOpplysningerArbeidsuforhet.Arbeidsgiver().apply {
+                harArbeidsgiver = CS().apply {
+                    dn = "Én arbeidsgiver"
+                    v = "1"
+                }
+                navnArbeidsgiver = sykmeldingRequest.arbeidsgiverNavn
+                yrkesbetegnelse = "Utvikler"
+                stillingsprosent = 100
+            }
         }
         medisinskVurdering = medisinskVurdering(sykmeldingRequest.diagnosekode, sykmeldingRequest.diagnosekodesystem, sykmeldingRequest.annenFraverGrunn, sykmeldingRequest.bidiagnoser)
         aktivitet = HelseOpplysningerArbeidsuforhet.Aktivitet().apply {
