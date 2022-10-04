@@ -21,7 +21,8 @@ data class SykmeldingRequest(
     val virksomhetsykmelding: Boolean,
     val utenUtdypendeOpplysninger: Boolean,
     val regelsettVersjon: String?,
-    val bidiagnoser: List<Diagnoser>?
+    val bidiagnoser: List<Diagnoser>?,
+    val arbeidsgiverNavn: String?,
 )
 
 enum class AnnenFraverGrunn(val codeValue: String, val text: String) {

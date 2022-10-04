@@ -41,7 +41,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 utenUtdypendeOpplysninger = true,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = emptyList()
+                bidiagnoser = emptyList(),
+                arbeidsgiverNavn = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -93,7 +94,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 utenUtdypendeOpplysninger = false,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = "Melding til arbeidsgiver",
-                bidiagnoser = null
+                bidiagnoser = null,
+                arbeidsgiverNavn = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -169,7 +171,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                         system = "icpc2",
                         text = "Politi"
                     )
-                )
+                ),
+                arbeidsgiverNavn = "NAV"
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -205,6 +208,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.regelSettVersjon shouldBeEqualTo "3"
             helseopplysninger.medisinskVurdering.biDiagnoser.diagnosekode[0].v shouldBeEqualTo "M674"
             helseopplysninger.medisinskVurdering.biDiagnoser.diagnosekode[1].v shouldBeEqualTo "Z09"
+            helseopplysninger.arbeidsgiver.navnArbeidsgiver shouldBeEqualTo "NAV"
         }
         test("Helseopplysninger kan opprettes med tullekode som diagnosekode (teste avvist sykmelding)") {
             val sykmeldingRequest = SykmeldingRequest(
@@ -231,7 +235,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 utenUtdypendeOpplysninger = false,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = emptyList()
+                bidiagnoser = emptyList(),
+                arbeidsgiverNavn = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -268,7 +273,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 utenUtdypendeOpplysninger = false,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = null
+                bidiagnoser = null,
+                arbeidsgiverNavn = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -302,7 +308,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 utenUtdypendeOpplysninger = true,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = null
+                bidiagnoser = null,
+                arbeidsgiverNavn = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -338,7 +345,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 utenUtdypendeOpplysninger = true,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = null
+                bidiagnoser = null,
+                arbeidsgiverNavn = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
