@@ -59,11 +59,11 @@ Finn nyeste versjon av gradle her: https://gradle.org/releases/
 ```./gradlew wrapper --gradle-version $gradleVersjon```
 
 
-### Kontakt
+## Contact
 
-Dette prosjektet er vedlikeholdt av navikt/teamsykmelding
+This project is maintained by navikt/teamsykmelding
 
-Spørsmål og/eller forbedrings ønsker? Gjerne lag ein [issue](https://github.com/navikt/teamsykmelding-mock-backend/issues).
+Questions and/or feature requests? Please create an [issue](https://github.com/navikt/teamsykmelding-mock-backend/issues).
 
-Dersom du jobber i NAV [@navikt](https://github.com/navikt) kan du nå oss på slack 
-kanalen [#team-sykmelding](https://nav-it.slack.com/archives/CMA3XV997).
+If you work in [@navikt](https://github.com/navikt) you can reach us at the Slack
+channel [#team-sykmelding](https://nav-it.slack.com/archives/CMA3XV997).

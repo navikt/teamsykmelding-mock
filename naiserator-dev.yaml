@@ -35,8 +35,6 @@ spec:
       memory: 768Mi
   vault:
     enabled: false
-  ingresses:
-    - "https://teamsykmelding-mock-backend.dev.intern.nav.no"
   webproxy: true
   kafka:
     pool: nav-dev
@@ -51,6 +49,11 @@ spec:
       external:
         - host: https://pdl-api.dev-fss-pub.nais.io
         - host: https://dokarkiv.dev-fss-pub.nais.io
+    inbound:
+      rules:
+        - application: teamsykmelding-mock
+          namespace: teamsykmelding
+          cluster: dev-gcp
   envFrom:
     - secret: mockbackend-secrets
   env:

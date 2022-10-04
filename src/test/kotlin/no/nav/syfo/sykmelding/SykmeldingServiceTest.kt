@@ -10,6 +10,7 @@ import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
+import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.util.get
 import org.amshove.kluent.shouldBeEqualTo
@@ -55,7 +56,9 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = null
             )
             val mottakId = "mottakId"
 
@@ -91,7 +94,9 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = true,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = emptyList()
             )
             val mottakId = "mottakId"
 
@@ -127,7 +132,15 @@ class SykmeldingServiceTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = true,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = listOf(
+                    Diagnoser(
+                        code = "M674",
+                        system = "icd10",
+                        text = "Ein viktig diagnose"
+                    )
+                )
             )
             val mottakId = "mottakId"
 

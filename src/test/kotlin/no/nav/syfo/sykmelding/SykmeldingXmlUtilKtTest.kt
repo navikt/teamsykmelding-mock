@@ -7,6 +7,7 @@ import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
+import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
@@ -38,7 +39,9 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = true,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = emptyList()
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -88,7 +91,9 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = "Melding til arbeidsgiver",
+                bidiagnoser = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -151,7 +156,20 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "3"
+                regelsettVersjon = "3",
+                meldingTilArbeidsgiver = "Viktig melding til arbeidsgiver",
+                bidiagnoser = listOf(
+                    Diagnoser(
+                        code = "M674",
+                        system = "icd10",
+                        text = "Ein viktig diagnose"
+                    ),
+                    Diagnoser(
+                        code = "Z09",
+                        system = "icpc2",
+                        text = "Politi"
+                    )
+                )
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -179,12 +197,14 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.behandler.id[0].id shouldBeEqualTo "10987654321"
             helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmSvar.size shouldBeEqualTo 3
             helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmGruppeId shouldBeEqualTo "6.5"
-            helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo "Melding til arbeidsgiver"
+            helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo "Viktig melding til arbeidsgiver"
             helseopplysninger.meldingTilNav.isBistandNAVUmiddelbart shouldBeEqualTo null
             helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"
             helseopplysninger.prognose.erIArbeid shouldBeEqualTo null
             helseopplysninger.tiltak shouldBeEqualTo null
             helseopplysninger.regelSettVersjon shouldBeEqualTo "3"
+            helseopplysninger.medisinskVurdering.biDiagnoser.diagnosekode[0].v shouldBeEqualTo "M674"
+            helseopplysninger.medisinskVurdering.biDiagnoser.diagnosekode[1].v shouldBeEqualTo "Z09"
         }
         test("Helseopplysninger kan opprettes med tullekode som diagnosekode (teste avvist sykmelding)") {
             val sykmeldingRequest = SykmeldingRequest(
@@ -209,7 +229,9 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = emptyList()
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -219,6 +241,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
             helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.v shouldBeEqualTo "TULLEKODE"
             helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.s shouldBeEqualTo Diagnosekoder.ICD10_CODE
             helseopplysninger.medisinskVurdering.hovedDiagnose.diagnosekode.dn shouldBeEqualTo ""
+            helseopplysninger.medisinskVurdering.biDiagnoser shouldBeEqualTo null
         }
         test("Virksomhetsykmelding får riktig behandler") {
             val sykmeldingRequest = SykmeldingRequest(
@@ -243,7 +266,9 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = true,
                 utenUtdypendeOpplysninger = false,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -275,7 +300,9 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = true,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -309,7 +336,9 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 vedlegg = false,
                 virksomhetsykmelding = false,
                 utenUtdypendeOpplysninger = true,
-                regelsettVersjon = "2"
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = null
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
