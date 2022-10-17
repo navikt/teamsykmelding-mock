@@ -12,6 +12,7 @@ import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
+import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
 import no.nav.syfo.util.get
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
@@ -55,7 +56,7 @@ class SykmeldingServiceTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = false,
+                utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,
@@ -94,7 +95,7 @@ class SykmeldingServiceTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = true,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = false,
+                utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = emptyList(),
@@ -133,7 +134,7 @@ class SykmeldingServiceTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
                 virksomhetsykmelding = true,
-                utenUtdypendeOpplysninger = false,
+                utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = listOf(
