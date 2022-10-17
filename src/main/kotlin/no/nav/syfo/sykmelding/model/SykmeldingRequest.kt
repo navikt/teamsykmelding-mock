@@ -19,7 +19,7 @@ data class SykmeldingRequest(
     val begrunnIkkeKontakt: String?,
     val vedlegg: Boolean,
     val virksomhetsykmelding: Boolean,
-    val utenUtdypendeOpplysninger: Boolean,
+    val utdypendeOpplysninger: UtdypendeOpplysninger?,
     val regelsettVersjon: String?,
     val bidiagnoser: List<Diagnoser>?,
     val arbeidsgiverNavn: String?,
@@ -43,3 +43,7 @@ data class Diagnoser(
     val system: String,
     val text: String
 )
+
+enum class UtdypendeOpplysninger {
+    INGEN, UKE_7, UKE_17, UKE_39
+}

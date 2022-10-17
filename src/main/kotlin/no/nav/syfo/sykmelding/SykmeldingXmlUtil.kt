@@ -8,6 +8,7 @@ import no.nav.helse.sm2013.CS
 import no.nav.helse.sm2013.CV
 import no.nav.helse.sm2013.DynaSvarType
 import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
+import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe
 import no.nav.helse.sm2013.Ident
 import no.nav.helse.sm2013.NavnType
 import no.nav.helse.sm2013.TeleCom
@@ -19,6 +20,7 @@ import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
+import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
@@ -121,11 +123,11 @@ fun lagHelseopplysninger(
             begrunnIkkeKontakt = sykmeldingRequest.begrunnIkkeKontakt
             behandletDato = sykmeldingRequest.behandletDato.atStartOfDay()
         }
-        utdypendeOpplysninger = if (sykmeldingRequest.utenUtdypendeOpplysninger) {
+        utdypendeOpplysninger = if (sykmeldingRequest.utdypendeOpplysninger == UtdypendeOpplysninger.INGEN) {
             null
         } else if (sykmeldingRequest.regelsettVersjon == "3") {
             HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger().apply {
-                spmGruppe.addAll(tilSpmGruppeRegelsett3())
+                spmGruppe.addAll(tilSpmGruppeRegelsett3(sykmeldingRequest.utdypendeOpplysninger))
             }
         } else {
             HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger().apply {
@@ -330,7 +332,7 @@ private fun finnAntallBehandlingsdager(fom: LocalDate, tom: LocalDate): Int {
     return ChronoUnit.WEEKS.between(range.start, range.endInclusive).toInt() + 1
 }
 
-fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe> {
+fun tilSpmGruppe(): List<SpmGruppe> {
     val listeDynaSvarType = ArrayList<DynaSvarType>()
 
     listeDynaSvarType.add(
@@ -380,7 +382,7 @@ fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.S
     )
 
     val spmGruppe = listOf(
-        HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe().apply {
+        SpmGruppe().apply {
             spmGruppeId = "6.4"
             spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
             spmSvar.addAll(listeDynaSvarType)
@@ -389,62 +391,163 @@ fun tilSpmGruppe(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.S
     return spmGruppe
 }
 
-fun tilSpmGruppeRegelsett3(): List<HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe> {
+fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<SpmGruppe> {
     val listeDynaSvarType = ArrayList<DynaSvarType>()
+    val spmGruppe = ArrayList<SpmGruppe>()
 
-    listeDynaSvarType.add(
-        DynaSvarType().apply {
-            spmId = "6.5.1"
-            spmTekst = "Beskriv kort sykdomsutviklingen, symptomer og funn. Hvordan påvirker helsetilstanden funksjonen i arbeid og dagligliv?"
-            restriksjon = DynaSvarType.Restriksjon().apply {
-                restriksjonskode.add(
-                    CS().apply {
-                        v = "A"
-                        dn = "Informasjonen skal ikke vises arbeidsgiver"
-                    }
-                )
+    if (utdypendeOpplysninger == UtdypendeOpplysninger.UKE_7) {
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.3.1"
+                spmTekst =
+                    "Beskriv kort sykehistorie, symptomer og funn. Hvordan påvirker helsetilstanden funksjonen i arbeid og dagligliv?"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Har vært syk i 7 uker. Sår hals og vondt i hodet."
             }
-            svarTekst = "Har ikke blitt noe bedre. Klarer ikke å jobbe eller drive med aktiviteter"
-        }
-    )
-    listeDynaSvarType.add(
-        DynaSvarType().apply {
-            spmId = "6.5.2"
-            spmTekst = "Beskriv pågående og planlagt utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?"
-            restriksjon = DynaSvarType.Restriksjon().apply {
-                restriksjonskode.add(
-                    CS().apply {
-                        v = "A"
-                        dn = "Informasjonen skal ikke vises arbeidsgiver"
-                    }
-                )
+        )
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.3.2"
+                spmTekst =
+                    "Beskriv pågående og planlagt utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
             }
-            svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
-        }
-    )
-    listeDynaSvarType.add(
-        DynaSvarType().apply {
-            spmId = "6.5.3"
-            spmTekst = "Kan arbeidsevnen bedres gjennom medisinsk behandling og/eller arbeidsrelatert aktivitet? I så fall hvordan? Angi tidsperspektiv"
-            restriksjon = DynaSvarType.Restriksjon().apply {
-                restriksjonskode.add(
-                    CS().apply {
-                        v = "A"
-                        dn = "Informasjonen skal ikke vises arbeidsgiver"
-                    }
-                )
+        )
+        spmGruppe.add(
+            SpmGruppe().apply {
+                spmGruppeId = "6.3"
+                spmGruppeTekst = "Helseopplysninger til vurdering av aktivitetskravet og NAVs oppfølging"
+                spmSvar.addAll(listeDynaSvarType)
             }
-            svarTekst = "Nei"
-        }
-    )
-
-    val spmGruppe = listOf(
-        HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.SpmGruppe().apply {
-            spmGruppeId = "6.5"
-            spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
-            spmSvar.addAll(listeDynaSvarType)
-        }
-    )
+        )
+    } else if (utdypendeOpplysninger == UtdypendeOpplysninger.UKE_17) {
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.4.1"
+                spmTekst =
+                    "Beskriv kort sykdomsutviklingen, symptomer og funn. Hvordan påvirker helsetilstanden funksjonen i arbeid og dagligliv?"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Blir gradvis bedre, men er fortsatt ikke frisk."
+            }
+        )
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.4.2"
+                spmTekst =
+                    "Beskriv pågående og planlagt utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
+            }
+        )
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.4.3"
+                spmTekst =
+                    "Hva mener du skal til for at pasienten kan komme tilbake i eget eller annet arbeid?"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Må fullføre behandlingen."
+            }
+        )
+        spmGruppe.add(
+            SpmGruppe().apply {
+                spmGruppeId = "6.4"
+                spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
+                spmSvar.addAll(listeDynaSvarType)
+            }
+        )
+    } else {
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.5.1"
+                spmTekst =
+                    "Beskriv kort sykdomsutviklingen, symptomer og funn. Hvordan påvirker helsetilstanden funksjonen i arbeid og dagligliv?"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Har ikke blitt noe bedre. Klarer ikke å jobbe eller drive med aktiviteter"
+            }
+        )
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.5.2"
+                spmTekst =
+                    "Beskriv pågående og planlagt utredning og/eller behandling. Lar dette seg kombinere med delvis arbeid?"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
+            }
+        )
+        listeDynaSvarType.add(
+            DynaSvarType().apply {
+                spmId = "6.5.3"
+                spmTekst =
+                    "Kan arbeidsevnen bedres gjennom medisinsk behandling og/eller arbeidsrelatert aktivitet? I så fall hvordan? Angi tidsperspektiv"
+                restriksjon = DynaSvarType.Restriksjon().apply {
+                    restriksjonskode.add(
+                        CS().apply {
+                            v = "A"
+                            dn = "Informasjonen skal ikke vises arbeidsgiver"
+                        }
+                    )
+                }
+                svarTekst = "Nei"
+            }
+        )
+        spmGruppe.add(
+            SpmGruppe().apply {
+                spmGruppeId = "6.5"
+                spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
+                spmSvar.addAll(listeDynaSvarType)
+            }
+        )
+    }
     return spmGruppe
 }
 

@@ -9,6 +9,7 @@ import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
+import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
 import java.time.LocalDate
@@ -38,7 +39,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = true,
+                utdypendeOpplysninger = UtdypendeOpplysninger.INGEN,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = emptyList(),
@@ -91,7 +92,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 begrunnIkkeKontakt = "Hadde ikke tid",
                 vedlegg = false,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = false,
+                utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = "Melding til arbeidsgiver",
                 bidiagnoser = null,
@@ -157,7 +158,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 begrunnIkkeKontakt = "Hadde ikke tid",
                 vedlegg = false,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = false,
+                utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                 regelsettVersjon = "3",
                 meldingTilArbeidsgiver = "Viktig melding til arbeidsgiver",
                 bidiagnoser = listOf(
@@ -232,7 +233,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = false,
+                utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = emptyList(),
@@ -270,7 +271,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
                 virksomhetsykmelding = true,
-                utenUtdypendeOpplysninger = false,
+                utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,
@@ -305,7 +306,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = true,
+                utdypendeOpplysninger = UtdypendeOpplysninger.INGEN,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,
@@ -342,7 +343,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
                 virksomhetsykmelding = false,
-                utenUtdypendeOpplysninger = true,
+                utdypendeOpplysninger = UtdypendeOpplysninger.INGEN,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,

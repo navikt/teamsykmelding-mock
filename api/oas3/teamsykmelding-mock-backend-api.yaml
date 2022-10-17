@@ -252,8 +252,13 @@ components:
           type: boolean
         virksomhetsykmelding:
           type: boolean
-        utenUtdypendeOpplysninger:
-          type: boolean
+        utdypendeOpplysninger:
+          type: string
+          enum:
+            - INGEN
+            - UKE_7
+            - UKE_17
+            - UKE_39
         regelsettVersjon:
           type: string
       required:
