@@ -6,5 +6,6 @@ data class LegeerklaeringRequest(
     val diagnosekode: String,
     val diagnosekodesystem: String,
     val statusPresens: String?,
-    val vedlegg: Boolean
+    val vedlegg: Boolean,
+    val vedleggMedVirus: Boolean
 )

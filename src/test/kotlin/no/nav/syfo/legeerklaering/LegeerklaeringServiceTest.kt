@@ -37,7 +37,8 @@ class LegeerklaeringServiceTest : FunSpec({
                 diagnosekode = "M674",
                 diagnosekodesystem = "icd10",
                 statusPresens = null,
-                vedlegg = false
+                vedlegg = false,
+                vedleggMedVirus = false
             )
             val mottakId = "mottakId"
 
@@ -61,7 +62,8 @@ class LegeerklaeringServiceTest : FunSpec({
                 diagnosekode = "M674",
                 diagnosekodesystem = "icd10",
                 statusPresens = "status",
-                vedlegg = true
+                vedlegg = true,
+                vedleggMedVirus = false
             )
             val mottakId = "mottakId"
 
