@@ -56,9 +56,11 @@ class LegeerklaeringService(
 
     suspend fun tilLegeerklaeringXml(legeerklaeringRequest: LegeerklaeringRequest, mottakId: String): XMLEIFellesformat {
         val legeerklaeringXml = if (legeerklaeringRequest.vedlegg) {
-            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering_med_vedlegg.xml").readText(charset = Charsets.ISO_8859_1)
+            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering_med_vedlegg.xml")!!.readText(charset = Charsets.ISO_8859_1)
+        } else if (legeerklaeringRequest.vedleggMedVirus) {
+            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering_med_vedlegg_virus.xml")!!.readText(charset = Charsets.ISO_8859_1)
         } else {
-            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering.xml").readText(charset = Charsets.ISO_8859_1)
+            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering.xml")!!.readText(charset = Charsets.ISO_8859_1)
         }
 
         val fellesformat = legeerklaeringUnmarshaller.unmarshal(StringReader(legeerklaeringXml)) as XMLEIFellesformat
