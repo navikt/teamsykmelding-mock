@@ -13,6 +13,7 @@ import no.nav.syfo.log
 
 fun Route.registrerLegeerklaeringApi(legeerklaeringService: LegeerklaeringService) {
     post("/legeerklaering/opprett") {
+        log.info("revice request to create legeerklaering")
         val request = call.receive<LegeerklaeringRequest>()
 
         val mottakId = legeerklaeringService.opprettLegeerklaering(request)

@@ -9,6 +9,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.apache.Apache
 import io.ktor.client.engine.apache.ApacheEngineConfig
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.network.sockets.SocketTimeoutException
@@ -76,6 +77,12 @@ fun main() {
                 when (exception) {
                     is SocketTimeoutException -> throw ServiceUnavailableException(exception.message)
                 }
+            }
+        }
+        install(HttpRequestRetry) {
+            maxRetries = 3
+            delayMillis { retry ->
+                retry * 500L
             }
         }
     }
