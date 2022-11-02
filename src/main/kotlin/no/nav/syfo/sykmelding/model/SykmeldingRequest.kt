@@ -23,6 +23,7 @@ data class SykmeldingRequest(
     val regelsettVersjon: String?,
     val bidiagnoser: List<Diagnoser>?,
     val arbeidsgiverNavn: String?,
+    val vedleggMedVirus: Boolean,
 )
 
 enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
