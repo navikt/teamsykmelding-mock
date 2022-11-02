@@ -39,13 +39,15 @@ class SykmeldingService(
 
     suspend fun tilSykmeldingXml(sykmeldingRequest: SykmeldingRequest, mottakId: String): XMLEIFellesformat {
         val sykmeldingXml = if (sykmeldingRequest.vedlegg) {
-            SykmeldingService::class.java.getResource("/sykmelding/sykmelding_med_vedlegg.xml").readText(charset = Charsets.ISO_8859_1)
+            SykmeldingService::class.java.getResource("/sykmelding/sykmelding_med_vedlegg.xml")!!.readText(charset = Charsets.ISO_8859_1)
+        } else if (sykmeldingRequest.vedleggMedVirus) {
+            SykmeldingService::class.java.getResource("/sykmelding/sykmelding_med_vedlegg_virus.xml")!!.readText(charset = Charsets.ISO_8859_1)
         } else if (sykmeldingRequest.virksomhetsykmelding) {
-            SykmeldingService::class.java.getResource("/sykmelding/virksomhetsykmelding.xml").readText(charset = Charsets.ISO_8859_1)
+            SykmeldingService::class.java.getResource("/sykmelding/virksomhetsykmelding.xml")!!.readText(charset = Charsets.ISO_8859_1)
         } else if (sykmeldingRequest.regelsettVersjon == "3") {
-            SykmeldingService::class.java.getResource("/sykmelding/sykmelding_regelsett3.xml").readText(charset = Charsets.ISO_8859_1)
+            SykmeldingService::class.java.getResource("/sykmelding/sykmelding_regelsett3.xml")!!.readText(charset = Charsets.ISO_8859_1)
         } else {
-            SykmeldingService::class.java.getResource("/sykmelding/sykmelding.xml").readText(charset = Charsets.ISO_8859_1)
+            SykmeldingService::class.java.getResource("/sykmelding/sykmelding.xml")!!.readText(charset = Charsets.ISO_8859_1)
         }
         val fellesformat = fellesformatUnmarshaller.unmarshal(StringReader(sykmeldingXml)) as XMLEIFellesformat
 

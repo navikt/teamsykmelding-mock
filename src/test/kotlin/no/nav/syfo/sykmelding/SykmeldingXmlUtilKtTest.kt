@@ -43,7 +43,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = emptyList(),
-                arbeidsgiverNavn = null
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -96,7 +97,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = "Melding til arbeidsgiver",
                 bidiagnoser = null,
-                arbeidsgiverNavn = null
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -173,7 +175,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                         text = "Politi"
                     )
                 ),
-                arbeidsgiverNavn = "NAV"
+                arbeidsgiverNavn = "NAV",
+                vedleggMedVirus = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -237,7 +240,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = emptyList(),
-                arbeidsgiverNavn = null
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -275,7 +279,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,
-                arbeidsgiverNavn = null
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -310,7 +315,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,
-                arbeidsgiverNavn = null
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -347,7 +353,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,
-                arbeidsgiverNavn = null
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
