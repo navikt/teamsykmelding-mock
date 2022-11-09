@@ -25,7 +25,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
                 diagnosekode = "A02",
-                diagnosekodesystem = "icpc2",
+                diagnosekodesystem = "ICPC2",
                 annenFraverGrunn = null,
                 perioder = listOf(
                     SykmeldingPeriode(

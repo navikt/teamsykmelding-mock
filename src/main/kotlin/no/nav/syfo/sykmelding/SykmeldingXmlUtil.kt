@@ -228,7 +228,7 @@ private fun tilDiagnosekode(bidiagnoser: Diagnoser): CV {
 }
 
 private fun tilDiagnosekode(kode: String, system: String): CV {
-    val diagnosekodesystem = if (system == "icpc2") {
+    val diagnosekodesystem = if (system == "ICPC2") {
         Diagnosekoder.ICPC2_CODE
     } else {
         Diagnosekoder.ICD10_CODE
