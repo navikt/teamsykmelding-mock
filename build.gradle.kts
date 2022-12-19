@@ -6,17 +6,17 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 val coroutinesVersion = "1.6.4"
-val jacksonVersion = "2.13.4"
+val jacksonVersion = "2.14.1"
 val kluentVersion = "1.72"
-val ktorVersion = "2.1.3"
-val logbackVersion = "1.4.4"
+val ktorVersion = "2.2.1"
+val logbackVersion = "1.4.5"
 val logstashEncoderVersion = "7.2"
 val prometheusVersion = "0.16.0"
-val smCommonVersion = "1.ea531b3"
+val smCommonVersion = "1.1490275"
 val mockkVersion = "1.13.2"
-val testContainerKafkaVersion = "1.17.4"
-val kotlinVersion = "1.7.20"
-val kotestVersion = "5.5.2"
+val testContainerKafkaVersion = "1.17.6"
+val kotlinVersion = "1.7.22"
+val kotestVersion = "5.5.4"
 val swaggerUiVersion = "4.15.0"
 val fellesformatVersion = "1.e6fcef8"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
@@ -24,15 +24,16 @@ val jaxbApiVersion = "2.4.0-b180830.0359"
 val legeerklaeringVersion = "2019.07.29-02-53-86b22e73f7843e422ee500b486dac387a582f2d1"
 val papirsykmeldingVersion = "2019.09.09-08-50-693492ddc1d3f98e70c1638c94dcb95a66036d12"
 val javaTimeAdapterVersion = "1.1.3"
+val nettyCodecVersion = "4.1.86.Final"
 
 tasks.withType<Jar> {
     manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
 }
 
 plugins {
-    id("org.jmailen.kotlinter") version "3.10.0"
-    kotlin("jvm") version "1.7.20"
-    id("com.diffplug.spotless") version "6.5.0"
+    id("org.jmailen.kotlinter") version "3.12.0"
+    kotlin("jvm") version "1.7.22"
+    id("com.diffplug.spotless") version "6.11.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
 }
@@ -66,6 +67,9 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    // This is to override version that is in io.ktor:ktor-server-netty
+    // https://www.cve.org/CVERecord?id=CVE-2022-41915
+    implementation("io.netty:netty-codec:$nettyCodecVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-call-id:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
