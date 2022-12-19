@@ -33,7 +33,7 @@ import javax.xml.datatype.XMLGregorianCalendar
 fun lagHelseopplysninger(
     sykmeldingRequest: SykmeldingRequest,
     sykmeldt: PdlPerson,
-    lege: PdlPerson,
+    lege: PdlPerson
 ): HelseOpplysningerArbeidsuforhet {
     return HelseOpplysningerArbeidsuforhet().apply {
         syketilfelleStartDato = sykmeldingRequest.syketilfelleStartdato
