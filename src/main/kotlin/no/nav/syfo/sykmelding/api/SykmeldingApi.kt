@@ -23,6 +23,15 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykm
         call.respond(HttpStatusCode.OK, HttpMessage("Opprettet sykmelding med mottakId $mottakId"))
     }
 
+    post("/sykmelding/regelsjekk") {
+        val request = call.receive<SykmeldingRequest>()
+
+        val validationResult = sykmeldingService.sjekkRegler(request)
+
+        log.info("Har sjekket regler for sykmelding")
+        call.respond(validationResult)
+    }
+
     delete("/sykmeldinger") {
         val fnr = call.request.headers["Sykmeldt-Fnr"]
         if (fnr == null || fnr.length != 11) {

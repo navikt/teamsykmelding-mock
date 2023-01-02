@@ -10,6 +10,7 @@ import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
+import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
@@ -21,8 +22,9 @@ import javax.jms.Connection
 
 class SykmeldingServiceTest : FunSpec({
     val pdlPersonService = mockk<PdlPersonService>()
+    val syfosmreglerClient = mockk<SyfosmreglerClient>()
     val connection = mockk<Connection>()
-    val sykmeldingService = SykmeldingService(pdlPersonService, connection, "syfosmmottak")
+    val sykmeldingService = SykmeldingService(pdlPersonService, connection, "syfosmmottak", syfosmreglerClient)
     val fnr = "12345678910"
     val legeFnr = "10987654321"
 

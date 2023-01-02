@@ -51,6 +51,19 @@ paths:
           description: Ok
         '500':
           description: Internal server error
+  /sykmelding/regelsjekk:
+    post:
+      operationId: sjekkSykmelding
+      tags:
+        - Sykmelding
+      summary: Sjekk sykmelding mot regler
+      requestBody:
+        $ref: '#/components/requestBodies/SykmeldingRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/ValidationResultResponse'
+        '500':
+          description: Internal server error
   /sykmeldinger:
     delete:
       operationId: slettSykmeldinger
@@ -134,6 +147,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PapirsykmeldingRequest'
+  responses:
+    ValidationResultResponse:
+      description: "Resultat av regelsjekk"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationResult'
   parameters:
     Orgnummer:
       description: Bedriftens orgnummer
@@ -326,3 +346,34 @@ components:
         - diagnosekodesystem
         - perioder
         - utenOcr
+    ValidationResult:
+      type: object
+      required:
+        - status
+        - ruleHits
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+        ruleHits:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleInfo'
+    Status:
+      type: string
+      enum: [ OK, MANUAL_PROCESSING, INVALID ]
+    RuleInfo:
+      type: object
+      required:
+        - messageForSender
+        - messageForUser
+        - ruleName
+        - ruleStatus
+      properties:
+        messageForSender:
+          type: string
+        messageForUser:
+          type: string
+        ruleName:
+          type: string
+        ruleStatus:
+          $ref: '#/components/schemas/Status'
