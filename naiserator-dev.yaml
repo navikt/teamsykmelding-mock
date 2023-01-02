@@ -46,6 +46,7 @@ spec:
     outbound:
       rule:
         - application: syfosmregister
+        - application: syfosmregler
       external:
         - host: https://pdl-api.dev-fss-pub.nais.io
         - host: https://dokarkiv.dev-fss-pub.nais.io
@@ -77,3 +78,5 @@ spec:
       value: https://smregister.dev.nav.no
     - name: SYFOSMREGISTER_SCOPE
       value: api://dev-gcp.teamsykmelding.syfosmregister/.default
+    - name: SYFOSMREGLER_SCOPE
+      value: api://dev-gcp.teamsykmelding.syfosmregler/.default

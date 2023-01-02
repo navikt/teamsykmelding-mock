@@ -23,7 +23,9 @@ data class Environment(
     val manuellTopic: String = "teamsykmelding.sykmelding-manuell",
     val sykmeldingStatusTopic: String = "teamsykmelding.sykmeldingstatus-leesah",
     val syfosmregisterUrl: String = getEnvVar("SYFOSMREGISTER_URL"),
-    val syfosmregisterScope: String = getEnvVar("SYFOSMREGISTER_SCOPE")
+    val syfosmregisterScope: String = getEnvVar("SYFOSMREGISTER_SCOPE"),
+    val syfosmreglerUrl: String = getEnvVar("http://syfosmregler"),
+    val syfosmreglerScope: String = getEnvVar("SYFOSMREGLER_SCOPE")
 ) : MqConfig
 
 data class ServiceUser(
