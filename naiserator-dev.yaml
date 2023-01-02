@@ -46,7 +46,7 @@ spec:
       tenant: trygdeetaten.no
   accessPolicy:
     outbound:
-      rule:
+      rules:
         - application: syfosmregister
         - application: syfosmregler
       external:
