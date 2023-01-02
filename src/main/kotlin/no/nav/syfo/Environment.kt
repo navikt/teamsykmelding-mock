@@ -24,7 +24,7 @@ data class Environment(
     val sykmeldingStatusTopic: String = "teamsykmelding.sykmeldingstatus-leesah",
     val syfosmregisterUrl: String = getEnvVar("SYFOSMREGISTER_URL"),
     val syfosmregisterScope: String = getEnvVar("SYFOSMREGISTER_SCOPE"),
-    val syfosmreglerUrl: String = getEnvVar("http://syfosmregler"),
+    val syfosmreglerUrl: String = "http://syfosmregler",
     val syfosmreglerScope: String = getEnvVar("SYFOSMREGLER_SCOPE")
 ) : MqConfig
 
