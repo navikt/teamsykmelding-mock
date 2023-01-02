@@ -66,7 +66,7 @@ class SykmeldingService(
             msgId = UUID.randomUUID().toString(),
             legeHprNr = sykmeldingRequest.hprNummer,
             legeHelsepersonellkategori = null,
-            legekontorOrgNr = "",
+            legekontorOrgNr = null,
             legekontorOrgName = "",
             legekontorHerId = "",
             legekontorReshId = "",
