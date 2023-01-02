@@ -35,7 +35,9 @@ spec:
       memory: 768Mi
   vault:
     enabled: false
-  webproxy: true
+  ingresses:
+    - "https://teamsykmelding-mock-backend.dev.intern.nav.no"
+  webproxy: false
   kafka:
     pool: nav-dev
   azure:
