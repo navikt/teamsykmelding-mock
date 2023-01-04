@@ -25,7 +25,11 @@ data class Environment(
     val syfosmregisterUrl: String = getEnvVar("SYFOSMREGISTER_URL"),
     val syfosmregisterScope: String = getEnvVar("SYFOSMREGISTER_SCOPE"),
     val syfosmreglerUrl: String = "http://syfosmregler",
-    val syfosmreglerScope: String = getEnvVar("SYFOSMREGLER_SCOPE")
+    val syfosmreglerScope: String = getEnvVar("SYFOSMREGLER_SCOPE"),
+    val syfosmpapirreglerUrl: String = "http://syfosmpapirregler",
+    val syfosmpapirreglerScope: String = getEnvVar("SYFOSMPAPIRREGLER_SCOPE"),
+    val norskHelsenettUrl: String = getEnvVar("NORSKHELSENETT_URL"),
+    val norskHelsenettScope: String = getEnvVar("NORSKHELSENETT_SCOPE")
 ) : MqConfig
 
 data class ServiceUser(

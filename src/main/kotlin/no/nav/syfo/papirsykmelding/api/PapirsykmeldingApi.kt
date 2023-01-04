@@ -21,6 +21,19 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
         call.respond(HttpStatusCode.OK, HttpMessage("Opprettet papirsykmelding med journalpostId $journalpostId"))
     }
 
+    post("/papirsykmelding/regelsjekk") {
+        val request = call.receive<PapirsykmeldingRequest>()
+        if (request.utenOcr) {
+            call.respond(HttpStatusCode.BadRequest, "Kan ikke sjekke papirsykmelding uten OCR")
+            return@post
+        }
+
+        val validationResult = papirsykmeldingService.sjekkRegler(request)
+
+        log.info("Har sjekket regler for papirsykmelding")
+        call.respond(validationResult)
+    }
+
     post("/papirsykmelding/utenlandsk/opprett") {
         val fnrSykmeldt = call.request.headers["Sykmeldt-Fnr"]
 

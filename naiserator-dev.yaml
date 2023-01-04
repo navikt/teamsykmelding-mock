@@ -82,3 +82,9 @@ spec:
       value: api://dev-gcp.teamsykmelding.syfosmregister/.default
     - name: SYFOSMREGLER_SCOPE
       value: api://dev-gcp.teamsykmelding.syfosmregler/.default
+    - name: SYFOSMPAPIRREGLER_SCOPE
+      value: api://dev-gcp.teamsykmelding.syfosmpapirregler/.default
+    - name: NORSKHELSENETT_URL
+      value: https://syfohelsenettproxy.dev-fss-pub.nais.io
+    - name: NORSKHELSENETT_SCOPE
+      value: api://dev-fss.teamsykmelding.syfohelsenettproxy/.default

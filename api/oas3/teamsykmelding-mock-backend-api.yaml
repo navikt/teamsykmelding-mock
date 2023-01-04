@@ -105,6 +105,19 @@ paths:
           description: Ok
         '500':
           description: Internal server error
+  /papirsykmelding/regelsjekk:
+    post:
+      operationId: sjekkPapirsykmelding
+      tags:
+        - Papirsykmelding
+      summary: Sjekk papirsykmelding mot regler
+      requestBody:
+        $ref: '#/components/requestBodies/PapirsykmeldingRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/ValidationResultResponse'
+        '500':
+          description: Internal server error
   /papirsykmelding/utenlandsk/opprett:
     post:
       operationId: opprettUtenlandskPapirsykmelding
