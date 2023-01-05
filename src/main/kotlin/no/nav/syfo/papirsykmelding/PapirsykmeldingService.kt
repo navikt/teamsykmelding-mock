@@ -12,6 +12,7 @@ import no.nav.helse.sykSkanningMeta.HovedDiagnoseType
 import no.nav.helse.sykSkanningMeta.KontaktMedPasientType
 import no.nav.helse.sykSkanningMeta.ReisetilskuddType
 import no.nav.helse.sykSkanningMeta.Skanningmetadata
+import no.nav.syfo.log
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
@@ -21,6 +22,7 @@ import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
 import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
 import no.nav.syfo.papirsykmelding.client.opprettJournalpostPayload
 import no.nav.syfo.papirsykmelding.client.opprettUtenlandskJournalpostPayload
+import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
 import no.nav.syfo.sykmelding.toSykmelding
 import no.nav.syfo.util.XMLDateAdapter
@@ -68,49 +70,58 @@ class PapirsykmeldingService(
     suspend fun sjekkRegler(papirsykmeldingRequest: PapirsykmeldingRequest): ValidationResult {
         val skanningMetadata = tilSkanningmetadata(papirsykmeldingRequest)
         val sykmeldingId = UUID.randomUUID().toString()
-        val fnrLege = norskHelsenettClient.finnBehandlerFnr(papirsykmeldingRequest.hprNummer) ?: throw RuntimeException("Fant ikke behandler i HPR, kan ikke validere mot regler")
-        val fellesformat = mapOcrFilTilFellesformat(
-            skanningmetadata = skanningMetadata,
-            hprNummer = papirsykmeldingRequest.hprNummer,
-            fnrLege = fnrLege,
-            sykmeldingId = sykmeldingId,
-            fnr = papirsykmeldingRequest.fnr,
-            journalpostId = "123"
-        )
+        val receivedSykmelding: ReceivedSykmelding
+        try {
+            val fnrLege = norskHelsenettClient.finnBehandlerFnr(papirsykmeldingRequest.hprNummer)
+                ?: throw RuntimeException("Fant ikke behandler i HPR, kan ikke validere mot regler")
+            val fellesformat = mapOcrFilTilFellesformat(
+                skanningmetadata = skanningMetadata,
+                hprNummer = papirsykmeldingRequest.hprNummer,
+                fnrLege = fnrLege,
+                sykmeldingId = sykmeldingId,
+                fnr = papirsykmeldingRequest.fnr,
+                journalpostId = "123"
+            )
 
-        val healthInformation = fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] as HelseOpplysningerArbeidsuforhet
-        val sykmelding = healthInformation.toSykmelding(
-            sykmeldingId = sykmeldingId,
-            pasientAktoerId = "",
-            legeAktoerId = "",
-            msgId = sykmeldingId,
-            signaturDato = LocalDateTime.of(papirsykmeldingRequest.behandletDato, LocalTime.NOON),
-            behandlerFnr = fnrLege,
-            behandlerHprNr = papirsykmeldingRequest.hprNummer
-        )
+            val healthInformation =
+                fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] as HelseOpplysningerArbeidsuforhet
+            val sykmelding = healthInformation.toSykmelding(
+                sykmeldingId = sykmeldingId,
+                pasientAktoerId = "",
+                legeAktoerId = "",
+                msgId = sykmeldingId,
+                signaturDato = LocalDateTime.of(papirsykmeldingRequest.behandletDato, LocalTime.NOON),
+                behandlerFnr = fnrLege,
+                behandlerHprNr = papirsykmeldingRequest.hprNummer
+            )
 
-        val receivedSykmelding = ReceivedSykmelding(
-            sykmelding = sykmelding,
-            personNrPasient = papirsykmeldingRequest.fnr,
-            tlfPasient = healthInformation.pasient.kontaktInfo.firstOrNull()?.teleAddress?.v,
-            personNrLege = fnrLege,
-            legeHprNr = papirsykmeldingRequest.hprNummer,
-            legeHelsepersonellkategori = null,
-            navLogId = sykmeldingId,
-            msgId = sykmeldingId,
-            legekontorOrgNr = null,
-            legekontorOrgName = "",
-            legekontorHerId = null,
-            legekontorReshId = null,
-            mottattDato = LocalDateTime.now().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(),
-            rulesetVersion = healthInformation.regelSettVersjon,
-            fellesformat = marshallFellesformat(fellesformat),
-            tssid = "",
-            merknader = null,
-            partnerreferanse = null,
-            vedlegg = emptyList(),
-            utenlandskSykmelding = null
-        )
+            receivedSykmelding = ReceivedSykmelding(
+                sykmelding = sykmelding,
+                personNrPasient = papirsykmeldingRequest.fnr,
+                tlfPasient = healthInformation.pasient.kontaktInfo.firstOrNull()?.teleAddress?.v,
+                personNrLege = fnrLege,
+                legeHprNr = papirsykmeldingRequest.hprNummer,
+                legeHelsepersonellkategori = null,
+                navLogId = sykmeldingId,
+                msgId = sykmeldingId,
+                legekontorOrgNr = null,
+                legekontorOrgName = "",
+                legekontorHerId = null,
+                legekontorReshId = null,
+                mottattDato = LocalDateTime.now().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneOffset.UTC)
+                    .toLocalDateTime(),
+                rulesetVersion = healthInformation.regelSettVersjon,
+                fellesformat = marshallFellesformat(fellesformat),
+                tssid = "",
+                merknader = null,
+                partnerreferanse = null,
+                vedlegg = emptyList(),
+                utenlandskSykmelding = null
+            )
+        } catch (e: Exception) {
+            log.error("Kunne ikke mappe request til received sykmelding", e)
+            throw PapirsykmeldingMappingException(e.message)
+        }
 
         return syfosmpapirreglerClient.sjekkRegler(receivedSykmelding)
     }
