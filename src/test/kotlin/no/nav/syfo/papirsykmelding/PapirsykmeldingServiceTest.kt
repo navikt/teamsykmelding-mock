@@ -7,6 +7,8 @@ import io.mockk.mockk
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
+import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
+import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
 import org.amshove.kluent.shouldBeEqualTo
 import java.math.BigInteger
@@ -14,7 +16,9 @@ import java.time.LocalDate
 
 class PapirsykmeldingServiceTest : FunSpec({
     val dokarkivClient = mockk<DokarkivClient>()
-    val papirsykmeldingService = PapirsykmeldingService(dokarkivClient)
+    val syfosmpapirreglerClient = mockk<SyfosmpapirreglerClient>()
+    val norskHelsenettClient = mockk<NorskHelsenettClient>()
+    val papirsykmeldingService = PapirsykmeldingService(dokarkivClient, syfosmpapirreglerClient, norskHelsenettClient)
     val fnr = "1234567890"
 
     coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
