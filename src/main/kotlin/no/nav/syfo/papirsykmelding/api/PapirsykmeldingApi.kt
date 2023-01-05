@@ -25,7 +25,7 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
     post("/papirsykmelding/regelsjekk") {
         val request = call.receive<PapirsykmeldingRequest>()
         if (request.utenOcr) {
-            call.respond(HttpStatusCode.BadRequest, "Kan ikke sjekke papirsykmelding uten OCR")
+            call.respond(HttpStatusCode.BadRequest, HttpMessage("Kan ikke sjekke papirsykmelding uten OCR"))
             return@post
         }
 
@@ -35,7 +35,7 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
             log.info("Har sjekket regler for papirsykmelding")
             call.respond(validationResult)
         } catch (e: PapirsykmeldingMappingException) {
-            call.respond(HttpStatusCode.BadRequest, e.message ?: "Kunne ikke mappe sykmelding til ReceivedSykmelding")
+            call.respond(HttpStatusCode.BadRequest, HttpMessage(e.message ?: "Kunne ikke mappe sykmelding til ReceivedSykmelding"))
         }
     }
 
