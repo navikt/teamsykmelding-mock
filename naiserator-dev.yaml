@@ -49,9 +49,11 @@ spec:
       rules:
         - application: syfosmregister
         - application: syfosmregler
+        - application: syfosmpapirregler
       external:
         - host: https://pdl-api.dev-fss-pub.nais.io
         - host: https://dokarkiv.dev-fss-pub.nais.io
+        - host: https://syfohelsenettproxy.dev-fss-pub.nais.io
     inbound:
       rules:
         - application: teamsykmelding-mock
