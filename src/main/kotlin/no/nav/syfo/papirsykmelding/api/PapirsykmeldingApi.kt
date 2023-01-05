@@ -28,10 +28,14 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
             return@post
         }
 
-        val validationResult = papirsykmeldingService.sjekkRegler(request)
+        try {
+            val validationResult = papirsykmeldingService.sjekkRegler(request)
 
-        log.info("Har sjekket regler for papirsykmelding")
-        call.respond(validationResult)
+            log.info("Har sjekket regler for papirsykmelding")
+            call.respond(validationResult)
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.InternalServerError, e.message ?: "Noe gikk galt ved regelsjekk")
+        }
     }
 
     post("/papirsykmelding/utenlandsk/opprett") {

@@ -557,7 +557,7 @@ fun toMedisinskVurderingDiagnose(originalDiagnosekode: String, originalSystem: S
 
     when {
         identifisertKodeverk == Diagnosekoder.ICD10_CODE && Diagnosekoder.icd10.containsKey(diagnosekode) -> {
-            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICD10, {} basert på angitt diagnosekode og kodeverk/diagnosetekst")
+            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICD10, basert på angitt diagnosekode og kodeverk/diagnosetekst")
             return CV().apply {
                 s = Diagnosekoder.ICD10_CODE
                 v = diagnosekode
@@ -565,7 +565,7 @@ fun toMedisinskVurderingDiagnose(originalDiagnosekode: String, originalSystem: S
             }
         }
         identifisertKodeverk == Diagnosekoder.ICPC2_CODE && Diagnosekoder.icpc2.containsKey(diagnosekode) -> {
-            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICPC2, {} basert på angitt diagnosekode og kodeverk/diagnosetekst")
+            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICPC2, basert på angitt diagnosekode og kodeverk/diagnosetekst")
             return CV().apply {
                 s = Diagnosekoder.ICPC2_CODE
                 v = diagnosekode
@@ -573,7 +573,7 @@ fun toMedisinskVurderingDiagnose(originalDiagnosekode: String, originalSystem: S
             }
         }
         identifisertKodeverk.isEmpty() && Diagnosekoder.icd10.containsKey(diagnosekode) && !Diagnosekoder.icpc2.containsKey(diagnosekode) -> {
-            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICD10, {} basert på angitt diagnosekode (kodeverk ikke angitt)")
+            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICD10, basert på angitt diagnosekode (kodeverk ikke angitt)")
             return CV().apply {
                 s = Diagnosekoder.ICD10_CODE
                 v = diagnosekode
@@ -581,7 +581,7 @@ fun toMedisinskVurderingDiagnose(originalDiagnosekode: String, originalSystem: S
             }
         }
         identifisertKodeverk.isEmpty() && Diagnosekoder.icpc2.containsKey(diagnosekode) && !Diagnosekoder.icd10.containsKey(diagnosekode) -> {
-            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICPC2, {} basert på angitt diagnosekode (kodeverk ikke angitt)")
+            log.info("Mappet $originalDiagnosekode til $diagnosekode for ICPC2, basert på angitt diagnosekode (kodeverk ikke angitt)")
             return CV().apply {
                 s = Diagnosekoder.ICPC2_CODE
                 v = diagnosekode
@@ -589,7 +589,7 @@ fun toMedisinskVurderingDiagnose(originalDiagnosekode: String, originalSystem: S
             }
         }
         else -> {
-            log.warn("Diagnosekode $originalDiagnosekode tilhører ingen kjente kodeverk, {}")
+            log.warn("Diagnosekode $originalDiagnosekode tilhører ingen kjente kodeverk")
             throw IllegalStateException("Diagnosekode $originalDiagnosekode tilhører ingen kjente kodeverk")
         }
     }
