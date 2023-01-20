@@ -103,7 +103,7 @@ fun opprettUtenlandskJournalpostPayload(
         bruker = Bruker(id = fnr),
         dokumenter = listOf(
             Dokument(
-                brevkode = "900023",
+                brevkode = "NAV 08-07.04 U",
                 dokumentvarianter = dokumentvarianter
             )
         ),
