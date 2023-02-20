@@ -29,7 +29,9 @@ data class Environment(
     val syfosmpapirreglerUrl: String = "http://syfosmpapirregler",
     val syfosmpapirreglerScope: String = getEnvVar("SYFOSMPAPIRREGLER_SCOPE"),
     val norskHelsenettUrl: String = getEnvVar("NORSKHELSENETT_URL"),
-    val norskHelsenettScope: String = getEnvVar("NORSKHELSENETT_SCOPE")
+    val norskHelsenettScope: String = getEnvVar("NORSKHELSENETT_SCOPE"),
+    val oppgaveUrl: String = getEnvVar("OPPGAVE_SCOPE"),
+    val oppgaveScope: String = getEnvVar("OPPGAVEBEHANDLING_URL")
 ) : MqConfig
 
 data class ServiceUser(

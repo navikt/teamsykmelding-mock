@@ -40,6 +40,29 @@ class DokarkivClient(
             log.warn("Oppretting av journalpost feilet: ${e.message}, {}")
             throw e
         }
+
+}
+
+fun opprettUtenlandskJournalpost(
+    fnr: String,
+    pdf: String,
+    antallPdfs: Int,
+): JournalpostRequest {
+    return JournalpostRequest(
+        bruker = Bruker(id = fnr),
+        dokumenter = (0 to antallPdfs).toList().map {
+            Dokument(
+                dokumentvarianter = mutableListOf(
+                    Dokumentvarianter(
+                        filnavn = "pdf-sykmelding-${it}",
+                        filtype = "PDFA",
+                        variantformat = "ARKIV",
+                        fysiskDokument = pdf
+                    )
+                )
+            )
+        }
+    )
 }
 
 fun opprettJournalpostPayload(
