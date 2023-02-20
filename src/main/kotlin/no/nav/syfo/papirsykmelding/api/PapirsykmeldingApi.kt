@@ -47,6 +47,11 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
             return@post
         }
 
+        if (fnrSykmeldt.length != 11) {
+            call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr har feil lengde, er ${fnrSykmeldt.length}"))
+            return@post
+        }
+
         val journalpostId = papirsykmeldingService.opprettUtenlandskPapirsykmelding(fnrSykmeldt)
 
         log.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")

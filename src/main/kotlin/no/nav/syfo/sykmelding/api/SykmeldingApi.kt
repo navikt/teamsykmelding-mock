@@ -17,6 +17,11 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykm
     post("/sykmelding/opprett") {
         val request = call.receive<SykmeldingRequest>()
 
+        if (request.fnr.length != 11) {
+            call.respond(HttpStatusCode.BadRequest, HttpMessage("request.fnr har feil lengde, er ${request.fnr.length}"))
+            return@post
+        }
+
         val mottakId = sykmeldingService.opprettSykmelding(request)
 
         log.info("Opprettet sykmelding")
