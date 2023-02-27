@@ -1,9 +1,13 @@
 package no.nav.syfo.oppgave
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import no.nav.syfo.azuread.AccessTokenClient
 import java.time.LocalDate
 
@@ -29,7 +33,6 @@ class OppgaveClient(
     }
 }
 
-
 data class OpprettOppgave(
     val tildeltEnhetsnr: String? = null,
     val opprettetAvEnhetsnr: String? = null,
@@ -44,7 +47,9 @@ data class OpprettOppgave(
     val behandlingstype: String? = null,
     val aktivDato: LocalDate,
     val fristFerdigstillelse: LocalDate? = null,
-    val prioritet: String
+    val prioritet: String,
+    val behandlingsTema: Nothing?,
+    val metadata: Map<String, String?> = emptyMap()
 )
 
 data class OpprettOppgaveResponse(
