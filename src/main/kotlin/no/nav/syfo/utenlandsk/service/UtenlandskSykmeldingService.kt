@@ -24,7 +24,7 @@ class UtenlandskSykmeldingService(
                 antallPdfs = 2
             )
         )
-
+        log.info("Opprettet journalpost med journalPostId $journalpostId")
         val opprettOppgave = OpprettOppgave(
             aktoerId = "",
             opprettetAvEnhetsnr = "9999",

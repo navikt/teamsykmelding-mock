@@ -23,9 +23,11 @@ class DokarkivClient(
     ): String =
         try {
             log.info("Oppretter papirsykmelding i dokarkiv")
+            val token = accessTokenClient.getAccessToken(scope)
+            log.info("Got access_token for dokarkiv")
             val httpResponse = httpClient.post(url) {
                 contentType(ContentType.Application.Json)
-                header("Authorization", "Bearer ${accessTokenClient.getAccessToken(scope)}")
+                header("Authorization", "Bearer $token")
                 header("Nav-Callid", journalpostRequest.eksternReferanseId)
                 setBody(journalpostRequest)
                 parameter("forsoekFerdigstill", false)

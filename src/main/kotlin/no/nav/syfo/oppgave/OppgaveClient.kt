@@ -9,6 +9,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.log
 import java.time.LocalDate
 
 class OppgaveClient(
@@ -18,9 +19,11 @@ class OppgaveClient(
     private val httpClient: HttpClient
 ) {
     suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
+        log.info("oppretter oppgave for ${opprettOppgave.journalpostId}")
         val response = httpClient.post(url) {
             contentType(ContentType.Application.Json)
             val token = accessTokenClient.getAccessToken(scope)
+            log.info("got token for opprett oppgave")
             header("Authorization", "Bearer $token")
             header("X-Correlation-ID", opprettOppgave.journalpostId)
             setBody(opprettOppgave)
