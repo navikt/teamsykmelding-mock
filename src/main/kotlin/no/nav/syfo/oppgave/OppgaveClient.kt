@@ -53,9 +53,9 @@ data class OpprettOppgave(
     val fristFerdigstillelse: LocalDate? = null,
     val prioritet: String,
     val behandlingsTema: Nothing?,
-    val metadata: Map<String, String?> = emptyMap()
+    val metadata: Map<String, String?> = emptyMap(),
+    val personident: String
 )
-
 data class OpprettOppgaveResponse(
     val id: Int,
     val versjon: Int,

@@ -26,7 +26,6 @@ class UtenlandskSykmeldingService(
         )
         log.info("Opprettet journalpost med journalPostId $journalpostId")
         val opprettOppgave = OpprettOppgave(
-            aktoerId = "",
             opprettetAvEnhetsnr = "9999",
             behandlesAvApplikasjon = null,
             beskrivelse = "Manuell",
@@ -38,7 +37,8 @@ class UtenlandskSykmeldingService(
             fristFerdigstillelse = LocalDate.now().plusDays(3),
             prioritet = "HOY",
             journalpostId = journalpostId,
-            metadata = mapOf("RINA_SAKID" to "1234")
+            metadata = mapOf("RINA_SAKID" to "1234"),
+            personident = utenlandskSykmeldingRequest.fnr
         )
 
         val opprettOppgaveResponse = oppgaveClient.opprettOppgave(opprettOppgave)
