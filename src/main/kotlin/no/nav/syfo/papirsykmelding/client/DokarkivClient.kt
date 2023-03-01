@@ -58,9 +58,10 @@ fun opprettUtenlandskJournalpost(
                         filnavn = "pdf-sykmelding-$it",
                         filtype = "PDFA",
                         variantformat = "ARKIV",
-                        fysiskDokument = pdf
+                        fysiskDokument = pdf,
                     )
-                )
+                ),
+                tittel = "Sykmelding-doc-$it"
             )
         }
     )
