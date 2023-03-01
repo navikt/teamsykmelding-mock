@@ -51,7 +51,7 @@ fun opprettUtenlandskJournalpost(
 ): JournalpostRequest {
     return JournalpostRequest(
         bruker = Bruker(id = fnr),
-        dokumenter = (0 to antallPdfs).toList().map {
+        dokumenter = (0 until antallPdfs).map {
             Dokument(
                 dokumentvarianter = mutableListOf(
                     Dokumentvarianter(

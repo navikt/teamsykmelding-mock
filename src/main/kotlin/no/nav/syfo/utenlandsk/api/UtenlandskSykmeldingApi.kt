@@ -14,8 +14,12 @@ fun Route.registrerUtenlandskPapirsykmeldingApi(utenlandskSykeldingService: Uten
     post("/utenlands/opprett") {
         val request = call.receive<UtenlandskSykmeldingRequest>()
         try {
-            utenlandskSykeldingService.opprettUtenlanskPdf(request)
-            call.respond(HttpStatusCode.OK)
+            if(request.antallPdfs > 10) {
+                call.respond(HttpStatusCode.BadRequest,"antallPdfs cannot be > 10")
+            } else {
+                utenlandskSykeldingService.opprettUtenlanskPdf(request)
+                call.respond(HttpStatusCode.OK)
+            }
         } catch (e: Exception) {
             log.error("Exception", e)
             call.respond(HttpStatusCode.InternalServerError)

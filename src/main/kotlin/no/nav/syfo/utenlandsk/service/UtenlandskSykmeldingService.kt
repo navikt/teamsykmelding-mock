@@ -21,7 +21,7 @@ class UtenlandskSykmeldingService(
             opprettUtenlandskJournalpost(
                 fnr = utenlandskSykmeldingRequest.fnr,
                 pdf = utenlandskPdf,
-                antallPdfs = 2
+                antallPdfs = utenlandskSykmeldingRequest.antallPdfs
             )
         )
         log.info("Opprettet journalpost med journalPostId $journalpostId")
