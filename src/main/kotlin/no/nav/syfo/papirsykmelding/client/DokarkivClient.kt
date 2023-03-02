@@ -23,9 +23,11 @@ class DokarkivClient(
     ): String =
         try {
             log.info("Oppretter papirsykmelding i dokarkiv")
+            val token = accessTokenClient.getAccessToken(scope)
+            log.info("Got access_token for dokarkiv")
             val httpResponse = httpClient.post(url) {
                 contentType(ContentType.Application.Json)
-                header("Authorization", "Bearer ${accessTokenClient.getAccessToken(scope)}")
+                header("Authorization", "Bearer $token")
                 header("Nav-Callid", journalpostRequest.eksternReferanseId)
                 setBody(journalpostRequest)
                 parameter("forsoekFerdigstill", false)
@@ -40,6 +42,29 @@ class DokarkivClient(
             log.warn("Oppretting av journalpost feilet: ${e.message}, {}")
             throw e
         }
+}
+
+fun opprettUtenlandskJournalpost(
+    fnr: String,
+    pdf: String,
+    antallPdfs: Int
+): JournalpostRequest {
+    return JournalpostRequest(
+        bruker = Bruker(id = fnr),
+        dokumenter = (0 until antallPdfs).map {
+            Dokument(
+                dokumentvarianter = mutableListOf(
+                    Dokumentvarianter(
+                        filnavn = "pdf-sykmelding-$it",
+                        filtype = "PDFA",
+                        variantformat = "ARKIV",
+                        fysiskDokument = pdf,
+                    )
+                ),
+                tittel = "Sykmelding-doc-$it"
+            )
+        }
+    )
 }
 
 fun opprettJournalpostPayload(

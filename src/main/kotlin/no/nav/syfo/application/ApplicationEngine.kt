@@ -31,6 +31,8 @@ import no.nav.syfo.papirsykmelding.api.registrerPapirsykmeldingApi
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.api.registrerSykmeldingApi
+import no.nav.syfo.utenlandsk.api.registrerUtenlandskPapirsykmeldingApi
+import no.nav.syfo.utenlandsk.opprettJournalpostservice.UtenlandskSykmeldingService
 import java.util.UUID
 
 fun createApplicationEngine(
@@ -40,7 +42,8 @@ fun createApplicationEngine(
     sykmeldingService: SykmeldingService,
     slettSykmeldingService: SlettSykmeldingService,
     legeerklaeringService: LegeerklaeringService,
-    papirsykmeldingService: PapirsykmeldingService
+    papirsykmeldingService: PapirsykmeldingService,
+    utenlandskSykmeldingService: UtenlandskSykmeldingService
 ): ApplicationEngine =
     embeddedServer(Netty, env.applicationPort) {
         install(ContentNegotiation) {
@@ -71,6 +74,7 @@ fun createApplicationEngine(
             registrerSykmeldingApi(sykmeldingService, slettSykmeldingService)
             registrerLegeerklaeringApi(legeerklaeringService)
             registrerPapirsykmeldingApi(papirsykmeldingService)
+            registrerUtenlandskPapirsykmeldingApi(utenlandskSykmeldingService)
         }
         intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests())
     }

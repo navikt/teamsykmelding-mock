@@ -27,6 +27,7 @@ import no.nav.syfo.mq.connectionFactory
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
 import no.nav.syfo.narmesteleder.kafka.model.NlResponseKafkaMessage
+import no.nav.syfo.oppgave.OppgaveClient
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
@@ -39,6 +40,7 @@ import no.nav.syfo.sykmelding.client.SyfosmregisterClient
 import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.sykmelding.kafka.SykmeldingStatusKafkaProducer
 import no.nav.syfo.sykmelding.kafka.TombstoneKafkaProducer
+import no.nav.syfo.utenlandsk.opprettJournalpostservice.UtenlandskSykmeldingService
 import no.nav.syfo.util.JacksonKafkaSerializer
 import no.nav.syfo.util.JacksonNullableKafkaSerializer
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -134,6 +136,13 @@ fun main() {
         httpClient = httpClient
     )
 
+    val oppgaveClient = OppgaveClient(
+        url = env.oppgaveUrl,
+        accessTokenClient = accessTokenClient,
+        scope = env.oppgaveScope,
+        httpClient = httpClient
+    )
+
     val producerProperties = KafkaUtils
         .getAivenKafkaConfig()
         .toProducerConfig("${env.applicationName}-producer", JacksonKafkaSerializer::class, StringSerializer::class)
@@ -154,6 +163,7 @@ fun main() {
     val sykmeldingService = SykmeldingService(pdlPersonService, connection, env.sykmeldingQueue, syfosmreglerClient)
     val legeerklaeringService = LegeerklaeringService(pdlPersonService, connection, env.legeerklaeringQueue)
     val papirsykmeldingService = PapirsykmeldingService(dokarkivClient, syfosmpapirreglerClient, norskHelsenettClient)
+    val utenlandskSykmeldingService = UtenlandskSykmeldingService(dokarkivClient, oppgaveClient)
 
     val applicationEngine = createApplicationEngine(
         env,
@@ -162,7 +172,8 @@ fun main() {
         sykmeldingService,
         slettSykmeldingService,
         legeerklaeringService,
-        papirsykmeldingService
+        papirsykmeldingService,
+        utenlandskSykmeldingService
     )
     val applicationServer = ApplicationServer(applicationEngine, applicationState)
     applicationServer.start()

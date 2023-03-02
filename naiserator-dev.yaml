@@ -54,6 +54,7 @@ spec:
         - host: https://pdl-api.dev-fss-pub.nais.io
         - host: https://dokarkiv.dev-fss-pub.nais.io
         - host: https://syfohelsenettproxy.dev-fss-pub.nais.io
+        - host: https://oppgave-q1.dev-fss-pub.nais.io
     inbound:
       rules:
         - application: teamsykmelding-mock
@@ -90,3 +91,7 @@ spec:
       value: https://syfohelsenettproxy.dev-fss-pub.nais.io
     - name: NORSKHELSENETT_SCOPE
       value: api://dev-fss.teamsykmelding.syfohelsenettproxy/.default
+    - name: OPPGAVE_SCOPE
+      value: api://dev-fss.oppgavehandtering.oppgave-q1/.default
+    - name: OPPGAVEBEHANDLING_URL
+      value: https://oppgave-q1.dev-fss-pub.nais.io/api/v1/oppgaver
