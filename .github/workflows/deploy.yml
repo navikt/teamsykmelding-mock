@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-env:
-  IMAGE: ghcr.io/${{ github.repository }}/teamsykmelding-mock-backend:${{ github.sha }}
 
 jobs:
   monitor:
@@ -27,7 +25,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/gradle-jdk16@master
+        uses: snyk/actions/gradle-jdk17@master
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -36,6 +34,9 @@ jobs:
           command: test
           args: --org=teamsykmelding --severity-threshold=high
   build:
+    permissions:
+      contents: "read"
+      id-token: "write"
     name: Checkout code and create docker tag
     runs-on: ubuntu-latest
     steps:
@@ -69,13 +70,16 @@ jobs:
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./gradlew shadowJar -x test
-      - name: Build and publish Docker image
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          docker build --tag ${IMAGE} .
-          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-          docker push ${IMAGE}
+      - name: docker-build-push
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: teamsykmelding
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
   deploy-dev:
     name: Deploy to dev
     runs-on: ubuntu-latest
@@ -89,3 +93,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: naiserator-dev.yaml
+          VAR: image=${{ needs.build.outputs.image }}
