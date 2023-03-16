@@ -17,7 +17,6 @@ import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.sm.Diagnosekoder
-import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
@@ -78,7 +77,7 @@ fun lagHelseopplysninger(
                 stillingsprosent = 100
             }
         }
-        medisinskVurdering = medisinskVurdering(sykmeldingRequest.diagnosekode, sykmeldingRequest.diagnosekodesystem, sykmeldingRequest.annenFraverGrunn, sykmeldingRequest.bidiagnoser)
+        medisinskVurdering = medisinskVurdering(sykmeldingRequest)
         aktivitet = HelseOpplysningerArbeidsuforhet.Aktivitet().apply {
             periode.addAll(sykmeldingRequest.perioder.map { tilPeriode(it) })
         }
@@ -182,21 +181,21 @@ fun lagHelseopplysninger(
     }
 }
 
-private fun medisinskVurdering(kode: String, system: String, annenFraverGrunn: AnnenFraverGrunn?, bidiagnose: List<Diagnoser>?): HelseOpplysningerArbeidsuforhet.MedisinskVurdering {
+private fun medisinskVurdering(sykmeldingRequest: SykmeldingRequest): HelseOpplysningerArbeidsuforhet.MedisinskVurdering {
     val medisinskVurdering = HelseOpplysningerArbeidsuforhet.MedisinskVurdering().apply {
         hovedDiagnose = HelseOpplysningerArbeidsuforhet.MedisinskVurdering.HovedDiagnose().apply {
-            diagnosekode = tilDiagnosekode(kode, system)
+            diagnosekode = tilDiagnosekode(sykmeldingRequest.diagnosekode, sykmeldingRequest.diagnosekodesystem)
         }
-        if (!bidiagnose.isNullOrEmpty()) {
+        if (!sykmeldingRequest.bidiagnoser.isNullOrEmpty()) {
             biDiagnoser = HelseOpplysningerArbeidsuforhet.MedisinskVurdering.BiDiagnoser().apply {
-                diagnosekode.addAll(bidiagnose.map { tilDiagnosekode(it) })
+                diagnosekode.addAll(sykmeldingRequest.bidiagnoser.map { tilDiagnosekode(it) })
             }
         }
-        isYrkesskade = false
+        isYrkesskade = sykmeldingRequest.yrkesskade
         yrkesskadeDato = null
         isSvangerskap = false
         isSkjermesForPasient = false
-        annenFraversArsak = annenFraverGrunn?.let {
+        annenFraversArsak = sykmeldingRequest.annenFraverGrunn?.let {
             ArsakType().apply {
                 arsakskode.add(
                     CS().apply {

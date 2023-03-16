@@ -5,7 +5,6 @@ import org.amshove.kluent.shouldBeEqualTo
 
 class DokarkivClientKtTest : FunSpec({
 
-
     test("create 1 documents") {
         val dokumenter = opprettUtenlandskJournalpost("fnr", "pdf", 1)
         dokumenter.dokumenter.size shouldBeEqualTo 1
