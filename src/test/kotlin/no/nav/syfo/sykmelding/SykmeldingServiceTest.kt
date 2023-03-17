@@ -63,7 +63,8 @@ class SykmeldingServiceTest : FunSpec({
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = null,
                 arbeidsgiverNavn = null,
-                vedleggMedVirus = false
+                vedleggMedVirus = false,
+                yrkesskade = false
             )
             val mottakId = "mottakId"
 
@@ -103,7 +104,8 @@ class SykmeldingServiceTest : FunSpec({
                 meldingTilArbeidsgiver = null,
                 bidiagnoser = emptyList(),
                 arbeidsgiverNavn = null,
-                vedleggMedVirus = false
+                vedleggMedVirus = false,
+                yrkesskade = false
             )
             val mottakId = "mottakId"
 
@@ -149,7 +151,8 @@ class SykmeldingServiceTest : FunSpec({
                     )
                 ),
                 arbeidsgiverNavn = null,
-                vedleggMedVirus = false
+                vedleggMedVirus = false,
+                yrkesskade = false
             )
             val mottakId = "mottakId"
 
