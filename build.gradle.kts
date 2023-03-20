@@ -12,7 +12,7 @@ val ktorVersion = "2.2.4"
 val logbackVersion = "1.4.5"
 val logstashEncoderVersion = "7.3"
 val prometheusVersion = "0.16.0"
-val smCommonVersion = "1.fbf33a9"
+val smCommonVersion = "1.9df1108"
 val mockkVersion = "1.13.2"
 val testContainerKafkaVersion = "1.17.6"
 val kotlinVersion = "1.8.10"
@@ -24,6 +24,7 @@ val jaxbApiVersion = "2.4.0-b180830.0359"
 val legeerklaeringVersion = "2019.07.29-02-53-86b22e73f7843e422ee500b486dac387a582f2d1"
 val papirsykmeldingVersion = "2019.09.09-08-50-693492ddc1d3f98e70c1638c94dcb95a66036d12"
 val javaTimeAdapterVersion = "1.1.3"
+val commonsCodecVersion = "1.15"
 
 tasks.withType<Jar> {
     manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
@@ -71,6 +72,8 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
+    implementation("commons-codec:commons-codec:$commonsCodecVersion")
+    // override transient version 1.10 from io.ktor:ktor-client-apache
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
