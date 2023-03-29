@@ -55,6 +55,11 @@ spec:
         - host: https://dokarkiv.dev-fss-pub.nais.io
         - host: https://syfohelsenettproxy.dev-fss-pub.nais.io
         - host: https://oppgave-q1.dev-fss-pub.nais.io
+        - host: b27apvl221.preprod.local
+          ports:
+            - name: mq
+              port: 1413
+              protocol: TCP
     inbound:
       rules:
         - application: teamsykmelding-mock
