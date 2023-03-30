@@ -22,7 +22,7 @@ data class Environment(
     val papirSmRegistreringTopic: String = "teamsykmelding.papir-sm-registering",
     val manuellTopic: String = "teamsykmelding.sykmelding-manuell",
     val sykmeldingStatusTopic: String = "teamsykmelding.sykmeldingstatus-leesah",
-    val syfosmregisterUrl: String = getEnvVar("SYFOSMREGISTER_URL"),
+    val syfosmregisterUrl: String = "http://syfosmregister",
     val syfosmregisterScope: String = getEnvVar("SYFOSMREGISTER_SCOPE"),
     val syfosmreglerUrl: String = "http://syfosmregler",
     val syfosmreglerScope: String = getEnvVar("SYFOSMREGLER_SCOPE"),
