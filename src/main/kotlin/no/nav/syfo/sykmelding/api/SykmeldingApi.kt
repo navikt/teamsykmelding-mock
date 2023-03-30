@@ -38,6 +38,7 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykm
     }
 
     delete("/sykmeldinger") {
+        log.info("going to delete sykmeldinger")
         val fnr = call.request.headers["Sykmeldt-Fnr"]
         if (fnr == null || fnr.length != 11) {
             call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde"))
