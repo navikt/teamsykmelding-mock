@@ -15,6 +15,7 @@ class SlettSykmeldingService(
     private val tombstoneKafkaProducer: TombstoneKafkaProducer
 ) {
     suspend fun slettAlleSykmeldinger(fnr: String): Int {
+        log.info("Henter ut alle sykmeldinger fra registeret")
         val sykmeldinger = syfosmregisterClient.hentSykmeldinger(fnr)
         log.info("Sletter ${sykmeldinger.size} sykmeldinger")
 
