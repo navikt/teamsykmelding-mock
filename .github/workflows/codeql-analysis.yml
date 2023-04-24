@@ -9,6 +9,36 @@ on:
   schedule:
     - cron: '0 0 * * 3'
 jobs:
-  codeql-jar-app-analysis:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/codeql-jar-app-analysis.yml@main
-    secrets: inherit
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'kotlin' ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - uses: actions/setup-java@v3
+        id: setup-java
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - run: ./gradlew shadowJar -x test
+        env:
+          ORG_GRADLE_PROJECT_githubUser: x-access-token
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
