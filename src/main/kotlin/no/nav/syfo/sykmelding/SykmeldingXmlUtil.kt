@@ -32,7 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar
 fun lagHelseopplysninger(
     sykmeldingRequest: SykmeldingRequest,
     sykmeldt: PdlPerson,
-    lege: PdlPerson
+    lege: PdlPerson,
 ): HelseOpplysningerArbeidsuforhet {
     return HelseOpplysningerArbeidsuforhet().apply {
         syketilfelleStartDato = sykmeldingRequest.syketilfelleStartdato
@@ -156,8 +156,8 @@ fun lagHelseopplysninger(
                             s = "2.16.578.1.12.4.1.1.8116"
                             v = "HPR"
                         }
-                    }
-                )
+                    },
+                ),
             )
             adresse = Address()
             kontaktInfo.add(
@@ -169,7 +169,7 @@ fun lagHelseopplysninger(
                     teleAddress = URL().apply {
                         v = "tel: 90909090"
                     }
-                }
+                },
             )
         }
         regelSettVersjon = sykmeldingRequest.regelsettVersjon
@@ -201,7 +201,7 @@ private fun medisinskVurdering(sykmeldingRequest: SykmeldingRequest): HelseOpply
                     CS().apply {
                         v = it.codeValue
                         dn = it.text
-                    }
+                    },
                 )
             }
         }
@@ -299,7 +299,7 @@ private fun hundreprosent(): HelseOpplysningerArbeidsuforhet.Aktivitet.Periode.A
                 CS().apply {
                     v = "9"
                     dn = "Annet"
-                }
+                },
             )
         }
         medisinskeArsaker = ArsakType().apply {
@@ -308,7 +308,7 @@ private fun hundreprosent(): HelseOpplysningerArbeidsuforhet.Aktivitet.Periode.A
                 CS().apply {
                     v = "3"
                     dn = "Annet"
-                }
+                },
             )
         }
     }
@@ -343,11 +343,11 @@ fun tilSpmGruppe(): List<SpmGruppe> {
                     CS().apply {
                         v = "A"
                         dn = "Informasjonen skal ikke vises arbeidsgiver"
-                    }
+                    },
                 )
             }
             svarTekst = "Langvarig korsryggsmerter. Ømhet og smerte"
-        }
+        },
     )
     listeDynaSvarType.add(
         DynaSvarType().apply {
@@ -358,11 +358,11 @@ fun tilSpmGruppe(): List<SpmGruppe> {
                     CS().apply {
                         v = "A"
                         dn = "Informasjonen skal ikke vises arbeidsgiver"
-                    }
+                    },
                 )
             }
             svarTekst = "Kan ikke utføre arbeidsoppgaver 100% som kreves fra yrket. Duplikatbuster: ${UUID.randomUUID()}"
-        }
+        },
     )
     listeDynaSvarType.add(
         DynaSvarType().apply {
@@ -373,11 +373,11 @@ fun tilSpmGruppe(): List<SpmGruppe> {
                     CS().apply {
                         v = "A"
                         dn = "Informasjonen skal ikke vises arbeidsgiver"
-                    }
+                    },
                 )
             }
             svarTekst = "Videre utredning"
-        }
+        },
     )
 
     val spmGruppe = listOf(
@@ -385,7 +385,7 @@ fun tilSpmGruppe(): List<SpmGruppe> {
             spmGruppeId = "6.4"
             spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
             spmSvar.addAll(listeDynaSvarType)
-        }
+        },
     )
     return spmGruppe
 }
@@ -405,11 +405,11 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Har vært syk i 7 uker. Sår hals og vondt i hodet."
-            }
+            },
         )
         listeDynaSvarType.add(
             DynaSvarType().apply {
@@ -421,18 +421,18 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
-            }
+            },
         )
         spmGruppe.add(
             SpmGruppe().apply {
                 spmGruppeId = "6.3"
                 spmGruppeTekst = "Helseopplysninger til vurdering av aktivitetskravet og NAVs oppfølging"
                 spmSvar.addAll(listeDynaSvarType)
-            }
+            },
         )
     } else if (utdypendeOpplysninger == UtdypendeOpplysninger.UKE_17) {
         listeDynaSvarType.add(
@@ -445,11 +445,11 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Blir gradvis bedre, men er fortsatt ikke frisk."
-            }
+            },
         )
         listeDynaSvarType.add(
             DynaSvarType().apply {
@@ -461,11 +461,11 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
-            }
+            },
         )
         listeDynaSvarType.add(
             DynaSvarType().apply {
@@ -477,18 +477,18 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Må fullføre behandlingen."
-            }
+            },
         )
         spmGruppe.add(
             SpmGruppe().apply {
                 spmGruppeId = "6.4"
                 spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
                 spmSvar.addAll(listeDynaSvarType)
-            }
+            },
         )
     } else {
         listeDynaSvarType.add(
@@ -501,11 +501,11 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Har ikke blitt noe bedre. Klarer ikke å jobbe eller drive med aktiviteter"
-            }
+            },
         )
         listeDynaSvarType.add(
             DynaSvarType().apply {
@@ -517,11 +517,11 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Henvist til fysio. Duplikatbuster: ${UUID.randomUUID()}"
-            }
+            },
         )
         listeDynaSvarType.add(
             DynaSvarType().apply {
@@ -533,18 +533,18 @@ fun tilSpmGruppeRegelsett3(utdypendeOpplysninger: UtdypendeOpplysninger?): List<
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = "Nei"
-            }
+            },
         )
         spmGruppe.add(
             SpmGruppe().apply {
                 spmGruppeId = "6.5"
                 spmGruppeTekst = "Helseopplysninger til NAVs videre vurdering av oppfølging"
                 spmSvar.addAll(listeDynaSvarType)
-            }
+            },
         )
     }
     return spmGruppe

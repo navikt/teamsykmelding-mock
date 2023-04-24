@@ -31,7 +31,7 @@ class SykmeldingServiceTest : FunSpec({
     beforeTest {
         coEvery { pdlPersonService.getPersoner(any()) } returns mapOf(
             fnr to PdlPerson(Navn("Syk", null, "Sykestad")),
-            legeFnr to PdlPerson(Navn("Doktor", null, "Dyregod"))
+            legeFnr to PdlPerson(Navn("Doktor", null, "Dyregod")),
         )
     }
 
@@ -50,8 +50,8 @@ class SykmeldingServiceTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.HUNDREPROSENT
-                    )
+                        type = SykmeldingType.HUNDREPROSENT,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -64,7 +64,7 @@ class SykmeldingServiceTest : FunSpec({
                 bidiagnoser = null,
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val mottakId = "mottakId"
 
@@ -91,8 +91,8 @@ class SykmeldingServiceTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.HUNDREPROSENT
-                    )
+                        type = SykmeldingType.HUNDREPROSENT,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -105,7 +105,7 @@ class SykmeldingServiceTest : FunSpec({
                 bidiagnoser = emptyList(),
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val mottakId = "mottakId"
 
@@ -132,8 +132,8 @@ class SykmeldingServiceTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.HUNDREPROSENT
-                    )
+                        type = SykmeldingType.HUNDREPROSENT,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -147,12 +147,12 @@ class SykmeldingServiceTest : FunSpec({
                     Diagnoser(
                         code = "M674",
                         system = "icd10",
-                        text = "Ein viktig diagnose"
-                    )
+                        text = "Ein viktig diagnose",
+                    ),
                 ),
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val mottakId = "mottakId"
 

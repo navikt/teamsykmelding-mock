@@ -14,7 +14,7 @@ class NlResponseProducer(private val kafkaProducer: KafkaProducer<String, NlResp
         val kafkaMessage = NlResponseKafkaMessage(
             kafkaMetadata = KafkaMetadata(OffsetDateTime.now(ZoneOffset.UTC), "mock"),
             nlResponse = nlResponse,
-            nlAvbrutt = nlAvbrutt
+            nlAvbrutt = nlAvbrutt,
         )
         kafkaProducer.send(ProducerRecord(topic, nlResponse?.orgnummer ?: nlAvbrutt?.orgnummer, kafkaMessage)).get()
     }

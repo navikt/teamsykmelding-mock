@@ -18,7 +18,7 @@ class NorskHelsenettClient(
     private val norskHelsenettUrl: String,
     private val accessTokenClient: AccessTokenClient,
     private val norskHelsenettScope: String,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) {
 
     suspend fun finnBehandlerFnr(hprNummer: String): String? {
@@ -48,5 +48,5 @@ class NorskHelsenettClient(
 }
 
 data class Behandler(
-    val fnr: String?
+    val fnr: String?,
 )

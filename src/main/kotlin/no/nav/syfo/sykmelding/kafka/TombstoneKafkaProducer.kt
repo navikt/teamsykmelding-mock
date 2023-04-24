@@ -6,7 +6,7 @@ import org.apache.kafka.clients.producer.ProducerRecord
 
 class TombstoneKafkaProducer(
     private val tombstoneProducer: KafkaProducer<String, Any?>,
-    private val topics: List<String>
+    private val topics: List<String>,
 ) {
     fun sendTombstone(sykmeldingId: String) {
         try {

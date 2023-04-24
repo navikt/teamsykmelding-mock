@@ -112,7 +112,7 @@ fun main() {
     val pdlClient = PdlClient(
         httpClient,
         env.pdlGraphqlPath,
-        PdlClient::class.java.getResource("/graphql/getPerson.graphql")!!.readText().replace(Regex("[\n\t]"), "")
+        PdlClient::class.java.getResource("/graphql/getPerson.graphql")!!.readText().replace(Regex("[\n\t]"), ""),
     )
     val pdlPersonService = PdlPersonService(pdlClient, accessTokenClient, env.pdlScope)
 
@@ -120,42 +120,42 @@ fun main() {
         url = env.dokarkivUrl,
         accessTokenClient = accessTokenClient,
         scope = env.dokarkivScope,
-        httpClient = httpClient
+        httpClient = httpClient,
     )
 
     val syfosmregisterClient = SyfosmregisterClient(
         syfosmregisterUrl = env.syfosmregisterUrl,
         accessTokenClient = accessTokenClient,
         syfosmregisterScope = env.syfosmregisterScope,
-        httpClient = httpClient
+        httpClient = httpClient,
     )
 
     val syfosmreglerClient = SyfosmreglerClient(
         syfosmreglerUrl = env.syfosmreglerUrl,
         accessTokenClient = accessTokenClient,
         syfosmreglerScope = env.syfosmreglerScope,
-        httpClient = httpClient
+        httpClient = httpClient,
     )
 
     val syfosmpapirreglerClient = SyfosmpapirreglerClient(
         syfosmpapirreglerUrl = env.syfosmpapirreglerUrl,
         accessTokenClient = accessTokenClient,
         syfosmpapirreglerScope = env.syfosmpapirreglerScope,
-        httpClient = httpClient
+        httpClient = httpClient,
     )
 
     val norskHelsenettClient = NorskHelsenettClient(
         norskHelsenettUrl = env.norskHelsenettUrl,
         accessTokenClient = accessTokenClient,
         norskHelsenettScope = env.norskHelsenettScope,
-        httpClient = httpClient
+        httpClient = httpClient,
     )
 
     val oppgaveClient = OppgaveClient(
         url = env.oppgaveUrl,
         accessTokenClient = accessTokenClient,
         scope = env.oppgaveScope,
-        httpClient = httpClient
+        httpClient = httpClient,
     )
 
     val producerProperties = KafkaUtils
@@ -168,7 +168,7 @@ fun main() {
     val tombstoneProducer = KafkaProducer<String, Any?>(
         KafkaUtils
             .getAivenKafkaConfig()
-            .toProducerConfig("${env.applicationName}-tombstone-producer", JacksonNullableKafkaSerializer::class)
+            .toProducerConfig("${env.applicationName}-tombstone-producer", JacksonNullableKafkaSerializer::class),
     )
     val tombstoneKafkaProducer = TombstoneKafkaProducer(tombstoneProducer, listOf(env.papirSmRegistreringTopic, env.manuellTopic))
     val sykmeldingStatusKafkaProducer = SykmeldingStatusKafkaProducer(KafkaProducer(producerProperties), env.sykmeldingStatusTopic)
@@ -188,7 +188,7 @@ fun main() {
         slettSykmeldingService,
         legeerklaeringService,
         papirsykmeldingService,
-        utenlandskSykmeldingService
+        utenlandskSykmeldingService,
     )
     val applicationServer = ApplicationServer(applicationEngine, applicationState)
     applicationServer.start()

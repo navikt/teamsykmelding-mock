@@ -16,10 +16,10 @@ class DokarkivClient(
     private val url: String,
     private val accessTokenClient: AccessTokenClient,
     private val scope: String,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) {
     suspend fun opprettJournalpost(
-        journalpostRequest: JournalpostRequest
+        journalpostRequest: JournalpostRequest,
     ): String =
         try {
             log.info("Oppretter papirsykmelding i dokarkiv")
@@ -47,7 +47,7 @@ class DokarkivClient(
 fun opprettUtenlandskJournalpost(
     fnr: String,
     pdf: String,
-    antallPdfs: Int
+    antallPdfs: Int,
 ): JournalpostRequest {
     return JournalpostRequest(
         bruker = Bruker(id = fnr),
@@ -58,12 +58,12 @@ fun opprettUtenlandskJournalpost(
                         filnavn = "pdf-sykmelding-$it",
                         filtype = "PDFA",
                         variantformat = "ARKIV",
-                        fysiskDokument = pdf
-                    )
+                        fysiskDokument = pdf,
+                    ),
                 ),
-                tittel = "Sykmelding-doc-$it"
+                tittel = "Sykmelding-doc-$it",
             )
-        }
+        },
     )
 }
 
@@ -71,21 +71,21 @@ fun opprettJournalpostPayload(
     fnr: String,
     ocr: String?,
     pdf: String,
-    metadata: String
+    metadata: String,
 ): JournalpostRequest {
     val dokumentvarianter = mutableListOf(
         Dokumentvarianter(
             filnavn = "pdf-sykmelding",
             filtype = "PDFA",
             variantformat = "ARKIV",
-            fysiskDokument = pdf
+            fysiskDokument = pdf,
         ),
         Dokumentvarianter(
             filnavn = "xml-sykmeldingmetadata",
             filtype = "XML",
             variantformat = "SKANNING_META",
-            fysiskDokument = metadata
-        )
+            fysiskDokument = metadata,
+        ),
     )
     if (ocr != null) {
         dokumentvarianter.add(
@@ -93,45 +93,45 @@ fun opprettJournalpostPayload(
                 filnavn = "ocr-sykmelding",
                 filtype = "XML",
                 variantformat = "ORIGINAL",
-                fysiskDokument = ocr
-            )
+                fysiskDokument = ocr,
+            ),
         )
     }
     return JournalpostRequest(
         bruker = Bruker(id = fnr),
         dokumenter = listOf(
-            Dokument(dokumentvarianter = dokumentvarianter)
-        )
+            Dokument(dokumentvarianter = dokumentvarianter),
+        ),
     )
 }
 
 fun opprettUtenlandskJournalpostPayload(
     fnr: String,
     pdf: String,
-    metadata: String
+    metadata: String,
 ): JournalpostRequest {
     val dokumentvarianter = mutableListOf(
         Dokumentvarianter(
             filnavn = "pdf-sykmelding",
             filtype = "PDFA",
             variantformat = "ARKIV",
-            fysiskDokument = pdf
+            fysiskDokument = pdf,
         ),
         Dokumentvarianter(
             filnavn = "xml-sykmeldingmetadata",
             filtype = "XML",
             variantformat = "SKANNING_META",
-            fysiskDokument = metadata
-        )
+            fysiskDokument = metadata,
+        ),
     )
     return JournalpostRequest(
         bruker = Bruker(id = fnr),
         dokumenter = listOf(
             Dokument(
                 brevkode = "NAV 08-07.04 U",
-                dokumentvarianter = dokumentvarianter
-            )
+                dokumentvarianter = dokumentvarianter,
+            ),
         ),
-        tittel = "Utenlandsk papirsykmelding"
+        tittel = "Utenlandsk papirsykmelding",
     )
 }

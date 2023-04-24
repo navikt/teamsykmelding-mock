@@ -43,7 +43,7 @@ fun createApplicationEngine(
     slettSykmeldingService: SlettSykmeldingService,
     legeerklaeringService: LegeerklaeringService,
     papirsykmeldingService: PapirsykmeldingService,
-    utenlandskSykmeldingService: UtenlandskSykmeldingService
+    utenlandskSykmeldingService: UtenlandskSykmeldingService,
 ): ApplicationEngine =
     embeddedServer(Netty, env.applicationPort) {
         install(ContentNegotiation) {

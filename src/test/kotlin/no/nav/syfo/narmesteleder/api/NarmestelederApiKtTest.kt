@@ -56,10 +56,10 @@ class NarmestelederApiKtTest : FunSpec({
                     ResponseData(
                         listOf(
                             HentPersonBolk(ansattFnr, Person(listOf(Navn("Fornavn", null, "Etternavn"))), "ok"),
-                            HentPersonBolk(lederFnr, Person(listOf(Navn("Leder", null, "Ledersen"))), "ok")
-                        )
+                            HentPersonBolk(lederFnr, Person(listOf(Navn("Leder", null, "Ledersen"))), "ok"),
+                        ),
                     ),
-                    null
+                    null,
                 )
                 val opprettNarmestelederRequest = OpprettNarmestelederRequest(
                     ansattFnr = ansattFnr,
@@ -68,13 +68,13 @@ class NarmestelederApiKtTest : FunSpec({
                     mobil = "98989898",
                     epost = "test@nav.no",
                     forskutterer = true,
-                    aktivFom = LocalDate.now()
+                    aktivFom = LocalDate.now(),
                 )
                 with(
                     handleRequest(HttpMethod.Post, "/narmesteleder/opprett") {
                         addHeader("Content-Type", ContentType.Application.Json.toString())
                         setBody(objectMapper.writeValueAsString(opprettNarmestelederRequest))
-                    }
+                    },
                 ) {
                     response.status() shouldBeEqualTo HttpStatusCode.OK
                     response.content shouldBeEqualTo objectMapper.writeValueAsString(HttpMessage("Nærmeste leder er registrert"))
@@ -90,16 +90,16 @@ class NarmestelederApiKtTest : FunSpec({
                                     mobil = "98989898",
                                     epost = "test@nav.no",
                                     fornavn = "Leder",
-                                    etternavn = "Ledersen"
+                                    etternavn = "Ledersen",
                                 ),
                                 sykmeldt = Sykmeldt(
                                     fnr = ansattFnr,
-                                    navn = "Fornavn Etternavn"
+                                    navn = "Fornavn Etternavn",
                                 ),
-                                aktivFom = OffsetDateTime.of(LocalDate.now().atStartOfDay(), ZoneOffset.UTC)
+                                aktivFom = OffsetDateTime.of(LocalDate.now().atStartOfDay(), ZoneOffset.UTC),
                             )
                         },
-                        nlAvbrutt = null
+                        nlAvbrutt = null,
                     )
                 }
             }
@@ -107,7 +107,7 @@ class NarmestelederApiKtTest : FunSpec({
                 with(
                     handleRequest(HttpMethod.Delete, "/narmesteleder/$orgnummer") {
                         addHeader("Sykmeldt-Fnr", ansattFnr)
-                    }
+                    },
                 ) {
                     response.status() shouldBeEqualTo HttpStatusCode.OK
                 }
@@ -116,13 +116,13 @@ class NarmestelederApiKtTest : FunSpec({
                         nlResponse = null,
                         match {
                             it.orgnummer == orgnummer && it.sykmeldtFnr == ansattFnr
-                        }
+                        },
                     )
                 }
             }
             test("Deaktivering gir 400 hvis fnr mangler") {
                 with(
-                    handleRequest(HttpMethod.Delete, "/narmesteleder/$orgnummer")
+                    handleRequest(HttpMethod.Delete, "/narmesteleder/$orgnummer"),
                 ) {
                     response.status() shouldBeEqualTo HttpStatusCode.BadRequest
                 }

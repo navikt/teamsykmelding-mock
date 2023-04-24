@@ -33,17 +33,17 @@ class PapirsykmeldingServiceTest : FunSpec({
                 SykmeldingPeriode(
                     fom = LocalDate.now().minusWeeks(1),
                     tom = LocalDate.now().minusDays(3),
-                    type = SykmeldingType.HUNDREPROSENT
+                    type = SykmeldingType.HUNDREPROSENT,
                 ),
                 SykmeldingPeriode(
                     fom = LocalDate.now().minusDays(2),
                     tom = LocalDate.now().plusDays(3),
-                    type = SykmeldingType.GRADERT_50
-                )
+                    type = SykmeldingType.GRADERT_50,
+                ),
             ),
             diagnosekode = "D71",
             diagnosekodesystem = "icpc2",
-            utenOcr = false
+            utenOcr = false,
         )
 
         test("tilSkanningmetadata oppretter riktig skanningmetadata") {

@@ -11,5 +11,5 @@ data class PapirsykmeldingRequest(
     val perioder: List<SykmeldingPeriode>,
     val diagnosekode: String,
     val diagnosekodesystem: String,
-    val utenOcr: Boolean
+    val utenOcr: Boolean,
 )

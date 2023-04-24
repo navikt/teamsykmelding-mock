@@ -24,7 +24,7 @@ data class SykmeldingRequest(
     val bidiagnoser: List<Diagnoser>?,
     val arbeidsgiverNavn: String?,
     val vedleggMedVirus: Boolean,
-    val yrkesskade: Boolean
+    val yrkesskade: Boolean,
 )
 
 enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
@@ -37,13 +37,13 @@ enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
     ABORT("7", "Når vedkommende er arbeidsufør som følge av svangerskapsavbrudd"),
     UFOR_GRUNNET_BARNLOSHET("8", "Når vedkommende er arbeidsufør som følge av behandling for barnløshet"),
     DONOR("9", "Når vedkommende er donor eller er under vurdering som donor"),
-    BEHANDLING_STERILISERING("10", "Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering")
+    BEHANDLING_STERILISERING("10", "Når vedkommende er arbeidsufør som følge av behandling i forbindelse med sterilisering"),
 }
 
 data class Diagnoser(
     val code: String,
     val system: String,
-    val text: String
+    val text: String,
 )
 
 enum class UtdypendeOpplysninger {

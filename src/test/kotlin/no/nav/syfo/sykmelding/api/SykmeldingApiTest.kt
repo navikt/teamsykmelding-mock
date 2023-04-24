@@ -30,9 +30,9 @@ class SykmeldingApiTest : FunSpec({
                 ruleName = "BEHANDLER_IKKE_GYLDIG_I_HPR",
                 messageForSender = "Behandler er ikke gyldig i HPR på konsultasjonstidspunkt. Pasienten har fått beskjed.",
                 messageForUser = "Den som skrev sykmeldingen manglet autorisasjon.",
-                ruleStatus = Status.INVALID
-            )
-        )
+                ruleStatus = Status.INVALID,
+            ),
+        ),
     )
 
     coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
@@ -84,9 +84,9 @@ class SykmeldingApiTest : FunSpec({
                                 "  \"diagnosekodesystem\": \"ICPC2\",\n" +
                                 "  \"diagnosekode\": \"A90\",\n" +
                                 "  \"arbeidsgiverNavn\": null\n" +
-                                "}"
+                                "}",
                         )
-                    }
+                    },
                 ) {
                     response.status() shouldBeEqualTo HttpStatusCode.OK
                     response.content shouldBeEqualTo objectMapper.writeValueAsString(HttpMessage("Opprettet sykmelding med mottakId 123-123--21321313"))
@@ -129,9 +129,9 @@ class SykmeldingApiTest : FunSpec({
                                 "  \"diagnosekodesystem\": \"ICPC2\",\n" +
                                 "  \"diagnosekode\": \"A90\",\n" +
                                 "  \"arbeidsgiverNavn\": \"NAV\"\n" +
-                                "}"
+                                "}",
                         )
-                    }
+                    },
                 ) {
                     response.status() shouldBeEqualTo HttpStatusCode.OK
                     response.content shouldBeEqualTo objectMapper.writeValueAsString(HttpMessage("Opprettet sykmelding med mottakId 123-123--21321313"))
@@ -180,9 +180,9 @@ class SykmeldingApiTest : FunSpec({
                                 "  \"diagnosekodesystem\": \"ICPC2\",\n" +
                                 "  \"diagnosekode\": \"A90\",\n" +
                                 "  \"arbeidsgiverNavn\": null\n" +
-                                "}"
+                                "}",
                         )
-                    }
+                    },
                 ) {
                     response.status() shouldBeEqualTo HttpStatusCode.OK
                     response.content shouldBeEqualTo objectMapper.writeValueAsString(validationResult)

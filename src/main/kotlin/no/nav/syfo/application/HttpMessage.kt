@@ -1,5 +1,5 @@
 package no.nav.syfo.application
 
 data class HttpMessage(
-    val message: String
+    val message: String,
 )

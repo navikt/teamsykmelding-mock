@@ -38,7 +38,7 @@ import javax.jms.Session
 class LegeerklaeringService(
     private val pdlPersonService: PdlPersonService,
     private val connection: Connection,
-    private val legeerklaeringQueue: String
+    private val legeerklaeringQueue: String,
 ) {
     suspend fun opprettLegeerklaering(legeerklaeringRequest: LegeerklaeringRequest): String {
         val mottakId = UUID.randomUUID().toString()
@@ -97,7 +97,7 @@ class LegeerklaeringService(
                         diagnose = "Vondt i skulder"
                         kodeverdi = diagnosekode
                         sortering = BigInteger.valueOf(0)
-                    }
+                    },
                 )
             }
             symptomerBehandling = "Får vondt av behandlingen"
@@ -142,7 +142,7 @@ class LegeerklaeringService(
                         s = "6.87.654.3.21.9.8.7.6543.2198"
                         dn = "Fødselsnummer"
                     }
-                }
+                },
             )
             familyName = pdlPerson.navn.etternavn
             middleName = pdlPerson.navn.mellomnavn

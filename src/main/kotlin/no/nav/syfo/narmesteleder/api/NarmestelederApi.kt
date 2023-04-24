@@ -23,8 +23,8 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
                 request.copy(
                     ansattFnr = request.ansattFnr.trim { it <= ' ' },
                     lederFnr = request.lederFnr.trim { it <= ' ' },
-                    orgnummer = request.orgnummer.trim { it <= ' ' }
-                )
+                    orgnummer = request.orgnummer.trim { it <= ' ' },
+                ),
             )
             log.info("Opprettet nærmesteleder-kobling")
             call.respond(HttpStatusCode.OK, HttpMessage("Nærmeste leder er registrert"))
@@ -45,7 +45,7 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
         }
         narmestelederService.nullstillNarmesteleder(
             sykmeldtFnr = fnrSykmeldt,
-            orgnummer = orgnummer
+            orgnummer = orgnummer,
         )
         log.info("Nullstilt nærmesteleder-koblinger for orgnummer $orgnummer")
         call.respond(HttpStatusCode.OK, HttpMessage("Nullstilt nærmesteleder-koblinger for ansatt"))
@@ -59,5 +59,5 @@ data class OpprettNarmestelederRequest(
     val mobil: String,
     val epost: String,
     val forskutterer: Boolean,
-    val aktivFom: LocalDate
+    val aktivFom: LocalDate,
 )

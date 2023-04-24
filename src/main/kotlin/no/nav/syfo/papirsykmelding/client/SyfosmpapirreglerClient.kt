@@ -19,7 +19,7 @@ class SyfosmpapirreglerClient(
     private val syfosmpapirreglerUrl: String,
     private val accessTokenClient: AccessTokenClient,
     private val syfosmpapirreglerScope: String,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) {
     suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
         val accessToken = accessTokenClient.getAccessToken(syfosmpapirreglerScope)

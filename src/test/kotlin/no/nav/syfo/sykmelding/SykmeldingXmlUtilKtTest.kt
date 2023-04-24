@@ -31,8 +31,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.HUNDREPROSENT
-                    )
+                        type = SykmeldingType.HUNDREPROSENT,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -45,7 +45,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 bidiagnoser = emptyList(),
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -81,13 +81,13 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().minusWeeks(2),
                         tom = LocalDate.now().minusDays(1),
-                        type = SykmeldingType.HUNDREPROSENT
+                        type = SykmeldingType.HUNDREPROSENT,
                     ),
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.GRADERT_REISETILSKUDD
-                    )
+                        type = SykmeldingType.GRADERT_REISETILSKUDD,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = LocalDate.now().minusDays(2),
@@ -100,7 +100,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 bidiagnoser = null,
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -149,13 +149,13 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().minusWeeks(2),
                         tom = LocalDate.now().minusDays(1),
-                        type = SykmeldingType.HUNDREPROSENT
+                        type = SykmeldingType.HUNDREPROSENT,
                     ),
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.GRADERT_REISETILSKUDD
-                    )
+                        type = SykmeldingType.GRADERT_REISETILSKUDD,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = LocalDate.now().minusDays(2),
@@ -169,17 +169,17 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     Diagnoser(
                         code = "M674",
                         system = "icd10",
-                        text = "Ein viktig diagnose"
+                        text = "Ein viktig diagnose",
                     ),
                     Diagnoser(
                         code = "Z09",
                         system = "icpc2",
-                        text = "Politi"
-                    )
+                        text = "Politi",
+                    ),
                 ),
                 arbeidsgiverNavn = "NAV",
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -231,8 +231,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.HUNDREPROSENT
-                    )
+                        type = SykmeldingType.HUNDREPROSENT,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -245,7 +245,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 bidiagnoser = emptyList(),
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -271,8 +271,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now().plusDays(1),
                         tom = LocalDate.now().plusWeeks(1),
-                        type = SykmeldingType.HUNDREPROSENT
-                    )
+                        type = SykmeldingType.HUNDREPROSENT,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -285,7 +285,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 bidiagnoser = null,
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -308,8 +308,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now(),
                         tom = LocalDate.now().plusDays(10),
-                        type = SykmeldingType.BEHANDLINGSDAG
-                    )
+                        type = SykmeldingType.BEHANDLINGSDAG,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -322,7 +322,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 bidiagnoser = null,
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -347,8 +347,8 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                     SykmeldingPeriode(
                         fom = LocalDate.now(),
                         tom = LocalDate.now().plusDays(10),
-                        type = SykmeldingType.BEHANDLINGSDAGER
-                    )
+                        type = SykmeldingType.BEHANDLINGSDAGER,
+                    ),
                 ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -361,7 +361,7 @@ class SykmeldingXmlUtilKtTest : FunSpec({
                 bidiagnoser = null,
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
-                yrkesskade = false
+                yrkesskade = false,
             )
             val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
             val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))

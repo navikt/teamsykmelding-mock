@@ -25,7 +25,7 @@ class LegeerklaeringServiceTest : FunSpec({
     beforeTest {
         coEvery { pdlPersonService.getPersoner(any()) } returns mapOf(
             fnr to PdlPerson(Navn("Syk", null, "Sykestad")),
-            legeFnr to PdlPerson(Navn("Doktor", null, "Dyregod"))
+            legeFnr to PdlPerson(Navn("Doktor", null, "Dyregod")),
         )
     }
 
@@ -38,7 +38,7 @@ class LegeerklaeringServiceTest : FunSpec({
                 diagnosekodesystem = "icd10",
                 statusPresens = null,
                 vedlegg = false,
-                vedleggMedVirus = false
+                vedleggMedVirus = false,
             )
             val mottakId = "mottakId"
 
@@ -63,7 +63,7 @@ class LegeerklaeringServiceTest : FunSpec({
                 diagnosekodesystem = "icd10",
                 statusPresens = "status",
                 vedlegg = true,
-                vedleggMedVirus = false
+                vedleggMedVirus = false,
             )
             val mottakId = "mottakId"
 

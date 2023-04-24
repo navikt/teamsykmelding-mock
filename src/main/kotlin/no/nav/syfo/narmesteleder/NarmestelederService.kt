@@ -13,7 +13,7 @@ import java.time.ZoneOffset
 
 class NarmestelederService(
     private val nlResponseProducer: NlResponseProducer,
-    private val pdlPersonService: PdlPersonService
+    private val pdlPersonService: PdlPersonService,
 ) {
     suspend fun registrerNarmesteleder(opprettNarmestelederRequest: OpprettNarmestelederRequest) {
         val personer = pdlPersonService.getPersoner(listOf(opprettNarmestelederRequest.ansattFnr, opprettNarmestelederRequest.lederFnr))
@@ -29,15 +29,15 @@ class NarmestelederService(
                     mobil = opprettNarmestelederRequest.mobil,
                     epost = opprettNarmestelederRequest.epost,
                     fornavn = leder?.navn?.fornavn + if (leder?.navn?.mellomnavn != null) leder.navn.mellomnavn else "",
-                    etternavn = leder?.navn?.etternavn ?: "Etternavn"
+                    etternavn = leder?.navn?.etternavn ?: "Etternavn",
                 ),
                 sykmeldt = Sykmeldt(
                     fnr = opprettNarmestelederRequest.ansattFnr,
-                    navn = getName(sykmeldt?.navn)
+                    navn = getName(sykmeldt?.navn),
                 ),
-                aktivFom = OffsetDateTime.of(opprettNarmestelederRequest.aktivFom.atStartOfDay(), ZoneOffset.UTC)
+                aktivFom = OffsetDateTime.of(opprettNarmestelederRequest.aktivFom.atStartOfDay(), ZoneOffset.UTC),
             ),
-            nlAvbrutt = null
+            nlAvbrutt = null,
         )
     }
 
@@ -47,8 +47,8 @@ class NarmestelederService(
             nlAvbrutt = NlAvbrutt(
                 orgnummer = orgnummer,
                 sykmeldtFnr = sykmeldtFnr,
-                aktivTom = OffsetDateTime.now(ZoneOffset.UTC)
-            )
+                aktivTom = OffsetDateTime.now(ZoneOffset.UTC),
+            ),
         )
     }
 

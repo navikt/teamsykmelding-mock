@@ -19,7 +19,7 @@ class AccessTokenClient(
     private val aadAccessTokenUrl: String,
     private val clientId: String,
     private val clientSecret: String,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) {
     private val mutex = Mutex()
 
@@ -44,14 +44,14 @@ class AccessTokenClient(
                                         append("scope", scope)
                                         append("grant_type", "client_credentials")
                                         append("client_secret", clientSecret)
-                                    }
-                                )
+                                    },
+                                ),
                             )
                         }.body()
                         val tokenMedExpiry = AadAccessTokenMedExpiry(
                             access_token = response.access_token,
                             expires_in = response.expires_in,
-                            expiresOn = Instant.now().plusSeconds(response.expires_in.toLong())
+                            expiresOn = Instant.now().plusSeconds(response.expires_in.toLong()),
                         )
                         tokenMap[scope] = tokenMedExpiry
                         log.debug("Har hentet accesstoken")
@@ -65,11 +65,11 @@ class AccessTokenClient(
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AadAccessTokenV2(
     val access_token: String,
-    val expires_in: Int
+    val expires_in: Int,
 )
 
 data class AadAccessTokenMedExpiry(
     val access_token: String,
     val expires_in: Int,
-    val expiresOn: Instant
+    val expiresOn: Instant,
 )

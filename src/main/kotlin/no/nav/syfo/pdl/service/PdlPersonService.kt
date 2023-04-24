@@ -10,7 +10,7 @@ import no.nav.syfo.pdl.model.PdlPerson
 class PdlPersonService(
     private val pdlClient: PdlClient,
     private val accessTokenClient: AccessTokenClient,
-    private val pdlScope: String
+    private val pdlScope: String,
 ) {
     suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
         val accessToken = accessTokenClient.getAccessToken(pdlScope)
@@ -38,7 +38,7 @@ class PdlPersonService(
         return hentPersonBolk!!.associate {
             it.ident to
                 PdlPerson(
-                    navn = getNavn(it.person?.navn?.first())
+                    navn = getNavn(it.person?.navn?.first()),
                 )
         }
     }

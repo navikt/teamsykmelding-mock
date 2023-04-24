@@ -31,12 +31,12 @@ data class Environment(
     val norskHelsenettUrl: String = getEnvVar("NORSKHELSENETT_URL"),
     val norskHelsenettScope: String = getEnvVar("NORSKHELSENETT_SCOPE"),
     val oppgaveUrl: String = getEnvVar("OPPGAVEBEHANDLING_URL"),
-    val oppgaveScope: String = getEnvVar("OPPGAVE_SCOPE")
+    val oppgaveScope: String = getEnvVar("OPPGAVE_SCOPE"),
 ) : MqConfig
 
 data class ServiceUser(
     val username: String = getEnvVar("SERVICEUSER_USERNAME"),
-    val password: String = getEnvVar("SERVICEUSER_PASSWORD")
+    val password: String = getEnvVar("SERVICEUSER_PASSWORD"),
 )
 
 fun getEnvVar(varName: String, defaultValue: String? = null) =

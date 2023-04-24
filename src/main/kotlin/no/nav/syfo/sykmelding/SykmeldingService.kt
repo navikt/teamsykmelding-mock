@@ -27,7 +27,7 @@ class SykmeldingService(
     private val pdlPersonService: PdlPersonService,
     private val connection: Connection,
     private val sykmeldingQueue: String,
-    private val syfosmreglerClient: SyfosmreglerClient
+    private val syfosmreglerClient: SyfosmreglerClient,
 ) {
     suspend fun opprettSykmelding(sykmeldingRequest: SykmeldingRequest): String {
         val mottakId = UUID.randomUUID().toString()
@@ -54,7 +54,7 @@ class SykmeldingService(
             msgId = UUID.randomUUID().toString(),
             signaturDato = LocalDateTime.now(),
             behandlerFnr = sykmeldingRequest.fnrLege,
-            behandlerHprNr = null
+            behandlerHprNr = null,
         )
 
         val receivedSykmelding = ReceivedSykmelding(
@@ -78,7 +78,7 @@ class SykmeldingService(
             merknader = null,
             partnerreferanse = "",
             vedlegg = null,
-            utenlandskSykmelding = null
+            utenlandskSykmelding = null,
         )
 
         return syfosmreglerClient.sjekkRegler(receivedSykmelding)
@@ -110,7 +110,7 @@ class SykmeldingService(
         val sykmelding = lagHelseopplysninger(
             sykmeldingRequest = sykmeldingRequest,
             sykmeldt = sykmeldt,
-            lege = lege
+            lege = lege,
         )
 
         val pasient = fellesformat.get<XMLMsgHead>().msgInfo.patient

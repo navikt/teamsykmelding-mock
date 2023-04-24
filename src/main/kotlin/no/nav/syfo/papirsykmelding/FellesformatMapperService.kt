@@ -41,7 +41,7 @@ fun mapOcrFilTilFellesformat(
     hprNummer: String,
     sykmeldingId: String,
     fnr: String,
-    journalpostId: String
+    journalpostId: String,
 ): XMLEIFellesformat {
     return XMLEIFellesformat().apply {
         any.add(
@@ -53,7 +53,7 @@ fun mapOcrFilTilFellesformat(
                     }
                     miGversion = "v1.2 2006-05-24"
                     genDate = velgRiktigKontaktOgSignaturDato(skanningmetadata.sykemeldinger.kontaktMedPasient?.behandletDato, tilPeriodeListe(skanningmetadata.sykemeldinger.aktivitet)).format(
-                        DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                        DateTimeFormatter.ISO_LOCAL_DATE_TIME,
                     )
                     msgId = sykmeldingId
                     ack = XMLCS().apply {
@@ -87,8 +87,8 @@ fun mapOcrFilTilFellesformat(
                                                 s = "2.16.578.1.12.4.1.1.8327"
                                                 v = "FNR"
                                             }
-                                        }
-                                    )
+                                        },
+                                    ),
                                 )
                             }
                         }
@@ -117,8 +117,8 @@ fun mapOcrFilTilFellesformat(
                                             s = "2.16.578.1.12.4.1.1.9051"
                                             v = "ENH"
                                         }
-                                    }
-                                )
+                                    },
+                                ),
                             )
                         }
                     }
@@ -136,7 +136,7 @@ fun mapOcrFilTilFellesformat(
                                         syketilfelleStartDato = velgRiktigSyketilfelleDato(
                                             skanningmetadata.sykemeldinger.syketilfelleStartDato,
                                             skanningmetadata.sykemeldinger.kontaktMedPasient?.behandletDato,
-                                            tilPeriodeListe(skanningmetadata.sykemeldinger.aktivitet)
+                                            tilPeriodeListe(skanningmetadata.sykemeldinger.aktivitet),
                                         )
                                         pasient = HelseOpplysningerArbeidsuforhet.Pasient().apply {
                                             navn = NavnType().apply {
@@ -184,13 +184,13 @@ fun mapOcrFilTilFellesformat(
                                             systemVersjon = journalpostId // Dette er nødvendig for at vi skal slippe å opprette generert PDF for papirsykmeldinger i syfosmsak
                                         }
                                         strekkode = "123456789qwerty"
-                                    }
+                                    },
                                 )
                             }
                         }
-                    }
+                    },
                 )
-            }
+            },
         )
     }
 }
@@ -219,8 +219,8 @@ fun tilBehandler(hprNummer: String, fnrLege: String): HelseOpplysningerArbeidsuf
                         s = "2.16.578.1.12.4.1.1.8327"
                         v = "FNR"
                     }
-                }
-            )
+                },
+            ),
         )
         adresse = Address()
         kontaktInfo.add(
@@ -232,7 +232,7 @@ fun tilBehandler(hprNummer: String, fnrLege: String): HelseOpplysningerArbeidsuf
                 teleAddress = URL().apply {
                     v = null
                 }
-            }
+            },
         )
     }
 
@@ -257,11 +257,11 @@ fun tilSpmGruppe(utdypendeOpplysningerType: UtdypendeOpplysningerType?): List<He
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = utdypendeOpplysningerType.sykehistorie
-            }
+            },
         )
     }
 
@@ -275,11 +275,11 @@ fun tilSpmGruppe(utdypendeOpplysningerType: UtdypendeOpplysningerType?): List<He
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = utdypendeOpplysningerType.arbeidsevne
-            }
+            },
         )
     }
 
@@ -293,11 +293,11 @@ fun tilSpmGruppe(utdypendeOpplysningerType: UtdypendeOpplysningerType?): List<He
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = utdypendeOpplysningerType.behandlingsresultat
-            }
+            },
         )
     }
 
@@ -311,11 +311,11 @@ fun tilSpmGruppe(utdypendeOpplysningerType: UtdypendeOpplysningerType?): List<He
                         CS().apply {
                             v = "A"
                             dn = "Informasjonen skal ikke vises arbeidsgiver"
-                        }
+                        },
                     )
                 }
                 svarTekst = utdypendeOpplysningerType.planlagtBehandling
-            }
+            },
         )
     }
 
@@ -325,7 +325,7 @@ fun tilSpmGruppe(utdypendeOpplysningerType: UtdypendeOpplysningerType?): List<He
             spmGruppeId = "6.2"
             spmGruppeTekst = "Utdypende opplysninger ved 7/8,17 og 39 uker"
             spmSvar.addAll(listeDynaSvarType)
-        }
+        },
     )
 
     if (spmGruppe.first().spmSvar.isNotEmpty()) {
@@ -386,7 +386,7 @@ fun tilPeriodeListe(aktivitetType: AktivitetType): List<HelseOpplysningerArbeids
                 gradertSykmelding = null
                 behandlingsdager = null
                 isReisetilskudd = false
-            }
+            },
         )
     }
 
@@ -404,7 +404,7 @@ fun tilPeriodeListe(aktivitetType: AktivitetType): List<HelseOpplysningerArbeids
                 }
                 behandlingsdager = null
                 isReisetilskudd = false
-            }
+            },
         )
     }
     if (aktivitetType.avventendeSykmelding != null && !aktivitetType.innspillTilArbeidsgiver.isNullOrEmpty()) {
@@ -419,7 +419,7 @@ fun tilPeriodeListe(aktivitetType: AktivitetType): List<HelseOpplysningerArbeids
                 gradertSykmelding = null
                 behandlingsdager = null
                 isReisetilskudd = false
-            }
+            },
         )
     }
     if (aktivitetType.behandlingsdager != null) {
@@ -434,7 +434,7 @@ fun tilPeriodeListe(aktivitetType: AktivitetType): List<HelseOpplysningerArbeids
                     antallBehandlingsdagerUke = aktivitetType.behandlingsdager?.antallBehandlingsdager?.toInt() ?: 1
                 }
                 isReisetilskudd = false
-            }
+            },
         )
     }
     if (aktivitetType.reisetilskudd != null) {
@@ -447,7 +447,7 @@ fun tilPeriodeListe(aktivitetType: AktivitetType): List<HelseOpplysningerArbeids
                 gradertSykmelding = null
                 behandlingsdager = null
                 isReisetilskudd = true
-            }
+            },
         )
     }
     if (periodeListe.isEmpty()) {
@@ -620,7 +620,7 @@ fun velgRiktigKontaktOgSignaturDato(behandletDato: LocalDate?, periodeliste: Lis
 fun velgRiktigSyketilfelleDato(
     syketilfelledato: LocalDate?,
     behandletDato: LocalDate?,
-    periodeliste: List<HelseOpplysningerArbeidsuforhet.Aktivitet.Periode>
+    periodeliste: List<HelseOpplysningerArbeidsuforhet.Aktivitet.Periode>,
 ): LocalDate {
     syketilfelledato?.let {
         return syketilfelledato

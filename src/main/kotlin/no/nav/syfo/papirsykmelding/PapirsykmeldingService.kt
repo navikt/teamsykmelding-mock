@@ -44,7 +44,7 @@ import javax.xml.bind.Unmarshaller
 class PapirsykmeldingService(
     private val dokarkivClient: DokarkivClient,
     private val syfosmpapirreglerClient: SyfosmpapirreglerClient,
-    private val norskHelsenettClient: NorskHelsenettClient
+    private val norskHelsenettClient: NorskHelsenettClient,
 ) {
     private val defaultPdf = PapirsykmeldingService::class.java.getResource("/papirsykmelding/base64Papirsykmelding").readText(charset = Charsets.ISO_8859_1)
     private val utenlandskPdf = PapirsykmeldingService::class.java.getResource("/papirsykmelding/base64utenlandsk").readText(charset = Charsets.ISO_8859_1)
@@ -62,8 +62,8 @@ class PapirsykmeldingService(
                 fnr = papirsykmeldingRequest.fnr,
                 ocr = ocr,
                 pdf = defaultPdf,
-                metadata = defaultMetadata
-            )
+                metadata = defaultMetadata,
+            ),
         )
     }
 
@@ -80,7 +80,7 @@ class PapirsykmeldingService(
                 fnrLege = fnrLege,
                 sykmeldingId = sykmeldingId,
                 fnr = papirsykmeldingRequest.fnr,
-                journalpostId = "123"
+                journalpostId = "123",
             )
 
             val healthInformation =
@@ -92,7 +92,7 @@ class PapirsykmeldingService(
                 msgId = sykmeldingId,
                 signaturDato = LocalDateTime.of(papirsykmeldingRequest.behandletDato, LocalTime.NOON),
                 behandlerFnr = fnrLege,
-                behandlerHprNr = papirsykmeldingRequest.hprNummer
+                behandlerHprNr = papirsykmeldingRequest.hprNummer,
             )
 
             receivedSykmelding = ReceivedSykmelding(
@@ -116,7 +116,7 @@ class PapirsykmeldingService(
                 merknader = null,
                 partnerreferanse = null,
                 vedlegg = emptyList(),
-                utenlandskSykmelding = null
+                utenlandskSykmelding = null,
             )
         } catch (e: Exception) {
             log.error("Kunne ikke mappe request til received sykmelding", e)
@@ -131,8 +131,8 @@ class PapirsykmeldingService(
             opprettUtenlandskJournalpostPayload(
                 fnr = fnr,
                 pdf = utenlandskPdf,
-                metadata = defaultMetadata
-            )
+                metadata = defaultMetadata,
+            ),
         )
     }
 

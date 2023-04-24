@@ -5,5 +5,5 @@ data class Leder(
     val mobil: String,
     val epost: String,
     val fornavn: String,
-    val etternavn: String
+    val etternavn: String,
 )

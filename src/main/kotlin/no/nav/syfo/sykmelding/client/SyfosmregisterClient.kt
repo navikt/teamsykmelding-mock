@@ -12,7 +12,7 @@ class SyfosmregisterClient(
     private val syfosmregisterUrl: String,
     private val accessTokenClient: AccessTokenClient,
     private val syfosmregisterScope: String,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) {
     suspend fun hentSykmeldinger(fnr: String): List<Sykmelding> =
         httpClient.get("$syfosmregisterUrl/api/v2/sykmelding/sykmeldinger") {
@@ -26,5 +26,5 @@ class SyfosmregisterClient(
 }
 
 data class Sykmelding(
-    val id: String
+    val id: String,
 )

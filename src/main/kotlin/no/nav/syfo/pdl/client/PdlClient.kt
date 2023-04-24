@@ -13,7 +13,7 @@ import no.nav.syfo.pdl.client.model.GetPersonVariables
 class PdlClient(
     private val httpClient: HttpClient,
     private val basePath: String,
-    private val graphQlQuery: String
+    private val graphQlQuery: String,
 ) {
     private val temaHeader = "TEMA"
     private val tema = "SYM"

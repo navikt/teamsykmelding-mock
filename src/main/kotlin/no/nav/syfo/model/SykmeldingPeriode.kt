@@ -5,7 +5,7 @@ import java.time.LocalDate
 data class SykmeldingPeriode(
     val fom: LocalDate,
     val tom: LocalDate,
-    val type: SykmeldingType
+    val type: SykmeldingType,
 )
 
 enum class SykmeldingType {
@@ -19,5 +19,5 @@ enum class SykmeldingType {
     HUNDREPROSENT,
     BEHANDLINGSDAGER,
     BEHANDLINGSDAG,
-    REISETILSKUDD
+    REISETILSKUDD,
 }

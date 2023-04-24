@@ -12,7 +12,7 @@ import java.time.ZoneOffset
 class SlettSykmeldingService(
     private val syfosmregisterClient: SyfosmregisterClient,
     private val sykmeldingStatusKafkaProducer: SykmeldingStatusKafkaProducer,
-    private val tombstoneKafkaProducer: TombstoneKafkaProducer
+    private val tombstoneKafkaProducer: TombstoneKafkaProducer,
 ) {
     suspend fun slettAlleSykmeldinger(fnr: String): Int {
         log.info("Henter ut alle sykmeldinger fra registeret")
@@ -26,9 +26,9 @@ class SlettSykmeldingService(
                     timestamp = OffsetDateTime.now(ZoneOffset.UTC),
                     statusEvent = STATUS_SLETTET,
                     arbeidsgiver = null,
-                    sporsmals = null
+                    sporsmals = null,
                 ),
-                fnr
+                fnr,
             )
             tombstoneKafkaProducer.sendTombstone(it.id)
         }

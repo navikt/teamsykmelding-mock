@@ -7,5 +7,5 @@ data class NlResponse(
     val utbetalesLonn: Boolean?,
     val leder: Leder,
     val sykmeldt: Sykmeldt,
-    val aktivFom: OffsetDateTime
+    val aktivFom: OffsetDateTime,
 )

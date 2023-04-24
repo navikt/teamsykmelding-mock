@@ -17,7 +17,7 @@ class OppgaveClient(
     private val url: String,
     private val accessTokenClient: AccessTokenClient,
     private val scope: String,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) {
     suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
         log.info("oppretter oppgave for ${opprettOppgave.journalpostId}")
@@ -54,12 +54,12 @@ data class OpprettOppgave(
     val prioritet: String,
     val behandlingsTema: Nothing?,
     val metadata: Map<String, String?> = emptyMap(),
-    val personident: String
+    val personident: String,
 )
 data class OpprettOppgaveResponse(
     val id: Int,
     val versjon: Int,
     val status: String? = null,
     val tildeltEnhetsnr: String? = null,
-    val mappeId: Int? = null
+    val mappeId: Int? = null,
 )
