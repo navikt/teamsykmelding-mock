@@ -12,6 +12,12 @@ import no.nav.helse.msgHead.XMLOrganisation
 import no.nav.helse.msgHead.XMLReceiver
 import no.nav.helse.msgHead.XMLRefDoc
 import no.nav.helse.msgHead.XMLSender
+import no.nav.helse.papirsykemelding.AktivitetType
+import no.nav.helse.papirsykemelding.ArbeidsgiverType
+import no.nav.helse.papirsykemelding.MedisinskVurderingType
+import no.nav.helse.papirsykemelding.PrognoseType
+import no.nav.helse.papirsykemelding.Skanningmetadata
+import no.nav.helse.papirsykemelding.UtdypendeOpplysningerType
 import no.nav.helse.sm2013.Address
 import no.nav.helse.sm2013.ArsakType
 import no.nav.helse.sm2013.CS
@@ -22,12 +28,6 @@ import no.nav.helse.sm2013.Ident
 import no.nav.helse.sm2013.NavnType
 import no.nav.helse.sm2013.TeleCom
 import no.nav.helse.sm2013.URL
-import no.nav.helse.sykSkanningMeta.AktivitetType
-import no.nav.helse.sykSkanningMeta.ArbeidsgiverType
-import no.nav.helse.sykSkanningMeta.MedisinskVurderingType
-import no.nav.helse.sykSkanningMeta.PrognoseType
-import no.nav.helse.sykSkanningMeta.Skanningmetadata
-import no.nav.helse.sykSkanningMeta.UtdypendeOpplysningerType
 import no.nav.syfo.log
 import no.nav.syfo.sm.Diagnosekoder
 import java.time.LocalDate

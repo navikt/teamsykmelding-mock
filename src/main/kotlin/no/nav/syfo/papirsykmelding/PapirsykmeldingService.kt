@@ -2,16 +2,16 @@ package no.nav.syfo.papirsykmelding
 
 import com.migesok.jaxb.adapter.javatime.LocalDateXmlAdapter
 import no.nav.helse.msgHead.XMLMsgHead
+import no.nav.helse.papirsykemelding.AktivitetIkkeMuligType
+import no.nav.helse.papirsykemelding.AktivitetType
+import no.nav.helse.papirsykemelding.AvventendeSykmeldingType
+import no.nav.helse.papirsykemelding.BehandlingsdagerType
+import no.nav.helse.papirsykemelding.GradertSykmeldingType
+import no.nav.helse.papirsykemelding.HovedDiagnoseType
+import no.nav.helse.papirsykemelding.KontaktMedPasientType
+import no.nav.helse.papirsykemelding.ReisetilskuddType
+import no.nav.helse.papirsykemelding.Skanningmetadata
 import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
-import no.nav.helse.sykSkanningMeta.AktivitetIkkeMuligType
-import no.nav.helse.sykSkanningMeta.AktivitetType
-import no.nav.helse.sykSkanningMeta.AvventendeSykmeldingType
-import no.nav.helse.sykSkanningMeta.BehandlingsdagerType
-import no.nav.helse.sykSkanningMeta.GradertSykmeldingType
-import no.nav.helse.sykSkanningMeta.HovedDiagnoseType
-import no.nav.helse.sykSkanningMeta.KontaktMedPasientType
-import no.nav.helse.sykSkanningMeta.ReisetilskuddType
-import no.nav.helse.sykSkanningMeta.Skanningmetadata
 import no.nav.syfo.log
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.SykmeldingPeriode
