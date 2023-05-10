@@ -86,7 +86,7 @@ fun opprettUtenlandskNavNoJournalpost(
                 tittel = "Egenerklæring for utenlandske sykemeldinger-$it",
             )
         },
-        kanal = "Nav.no",
+        kanal = "NAV_NO",
         tema = "SYK",
         tittel = "Egenerklæring for utenlandske sykemeldinger"
     )
