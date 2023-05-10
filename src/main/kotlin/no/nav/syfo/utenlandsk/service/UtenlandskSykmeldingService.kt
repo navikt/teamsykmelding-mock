@@ -6,6 +6,7 @@ import no.nav.syfo.oppgave.OpprettOppgave
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.opprettUtenlandskJournalpost
+import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingRequest
 import java.time.LocalDate
 
@@ -39,6 +40,34 @@ class UtenlandskSykmeldingService(
             journalpostId = journalpostId,
             metadata = mapOf("RINA_SAKID" to "1234"),
             personident = utenlandskSykmeldingRequest.fnr,
+        )
+
+        val opprettOppgaveResponse = oppgaveClient.opprettOppgave(opprettOppgave)
+        log.info("Oppgave id: ${opprettOppgaveResponse.id}")
+    }
+
+    suspend fun opprettUtenlanskNavNo(utenlandskSykmeldingNavNoRequest: UtenlandskSykmeldingNavNoRequest) {
+        val journalpostId = dokarkivClient.opprettJournalpost(
+            opprettUtenlandskJournalpost(
+                fnr = utenlandskSykmeldingNavNoRequest.fnr,
+                pdf = utenlandskPdf,
+                antallPdfs = 1,
+            ),
+        )
+        log.info("Opprettet journalpost med journalPostId $journalpostId")
+        val opprettOppgave = OpprettOppgave(
+            opprettetAvEnhetsnr = "9999",
+            behandlesAvApplikasjon = null,
+            beskrivelse = "Egenerklæring for utenlandske sykemeldinger",
+            tema = "SYK",
+            behandlingsTema = null,
+            oppgavetype = "JFR",
+            behandlingstype = "ae0106",
+            aktivDato = LocalDate.now(),
+            fristFerdigstillelse = LocalDate.now().plusDays(3),
+            prioritet = "HOY",
+            journalpostId = journalpostId,
+            personident = utenlandskSykmeldingNavNoRequest.fnr,
         )
 
         val opprettOppgaveResponse = oppgaveClient.opprettOppgave(opprettOppgave)

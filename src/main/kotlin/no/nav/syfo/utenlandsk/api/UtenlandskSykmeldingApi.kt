@@ -7,6 +7,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import no.nav.syfo.log
+import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingRequest
 import no.nav.syfo.utenlandsk.opprettJournalpostservice.UtenlandskSykmeldingService
 
@@ -20,6 +21,16 @@ fun Route.registrerUtenlandskPapirsykmeldingApi(utenlandskSykeldingService: Uten
                 utenlandskSykeldingService.opprettUtenlanskPdf(request)
                 call.respond(HttpStatusCode.OK)
             }
+        } catch (e: Exception) {
+            log.error("Exception", e)
+            call.respond(HttpStatusCode.InternalServerError)
+        }
+    }
+    post("/utenlands/nav/opprett") {
+        val request = call.receive<UtenlandskSykmeldingNavNoRequest>()
+        try {
+            utenlandskSykeldingService.opprettUtenlanskNavNo(request)
+            call.respond(HttpStatusCode.OK)
         } catch (e: Exception) {
             log.error("Exception", e)
             call.respond(HttpStatusCode.InternalServerError)
