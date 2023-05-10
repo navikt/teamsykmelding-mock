@@ -9,6 +9,7 @@ import no.nav.syfo.papirsykmelding.client.opprettUtenlandskJournalpost
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingRequest
 import java.time.LocalDate
+import no.nav.syfo.papirsykmelding.client.opprettUtenlandskNavNoJournalpost
 
 class UtenlandskSykmeldingService(
     private val dokarkivClient: DokarkivClient,
@@ -48,10 +49,9 @@ class UtenlandskSykmeldingService(
 
     suspend fun opprettUtenlanskNavNo(utenlandskSykmeldingNavNoRequest: UtenlandskSykmeldingNavNoRequest) {
         val journalpostId = dokarkivClient.opprettJournalpost(
-            opprettUtenlandskJournalpost(
+            opprettUtenlandskNavNoJournalpost(
                 fnr = utenlandskSykmeldingNavNoRequest.fnr,
                 pdf = utenlandskPdf,
-                antallPdfs = 1,
             ),
         )
         log.info("Opprettet journalpost med journalPostId $journalpostId")

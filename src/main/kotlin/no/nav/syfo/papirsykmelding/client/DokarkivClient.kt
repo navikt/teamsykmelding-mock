@@ -67,6 +67,31 @@ fun opprettUtenlandskJournalpost(
     )
 }
 
+fun opprettUtenlandskNavNoJournalpost(
+    fnr: String,
+    pdf: String,
+): JournalpostRequest {
+    return JournalpostRequest(
+        bruker = Bruker(id = fnr),
+        dokumenter = (0 until 1).map {
+            Dokument(
+                dokumentvarianter = mutableListOf(
+                    Dokumentvarianter(
+                        filnavn = "pdf-sykmelding-$it",
+                        filtype = "PDFA",
+                        variantformat = "ARKIV",
+                        fysiskDokument = pdf,
+                    ),
+                ),
+                tittel = "Egenerklæring for utenlandske sykemeldinger-$it",
+            )
+        },
+        kanal = "Nav.no",
+        tema = "SYK",
+        tittel = "Egenerklæring for utenlandske sykemeldinger"
+    )
+}
+
 fun opprettJournalpostPayload(
     fnr: String,
     ocr: String?,
