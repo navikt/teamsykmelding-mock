@@ -20,7 +20,7 @@ fun Route.registrerUtenlandskPapirsykmeldingApi(utenlandskSykeldingService: Uten
                 call.respond(HttpStatusCode.BadRequest, "antallPdfs cannot be > 10")
             } else {
                 val journalpostId = utenlandskSykeldingService.opprettUtenlanskPdf(request)
-                call.respond(HttpStatusCode.OK, HttpMessage("Opprettet utenlandsk papirsykmelding fra nav.no med journalpostId $journalpostId"))
+                call.respond(HttpStatusCode.OK, HttpMessage("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId"))
             }
         } catch (exception: Exception) {
             log.error("Exception", exception)
