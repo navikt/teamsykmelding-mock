@@ -88,7 +88,7 @@ fun opprettUtenlandskNavNoJournalpost(
         },
         kanal = "NAV_NO",
         tema = "SYK",
-        tittel = "Egenerklæring for utenlandske sykemeldinger"
+        tittel = "Egenerklæring for utenlandske sykemeldinger",
     )
 }
 

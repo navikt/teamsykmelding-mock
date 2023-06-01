@@ -6,10 +6,10 @@ import no.nav.syfo.oppgave.OpprettOppgave
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.opprettUtenlandskJournalpost
+import no.nav.syfo.papirsykmelding.client.opprettUtenlandskNavNoJournalpost
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingRequest
 import java.time.LocalDate
-import no.nav.syfo.papirsykmelding.client.opprettUtenlandskNavNoJournalpost
 
 class UtenlandskSykmeldingService(
     private val dokarkivClient: DokarkivClient,
