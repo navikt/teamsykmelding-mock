@@ -50,12 +50,13 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 val log: Logger = LoggerFactory.getLogger("no.nav.syfo.teamsykmelding-mock-backend")
-val objectMapper: ObjectMapper = ObjectMapper().apply {
-    registerKotlinModule()
-    registerModule(JavaTimeModule())
-    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-}
+val objectMapper: ObjectMapper =
+    ObjectMapper().apply {
+        registerKotlinModule()
+        registerModule(JavaTimeModule())
+        configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+    }
 
 fun main() {
     val env = Environment()
@@ -63,10 +64,13 @@ fun main() {
     DefaultExports.initialize()
     val applicationState = ApplicationState()
 
-    val connection = connectionFactory(env).apply {
-        sslSocketFactory = null
-        sslCipherSuite = null
-    }.createConnection(serviceUser.username, serviceUser.password)
+    val connection =
+        connectionFactory(env)
+            .apply {
+                sslSocketFactory = null
+                sslCipherSuite = null
+            }
+            .createConnection(serviceUser.username, serviceUser.password)
     connection.start()
 
     val config: HttpClientConfig<ApacheEngineConfig>.() -> Unit = {
@@ -81,7 +85,8 @@ fun main() {
         HttpResponseValidator {
             handleResponseExceptionWithRequest { exception, _ ->
                 when (exception) {
-                    is SocketTimeoutException -> throw ServiceUnavailableException(exception.message)
+                    is SocketTimeoutException ->
+                        throw ServiceUnavailableException(exception.message)
                 }
             }
         }
@@ -93,7 +98,9 @@ fun main() {
             }
             retryIf(maxRetries) { request, response ->
                 if (response.status.value.let { it in 500..599 }) {
-                    log.warn("Retrying for statuscode ${response.status.value}, for url ${request.url}")
+                    log.warn(
+                        "Retrying for statuscode ${response.status.value}, for url ${request.url}"
+                    )
                     true
                 } else {
                     false
@@ -108,88 +115,121 @@ fun main() {
     }
     val httpClient = HttpClient(Apache, config)
 
-    val accessTokenClient = AccessTokenClient(env.aadAccessTokenUrl, env.clientId, env.clientSecret, httpClient)
-    val pdlClient = PdlClient(
-        httpClient,
-        env.pdlGraphqlPath,
-        PdlClient::class.java.getResource("/graphql/getPerson.graphql")!!.readText().replace(Regex("[\n\t]"), ""),
-    )
+    val accessTokenClient =
+        AccessTokenClient(env.aadAccessTokenUrl, env.clientId, env.clientSecret, httpClient)
+    val pdlClient =
+        PdlClient(
+            httpClient,
+            env.pdlGraphqlPath,
+            PdlClient::class
+                .java
+                .getResource("/graphql/getPerson.graphql")!!
+                .readText()
+                .replace(Regex("[\n\t]"), ""),
+        )
     val pdlPersonService = PdlPersonService(pdlClient, accessTokenClient, env.pdlScope)
 
-    val dokarkivClient = DokarkivClient(
-        url = env.dokarkivUrl,
-        accessTokenClient = accessTokenClient,
-        scope = env.dokarkivScope,
-        httpClient = httpClient,
-    )
+    val dokarkivClient =
+        DokarkivClient(
+            url = env.dokarkivUrl,
+            accessTokenClient = accessTokenClient,
+            scope = env.dokarkivScope,
+            httpClient = httpClient,
+        )
 
-    val syfosmregisterClient = SyfosmregisterClient(
-        syfosmregisterUrl = env.syfosmregisterUrl,
-        accessTokenClient = accessTokenClient,
-        syfosmregisterScope = env.syfosmregisterScope,
-        httpClient = httpClient,
-    )
+    val syfosmregisterClient =
+        SyfosmregisterClient(
+            syfosmregisterUrl = env.syfosmregisterUrl,
+            accessTokenClient = accessTokenClient,
+            syfosmregisterScope = env.syfosmregisterScope,
+            httpClient = httpClient,
+        )
 
-    val syfosmreglerClient = SyfosmreglerClient(
-        syfosmreglerUrl = env.syfosmreglerUrl,
-        accessTokenClient = accessTokenClient,
-        syfosmreglerScope = env.syfosmreglerScope,
-        httpClient = httpClient,
-    )
+    val syfosmreglerClient =
+        SyfosmreglerClient(
+            syfosmreglerUrl = env.syfosmreglerUrl,
+            accessTokenClient = accessTokenClient,
+            syfosmreglerScope = env.syfosmreglerScope,
+            httpClient = httpClient,
+        )
 
-    val syfosmpapirreglerClient = SyfosmpapirreglerClient(
-        syfosmpapirreglerUrl = env.syfosmpapirreglerUrl,
-        accessTokenClient = accessTokenClient,
-        syfosmpapirreglerScope = env.syfosmpapirreglerScope,
-        httpClient = httpClient,
-    )
+    val syfosmpapirreglerClient =
+        SyfosmpapirreglerClient(
+            syfosmpapirreglerUrl = env.syfosmpapirreglerUrl,
+            accessTokenClient = accessTokenClient,
+            syfosmpapirreglerScope = env.syfosmpapirreglerScope,
+            httpClient = httpClient,
+        )
 
-    val norskHelsenettClient = NorskHelsenettClient(
-        norskHelsenettUrl = env.norskHelsenettUrl,
-        accessTokenClient = accessTokenClient,
-        norskHelsenettScope = env.norskHelsenettScope,
-        httpClient = httpClient,
-    )
+    val norskHelsenettClient =
+        NorskHelsenettClient(
+            norskHelsenettUrl = env.norskHelsenettUrl,
+            accessTokenClient = accessTokenClient,
+            norskHelsenettScope = env.norskHelsenettScope,
+            httpClient = httpClient,
+        )
 
-    val oppgaveClient = OppgaveClient(
-        url = env.oppgaveUrl,
-        accessTokenClient = accessTokenClient,
-        scope = env.oppgaveScope,
-        httpClient = httpClient,
-    )
+    val oppgaveClient =
+        OppgaveClient(
+            url = env.oppgaveUrl,
+            accessTokenClient = accessTokenClient,
+            scope = env.oppgaveScope,
+            httpClient = httpClient,
+        )
 
-    val producerProperties = KafkaUtils
-        .getAivenKafkaConfig()
-        .toProducerConfig("${env.applicationName}-producer", JacksonKafkaSerializer::class, StringSerializer::class)
+    val producerProperties =
+        KafkaUtils.getAivenKafkaConfig()
+            .toProducerConfig(
+                "${env.applicationName}-producer",
+                JacksonKafkaSerializer::class,
+                StringSerializer::class
+            )
 
     val kafkaProducer = KafkaProducer<String, NlResponseKafkaMessage>(producerProperties)
     val nlResponseKafkaProducer = NlResponseProducer(kafkaProducer, env.narmestelederTopic)
 
-    val tombstoneProducer = KafkaProducer<String, Any?>(
-        KafkaUtils
-            .getAivenKafkaConfig()
-            .toProducerConfig("${env.applicationName}-tombstone-producer", JacksonNullableKafkaSerializer::class),
-    )
-    val tombstoneKafkaProducer = TombstoneKafkaProducer(tombstoneProducer, listOf(env.papirSmRegistreringTopic, env.manuellTopic))
-    val sykmeldingStatusKafkaProducer = SykmeldingStatusKafkaProducer(KafkaProducer(producerProperties), env.sykmeldingStatusTopic)
+    val tombstoneProducer =
+        KafkaProducer<String, Any?>(
+            KafkaUtils.getAivenKafkaConfig()
+                .toProducerConfig(
+                    "${env.applicationName}-tombstone-producer",
+                    JacksonNullableKafkaSerializer::class
+                ),
+        )
+    val tombstoneKafkaProducer =
+        TombstoneKafkaProducer(
+            tombstoneProducer,
+            listOf(env.papirSmRegistreringTopic, env.manuellTopic)
+        )
+    val sykmeldingStatusKafkaProducer =
+        SykmeldingStatusKafkaProducer(KafkaProducer(producerProperties), env.sykmeldingStatusTopic)
 
     val narmestelederService = NarmestelederService(nlResponseKafkaProducer, pdlPersonService)
-    val slettSykmeldingService = SlettSykmeldingService(syfosmregisterClient, sykmeldingStatusKafkaProducer, tombstoneKafkaProducer)
-    val sykmeldingService = SykmeldingService(pdlPersonService, connection, env.sykmeldingQueue, syfosmreglerClient)
-    val legeerklaeringService = LegeerklaeringService(pdlPersonService, connection, env.legeerklaeringQueue)
-    val papirsykmeldingService = PapirsykmeldingService(dokarkivClient, syfosmpapirreglerClient, norskHelsenettClient)
+    val slettSykmeldingService =
+        SlettSykmeldingService(
+            syfosmregisterClient,
+            sykmeldingStatusKafkaProducer,
+            tombstoneKafkaProducer
+        )
+    val sykmeldingService =
+        SykmeldingService(pdlPersonService, connection, env.sykmeldingQueue, syfosmreglerClient)
+    val legeerklaeringService =
+        LegeerklaeringService(pdlPersonService, connection, env.legeerklaeringQueue)
+    val papirsykmeldingService =
+        PapirsykmeldingService(dokarkivClient, syfosmpapirreglerClient, norskHelsenettClient)
     val utenlandskSykmeldingService = UtenlandskSykmeldingService(dokarkivClient, oppgaveClient)
 
-    val applicationEngine = createApplicationEngine(
-        env,
-        applicationState,
-        narmestelederService,
-        sykmeldingService,
-        slettSykmeldingService,
-        legeerklaeringService,
-        papirsykmeldingService,
-        utenlandskSykmeldingService,
-    )
+    val applicationEngine =
+        createApplicationEngine(
+            env,
+            applicationState,
+            narmestelederService,
+            sykmeldingService,
+            slettSykmeldingService,
+            legeerklaeringService,
+            papirsykmeldingService,
+            utenlandskSykmeldingService,
+        )
     val applicationServer = ApplicationServer(applicationEngine, applicationState)
     applicationServer.start()
 }

@@ -13,12 +13,18 @@ import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 
-fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykmeldingService: SlettSykmeldingService) {
+fun Route.registrerSykmeldingApi(
+    sykmeldingService: SykmeldingService,
+    slettSykmeldingService: SlettSykmeldingService
+) {
     post("/sykmelding/opprett") {
         val request = call.receive<SykmeldingRequest>()
 
         if (request.fnr.length != 11) {
-            call.respond(HttpStatusCode.BadRequest, HttpMessage("request.fnr har feil lengde, er ${request.fnr.length}"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                HttpMessage("request.fnr har feil lengde, er ${request.fnr.length}")
+            )
             return@post
         }
 
@@ -41,7 +47,10 @@ fun Route.registrerSykmeldingApi(sykmeldingService: SykmeldingService, slettSykm
         log.info("going to delete sykmeldinger")
         val fnr = call.request.headers["Sykmeldt-Fnr"]
         if (fnr == null || fnr.length != 11) {
-            call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde")
+            )
             return@delete
         }
         val antallSlettede = slettSykmeldingService.slettAlleSykmeldinger(fnr = fnr)

@@ -26,9 +26,7 @@ fun withKtor(build: Route.() -> Unit, block: TestApplicationEngine.() -> Unit) {
                 configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             }
         }
-        application.routing {
-            build()
-        }
+        application.routing { build() }
 
         block(this)
     }

@@ -1,5 +1,11 @@
 package no.nav.syfo.legeerklaering
 
+import java.io.StringReader
+import java.math.BigInteger
+import java.time.LocalDate
+import java.util.UUID
+import javax.jms.Connection
+import javax.jms.Session
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.legeerklaering.Arbeidsforhold
@@ -28,12 +34,6 @@ import no.nav.syfo.sykmelding.convertToXmlGregorianCalendar
 import no.nav.syfo.util.get
 import no.nav.syfo.util.legeerklaeringUnmarshaller
 import no.nav.syfo.util.marshallLegeerklaering
-import java.io.StringReader
-import java.math.BigInteger
-import java.time.LocalDate
-import java.util.UUID
-import javax.jms.Connection
-import javax.jms.Session
 
 class LegeerklaeringService(
     private val pdlPersonService: PdlPersonService,
@@ -54,18 +54,36 @@ class LegeerklaeringService(
         return mottakId
     }
 
-    suspend fun tilLegeerklaeringXml(legeerklaeringRequest: LegeerklaeringRequest, mottakId: String): XMLEIFellesformat {
-        val legeerklaeringXml = if (legeerklaeringRequest.vedlegg) {
-            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering_med_vedlegg.xml")!!.readText(charset = Charsets.ISO_8859_1)
-        } else if (legeerklaeringRequest.vedleggMedVirus) {
-            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering_med_vedlegg_virus.xml")!!.readText(charset = Charsets.ISO_8859_1)
-        } else {
-            LegeerklaeringService::class.java.getResource("/legeerklaering/legeerklaering.xml")!!.readText(charset = Charsets.ISO_8859_1)
-        }
+    suspend fun tilLegeerklaeringXml(
+        legeerklaeringRequest: LegeerklaeringRequest,
+        mottakId: String
+    ): XMLEIFellesformat {
+        val legeerklaeringXml =
+            if (legeerklaeringRequest.vedlegg) {
+                LegeerklaeringService::class
+                    .java
+                    .getResource("/legeerklaering/legeerklaering_med_vedlegg.xml")!!
+                    .readText(charset = Charsets.ISO_8859_1)
+            } else if (legeerklaeringRequest.vedleggMedVirus) {
+                LegeerklaeringService::class
+                    .java
+                    .getResource("/legeerklaering/legeerklaering_med_vedlegg_virus.xml")!!
+                    .readText(charset = Charsets.ISO_8859_1)
+            } else {
+                LegeerklaeringService::class
+                    .java
+                    .getResource("/legeerklaering/legeerklaering.xml")!!
+                    .readText(charset = Charsets.ISO_8859_1)
+            }
 
-        val fellesformat = legeerklaeringUnmarshaller.unmarshal(StringReader(legeerklaeringXml)) as XMLEIFellesformat
+        val fellesformat =
+            legeerklaeringUnmarshaller.unmarshal(StringReader(legeerklaeringXml))
+                as XMLEIFellesformat
 
-        val personer = pdlPersonService.getPersoner(listOf(legeerklaeringRequest.fnr, legeerklaeringRequest.fnrLege))
+        val personer =
+            pdlPersonService.getPersoner(
+                listOf(legeerklaeringRequest.fnr, legeerklaeringRequest.fnrLege)
+            )
         val pasient = personer[legeerklaeringRequest.fnr]
         val lege = personer[legeerklaeringRequest.fnrLege]
 
@@ -74,74 +92,95 @@ class LegeerklaeringService(
             throw RuntimeException("Fant ikke pasient eller lege i PDL")
         }
 
-        val legeerklaering = fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] as Legeerklaring
-        legeerklaering.arsakssammenhengLegeerklaring = "Vedkommende har vært syk lenge, duplikatbuster: ${UUID.randomUUID()}"
-        legeerklaering.diagnoseArbeidsuforhet = diagnoseArbeidsuforhet(legeerklaeringRequest.diagnosekode, legeerklaeringRequest.statusPresens)
+        val legeerklaering =
+            fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] as Legeerklaring
+        legeerklaering.arsakssammenhengLegeerklaring =
+            "Vedkommende har vært syk lenge, duplikatbuster: ${UUID.randomUUID()}"
+        legeerklaering.diagnoseArbeidsuforhet =
+            diagnoseArbeidsuforhet(
+                legeerklaeringRequest.diagnosekode,
+                legeerklaeringRequest.statusPresens
+            )
         legeerklaering.pasientopplysninger = pasientopplysninger(legeerklaeringRequest.fnr, pasient)
 
         fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] = legeerklaering
         fellesformat.get<XMLMsgHead>().msgInfo.msgId = UUID.randomUUID().toString()
-        fellesformat.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional = opprettHealthcareProfessional(legeerklaeringRequest.fnrLege, lege)
+        fellesformat.get<XMLMsgHead>().msgInfo.sender.organisation.healthcareProfessional =
+            opprettHealthcareProfessional(legeerklaeringRequest.fnrLege, lege)
         fellesformat.get<XMLMottakenhetBlokk>().ediLoggId = mottakId
-        fellesformat.get<XMLMottakenhetBlokk>().mottattDatotid = convertToXmlGregorianCalendar(LocalDate.now())
-        fellesformat.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur = legeerklaeringRequest.fnrLege
+        fellesformat.get<XMLMottakenhetBlokk>().mottattDatotid =
+            convertToXmlGregorianCalendar(LocalDate.now())
+        fellesformat.get<XMLMottakenhetBlokk>().avsenderFnrFraDigSignatur =
+            legeerklaeringRequest.fnrLege
         return fellesformat
     }
 
-    private fun diagnoseArbeidsuforhet(diagnosekode: String, statuspresens: String?): DiagnoseArbeidsuforhet {
+    private fun diagnoseArbeidsuforhet(
+        diagnosekode: String,
+        statuspresens: String?
+    ): DiagnoseArbeidsuforhet {
         return DiagnoseArbeidsuforhet().apply {
-            diagnoseKodesystem = DiagnoseKodesystem().apply {
-                kodesystem = BigInteger.valueOf(1)
-                enkeltdiagnose.add(
-                    Enkeltdiagnose().apply {
-                        diagnose = "Vondt i skulder"
-                        kodeverdi = diagnosekode
-                        sortering = BigInteger.valueOf(0)
-                    },
-                )
-            }
+            diagnoseKodesystem =
+                DiagnoseKodesystem().apply {
+                    kodesystem = BigInteger.valueOf(1)
+                    enkeltdiagnose.add(
+                        Enkeltdiagnose().apply {
+                            diagnose = "Vondt i skulder"
+                            kodeverdi = diagnosekode
+                            sortering = BigInteger.valueOf(0)
+                        },
+                    )
+                }
             symptomerBehandling = "Får vondt av behandlingen"
             statusPresens = statuspresens
-            vurderingYrkesskade = VurderingYrkesskade().apply {
-                borVurderes = BigInteger.valueOf(1)
-                skadeDato = convertToXmlGregorianCalendar(LocalDate.now())
-            }
+            vurderingYrkesskade =
+                VurderingYrkesskade().apply {
+                    borVurderes = BigInteger.valueOf(1)
+                    skadeDato = convertToXmlGregorianCalendar(LocalDate.now())
+                }
         }
     }
 
     private fun pasientopplysninger(pasientfnr: String, pdlPerson: PdlPerson): Pasientopplysninger {
         return Pasientopplysninger().apply {
-            pasient = Pasient().apply {
-                fodselsnummer = pasientfnr
-                navn = TypeNavn().apply {
-                    fornavn = pdlPerson.navn.fornavn
-                    etternavn = pdlPerson.navn.etternavn
-                }
-                arbeidsforhold = Arbeidsforhold().apply {
-                    primartArbeidsforhold = BigInteger.valueOf(1)
-                    virksomhet = Virksomhet().apply {
-                        organisasjonsnummer = "133144"
-                        virksomhetsBetegnelse = "NAV IKT"
-                        virksomhetsAdr = TypeAdresse().apply {
-                            adressetype = TypeAdressetype.ABC
+            pasient =
+                Pasient().apply {
+                    fodselsnummer = pasientfnr
+                    navn =
+                        TypeNavn().apply {
+                            fornavn = pdlPerson.navn.fornavn
+                            etternavn = pdlPerson.navn.etternavn
                         }
-                    }
-                    yrkeskode = "Utvikler"
+                    arbeidsforhold =
+                        Arbeidsforhold().apply {
+                            primartArbeidsforhold = BigInteger.valueOf(1)
+                            virksomhet =
+                                Virksomhet().apply {
+                                    organisasjonsnummer = "133144"
+                                    virksomhetsBetegnelse = "NAV IKT"
+                                    virksomhetsAdr =
+                                        TypeAdresse().apply { adressetype = TypeAdressetype.ABC }
+                                }
+                            yrkeskode = "Utvikler"
+                        }
                 }
-            }
         }
     }
 
-    private fun opprettHealthcareProfessional(legeFnr: String, pdlPerson: PdlPerson): XMLHealthcareProfessional {
+    private fun opprettHealthcareProfessional(
+        legeFnr: String,
+        pdlPerson: PdlPerson
+    ): XMLHealthcareProfessional {
         return XMLHealthcareProfessional().apply {
             ident.add(
                 XMLIdent().apply {
                     id = legeFnr
-                    typeId = XMLCV().apply {
-                        v = "FNR"
-                        s = "6.87.654.3.21.9.8.7.6543.2198"
-                        dn = "Fødselsnummer"
-                    }
+                    typeId =
+                        XMLCV().apply {
+                            v = "FNR"
+                            s = "6.87.654.3.21.9.8.7.6543.2198"
+                            dn = "Fødselsnummer"
+                        }
                 },
             )
             familyName = pdlPerson.navn.etternavn

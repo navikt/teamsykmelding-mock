@@ -12,7 +12,9 @@ import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingRequest
 import no.nav.syfo.utenlandsk.opprettJournalpostservice.UtenlandskSykmeldingService
 
-fun Route.registrerUtenlandskPapirsykmeldingApi(utenlandskSykeldingService: UtenlandskSykmeldingService) {
+fun Route.registrerUtenlandskPapirsykmeldingApi(
+    utenlandskSykeldingService: UtenlandskSykmeldingService
+) {
     post("/utenlands/opprett") {
         val request = call.receive<UtenlandskSykmeldingRequest>()
         try {
@@ -20,21 +22,37 @@ fun Route.registrerUtenlandskPapirsykmeldingApi(utenlandskSykeldingService: Uten
                 call.respond(HttpStatusCode.BadRequest, "antallPdfs cannot be > 10")
             } else {
                 val journalpostId = utenlandskSykeldingService.opprettUtenlanskPdf(request)
-                call.respond(HttpStatusCode.OK, HttpMessage("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId"))
+                call.respond(
+                    HttpStatusCode.OK,
+                    HttpMessage(
+                        "Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId"
+                    )
+                )
             }
         } catch (exception: Exception) {
             log.error("Exception", exception)
-            call.respond(HttpStatusCode.InternalServerError, HttpMessage(exception.message ?: "Unknown error"))
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                HttpMessage(exception.message ?: "Unknown error")
+            )
         }
     }
     post("/utenlands/nav/opprett") {
         val request = call.receive<UtenlandskSykmeldingNavNoRequest>()
         try {
             val journalpostId = utenlandskSykeldingService.opprettUtenlanskNavNo(request)
-            call.respond(HttpStatusCode.OK, HttpMessage("Opprettet utenlandsk papirsykmelding fra nav.no med journalpostId $journalpostId"))
+            call.respond(
+                HttpStatusCode.OK,
+                HttpMessage(
+                    "Opprettet utenlandsk papirsykmelding fra nav.no med journalpostId $journalpostId"
+                )
+            )
         } catch (exception: Exception) {
             log.error("Exception", exception)
-            call.respond(HttpStatusCode.InternalServerError, HttpMessage(exception.message ?: "Unknown error"))
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                HttpMessage(exception.message ?: "Unknown error")
+            )
         }
     }
 }

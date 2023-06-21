@@ -9,9 +9,9 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import java.time.LocalDate
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.log
-import java.time.LocalDate
 
 class OppgaveClient(
     private val url: String,
@@ -21,18 +21,21 @@ class OppgaveClient(
 ) {
     suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
         log.info("oppretter oppgave for ${opprettOppgave.journalpostId}")
-        val response = httpClient.post(url) {
-            contentType(ContentType.Application.Json)
-            val token = accessTokenClient.getAccessToken(scope)
-            log.info("got token for opprett oppgave")
-            header("Authorization", "Bearer $token")
-            header("X-Correlation-ID", opprettOppgave.journalpostId)
-            setBody(opprettOppgave)
-        }
+        val response =
+            httpClient.post(url) {
+                contentType(ContentType.Application.Json)
+                val token = accessTokenClient.getAccessToken(scope)
+                log.info("got token for opprett oppgave")
+                header("Authorization", "Bearer $token")
+                header("X-Correlation-ID", opprettOppgave.journalpostId)
+                setBody(opprettOppgave)
+            }
         if (response.status == HttpStatusCode.Created) {
             return response.body()
         } else {
-            throw RuntimeException("Noe gikk galt ved oppretting av oppgave for journalpostId ${opprettOppgave.journalpostId}: ${response.status}, ${response.bodyAsText()}")
+            throw RuntimeException(
+                "Noe gikk galt ved oppretting av oppgave for journalpostId ${opprettOppgave.journalpostId}: ${response.status}, ${response.bodyAsText()}"
+            )
         }
     }
 }
@@ -56,6 +59,7 @@ data class OpprettOppgave(
     val metadata: Map<String, String?> = emptyMap(),
     val personident: String,
 )
+
 data class OpprettOppgaveResponse(
     val id: Int,
     val versjon: Int,

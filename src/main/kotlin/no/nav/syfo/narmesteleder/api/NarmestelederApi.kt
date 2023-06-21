@@ -7,17 +7,19 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
+import java.time.LocalDate
 import no.nav.syfo.application.HttpMessage
 import no.nav.syfo.log
 import no.nav.syfo.narmesteleder.NarmestelederService
-import java.time.LocalDate
 
 fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) {
     post("/narmesteleder/opprett") {
         val request = call.receive<OpprettNarmestelederRequest>()
 
-        if (request.ansattFnr.trim { it <= ' ' }.length == 11 && request.lederFnr.trim { it <= ' ' }.length == 11 &&
-            request.orgnummer.trim { it <= ' ' }.length == 9
+        if (
+            request.ansattFnr.trim { it <= ' ' }.length == 11 &&
+                request.lederFnr.trim { it <= ' ' }.length == 11 &&
+                request.orgnummer.trim { it <= ' ' }.length == 9
         ) {
             narmestelederService.registrerNarmesteleder(
                 request.copy(
@@ -29,7 +31,10 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
             log.info("Opprettet nærmesteleder-kobling")
             call.respond(HttpStatusCode.OK, HttpMessage("Nærmeste leder er registrert"))
         } else {
-            call.respond(HttpStatusCode.BadRequest, HttpMessage("Feil lengde på fødselsnummer eller orgnummer"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                HttpMessage("Feil lengde på fødselsnummer eller orgnummer")
+            )
         }
     }
     delete("/narmesteleder/{orgnummer}") {

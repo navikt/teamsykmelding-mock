@@ -14,7 +14,10 @@ class TombstoneKafkaProducer(
                 tombstoneProducer.send(ProducerRecord(topic, sykmeldingId, null)).get()
             }
         } catch (e: Exception) {
-            log.error("Kunne ikke skrive tombstone til topic for sykmeldingid $sykmeldingId: {}", e.message)
+            log.error(
+                "Kunne ikke skrive tombstone til topic for sykmeldingid $sykmeldingId: {}",
+                e.message
+            )
             throw e
         }
     }

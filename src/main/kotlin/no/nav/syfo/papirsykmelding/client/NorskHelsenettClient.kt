@@ -9,10 +9,10 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.NotFound
-import no.nav.syfo.azuread.AccessTokenClient
-import no.nav.syfo.log
 import java.io.IOException
 import java.util.UUID
+import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.log
 
 class NorskHelsenettClient(
     private val norskHelsenettUrl: String,
@@ -22,15 +22,16 @@ class NorskHelsenettClient(
 ) {
 
     suspend fun finnBehandlerFnr(hprNummer: String): String? {
-        val httpResponse: HttpResponse = httpClient.get("$norskHelsenettUrl/api/v2/behandlerMedHprNummer") {
-            accept(ContentType.Application.Json)
-            val accessToken = accessTokenClient.getAccessToken(norskHelsenettScope)
-            headers {
-                append("Authorization", "Bearer $accessToken")
-                append("Nav-CallId", UUID.randomUUID().toString())
-                append("hprNummer", hprNummer)
+        val httpResponse: HttpResponse =
+            httpClient.get("$norskHelsenettUrl/api/v2/behandlerMedHprNummer") {
+                accept(ContentType.Application.Json)
+                val accessToken = accessTokenClient.getAccessToken(norskHelsenettScope)
+                headers {
+                    append("Authorization", "Bearer $accessToken")
+                    append("Nav-CallId", UUID.randomUUID().toString())
+                    append("hprNummer", hprNummer)
+                }
             }
-        }
         return when (httpResponse.status) {
             HttpStatusCode.InternalServerError -> {
                 log.error("Syfohelsenettproxy svarte med feilmelding")

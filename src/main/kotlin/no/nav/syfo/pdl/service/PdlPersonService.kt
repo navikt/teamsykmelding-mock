@@ -19,10 +19,17 @@ class PdlPersonService(
         if (pdlResponse.errors != null) {
             pdlResponse.errors.forEach {
                 log.error("PDL returnerte feilmelding: ${it.message}, ${it.extensions?.code}")
-                it.extensions?.details?.let { details -> log.error("Type: ${details.type}, cause: ${details.cause}, policy: ${details.policy}") }
+                it.extensions?.details?.let { details ->
+                    log.error(
+                        "Type: ${details.type}, cause: ${details.cause}, policy: ${details.policy}"
+                    )
+                }
             }
         }
-        if (pdlResponse.data.hentPersonBolk == null || pdlResponse.data.hentPersonBolk.isNullOrEmpty()) {
+        if (
+            pdlResponse.data.hentPersonBolk == null ||
+                pdlResponse.data.hentPersonBolk.isNullOrEmpty()
+        ) {
             log.error("Fant ikke identer i PDL")
             throw IllegalStateException("Fant ingen identer i PDL!")
         }
@@ -44,5 +51,9 @@ class PdlPersonService(
     }
 
     private fun getNavn(navn: no.nav.syfo.pdl.client.model.Navn?): Navn =
-        Navn(fornavn = navn?.fornavn ?: "Fornavn", mellomnavn = navn?.mellomnavn, etternavn = navn?.etternavn ?: "Etternavn")
+        Navn(
+            fornavn = navn?.fornavn ?: "Fornavn",
+            mellomnavn = navn?.mellomnavn,
+            etternavn = navn?.etternavn ?: "Etternavn"
+        )
 }

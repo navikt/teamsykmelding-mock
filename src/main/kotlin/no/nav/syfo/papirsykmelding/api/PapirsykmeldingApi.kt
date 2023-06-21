@@ -19,13 +19,19 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
         val journalpostId = papirsykmeldingService.opprettPapirsykmelding(request)
 
         log.info("Opprettet papirsykmelding med journalpostId $journalpostId")
-        call.respond(HttpStatusCode.OK, HttpMessage("Opprettet papirsykmelding med journalpostId $journalpostId"))
+        call.respond(
+            HttpStatusCode.OK,
+            HttpMessage("Opprettet papirsykmelding med journalpostId $journalpostId")
+        )
     }
 
     post("/papirsykmelding/regelsjekk") {
         val request = call.receive<PapirsykmeldingRequest>()
         if (request.utenOcr) {
-            call.respond(HttpStatusCode.BadRequest, HttpMessage("Kan ikke sjekke papirsykmelding uten OCR"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                HttpMessage("Kan ikke sjekke papirsykmelding uten OCR")
+            )
             return@post
         }
 
@@ -35,7 +41,10 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
             log.info("Har sjekket regler for papirsykmelding")
             call.respond(validationResult)
         } catch (e: PapirsykmeldingMappingException) {
-            call.respond(HttpStatusCode.BadRequest, HttpMessage(e.message ?: "Kunne ikke mappe sykmelding til ReceivedSykmelding"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                HttpMessage(e.message ?: "Kunne ikke mappe sykmelding til ReceivedSykmelding")
+            )
         }
     }
 
@@ -48,13 +57,19 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
         }
 
         if (fnrSykmeldt.length != 11) {
-            call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr har feil lengde, er ${fnrSykmeldt.length}"))
+            call.respond(
+                HttpStatusCode.BadRequest,
+                HttpMessage("Sykmeldt-Fnr har feil lengde, er ${fnrSykmeldt.length}")
+            )
             return@post
         }
 
         val journalpostId = papirsykmeldingService.opprettUtenlandskPapirsykmelding(fnrSykmeldt)
 
         log.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
-        call.respond(HttpStatusCode.OK, HttpMessage("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId"))
+        call.respond(
+            HttpStatusCode.OK,
+            HttpMessage("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
+        )
     }
 }

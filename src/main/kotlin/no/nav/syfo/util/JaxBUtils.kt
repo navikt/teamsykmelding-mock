@@ -2,11 +2,6 @@ package no.nav.syfo.util
 
 import com.migesok.jaxb.adapter.javatime.LocalDateTimeXmlAdapter
 import com.migesok.jaxb.adapter.javatime.LocalDateXmlAdapter
-import no.nav.helse.eiFellesformat.XMLEIFellesformat
-import no.nav.helse.legeerklaering.Legeerklaring
-import no.nav.helse.msgHead.XMLMsgHead
-import no.nav.helse.papirsykemelding.Skanningmetadata
-import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
 import java.io.StringWriter
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -22,11 +17,26 @@ import kotlin.Any
 import kotlin.RuntimeException
 import kotlin.String
 import kotlin.apply
+import no.nav.helse.eiFellesformat.XMLEIFellesformat
+import no.nav.helse.legeerklaering.Legeerklaring
+import no.nav.helse.msgHead.XMLMsgHead
+import no.nav.helse.papirsykemelding.Skanningmetadata
+import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
 
-val fellesformatJaxBContext: JAXBContext = JAXBContext.newInstance(XMLEIFellesformat::class.java, XMLMsgHead::class.java, HelseOpplysningerArbeidsuforhet::class.java)
+val fellesformatJaxBContext: JAXBContext =
+    JAXBContext.newInstance(
+        XMLEIFellesformat::class.java,
+        XMLMsgHead::class.java,
+        HelseOpplysningerArbeidsuforhet::class.java
+    )
 val fellesformatUnmarshaller: Unmarshaller = fellesformatJaxBContext.createUnmarshaller()
 
-val legeerklaeringJaxBContext: JAXBContext = JAXBContext.newInstance(XMLEIFellesformat::class.java, XMLMsgHead::class.java, Legeerklaring::class.java)
+val legeerklaeringJaxBContext: JAXBContext =
+    JAXBContext.newInstance(
+        XMLEIFellesformat::class.java,
+        XMLMsgHead::class.java,
+        Legeerklaring::class.java
+    )
 val legeerklaeringUnmarshaller: Unmarshaller = legeerklaeringJaxBContext.createUnmarshaller()
 
 val jaxbContextSkanningmetadata: JAXBContext = JAXBContext.newInstance(Skanningmetadata::class.java)
@@ -34,11 +44,12 @@ val jaxbContextSkanningmetadata: JAXBContext = JAXBContext.newInstance(Skanningm
 fun marshallFellesformat(element: Any): String {
     return try {
         val writer = StringWriter()
-        val marshaller: Marshaller = fellesformatJaxBContext.createMarshaller().apply {
-            setProperty(Marshaller.JAXB_ENCODING, "UTF-8")
-            setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-            setProperty(JAXB_FRAGMENT, true)
-        }
+        val marshaller: Marshaller =
+            fellesformatJaxBContext.createMarshaller().apply {
+                setProperty(Marshaller.JAXB_ENCODING, "UTF-8")
+                setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
+                setProperty(JAXB_FRAGMENT, true)
+            }
         marshaller.marshal(element, StreamResult(writer))
         writer.toString()
     } catch (e: JAXBException) {
@@ -49,11 +60,12 @@ fun marshallFellesformat(element: Any): String {
 fun marshallLegeerklaering(element: Any): String {
     return try {
         val writer = StringWriter()
-        val marshaller: Marshaller = legeerklaeringJaxBContext.createMarshaller().apply {
-            setProperty(Marshaller.JAXB_ENCODING, "UTF-8")
-            setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-            setProperty(JAXB_FRAGMENT, true)
-        }
+        val marshaller: Marshaller =
+            legeerklaeringJaxBContext.createMarshaller().apply {
+                setProperty(Marshaller.JAXB_ENCODING, "UTF-8")
+                setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
+                setProperty(JAXB_FRAGMENT, true)
+            }
         marshaller.marshal(element, StreamResult(writer))
         writer.toString()
     } catch (e: JAXBException) {
@@ -62,14 +74,25 @@ fun marshallLegeerklaering(element: Any): String {
 }
 
 class XMLDateTimeAdapter : LocalDateTimeXmlAdapter() {
-    override fun unmarshal(stringValue: String?): LocalDateTime? = when (stringValue) {
-        null -> null
-        else -> DatatypeConverter.parseDateTime(stringValue).toInstant().atZone(ZoneOffset.UTC).toLocalDateTime()
-    }
+    override fun unmarshal(stringValue: String?): LocalDateTime? =
+        when (stringValue) {
+            null -> null
+            else ->
+                DatatypeConverter.parseDateTime(stringValue)
+                    .toInstant()
+                    .atZone(ZoneOffset.UTC)
+                    .toLocalDateTime()
+        }
 }
+
 class XMLDateAdapter : LocalDateXmlAdapter() {
-    override fun unmarshal(stringValue: String?): LocalDate? = when (stringValue) {
-        null -> null
-        else -> DatatypeConverter.parseDate(stringValue).toInstant().atZone(ZoneOffset.UTC).toLocalDate()
-    }
+    override fun unmarshal(stringValue: String?): LocalDate? =
+        when (stringValue) {
+            null -> null
+            else ->
+                DatatypeConverter.parseDate(stringValue)
+                    .toInstant()
+                    .atZone(ZoneOffset.UTC)
+                    .toLocalDate()
+        }
 }

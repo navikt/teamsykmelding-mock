@@ -15,14 +15,16 @@ class SyfosmregisterClient(
     private val httpClient: HttpClient,
 ) {
     suspend fun hentSykmeldinger(fnr: String): List<Sykmelding> =
-        httpClient.get("$syfosmregisterUrl/api/v2/sykmelding/sykmeldinger") {
-            accept(ContentType.Application.Json)
-            val accessToken = accessTokenClient.getAccessToken(syfosmregisterScope)
-            headers {
-                append("Authorization", "Bearer $accessToken")
-                append("fnr", fnr)
+        httpClient
+            .get("$syfosmregisterUrl/api/v2/sykmelding/sykmeldinger") {
+                accept(ContentType.Application.Json)
+                val accessToken = accessTokenClient.getAccessToken(syfosmregisterScope)
+                headers {
+                    append("Authorization", "Bearer $accessToken")
+                    append("fnr", fnr)
+                }
             }
-        }.body()
+            .body()
 }
 
 data class Sykmelding(
