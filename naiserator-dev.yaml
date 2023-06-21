@@ -51,10 +51,10 @@ spec:
         - application: syfosmregler
         - application: syfosmpapirregler
       external:
-        - host: https://pdl-api.dev-fss-pub.nais.io
-        - host: https://dokarkiv.dev-fss-pub.nais.io
-        - host: https://syfohelsenettproxy.dev-fss-pub.nais.io
-        - host: https://oppgave-q1.dev-fss-pub.nais.io
+        - host: pdl-api.dev-fss-pub.nais.io
+        - host: dokarkiv.dev-fss-pub.nais.io
+        - host: syfohelsenettproxy.dev-fss-pub.nais.io
+        - host: oppgave-q1.dev-fss-pub.nais.io
         - host: b27apvl221.preprod.local
           ports:
             - name: mq
