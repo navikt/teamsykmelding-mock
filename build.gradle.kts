@@ -22,7 +22,7 @@ val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "1.0.4"
 val javaTimeAdapterVersion = "1.1.3"
-val commonsCodecVersion = "1.15"
+val commonsCodecVersion = "1.16.0"
 val ktfmtVersion = "0.44"
 
 tasks.withType<Jar> {
