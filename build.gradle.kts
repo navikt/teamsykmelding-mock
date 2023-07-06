@@ -31,7 +31,7 @@ tasks.withType<Jar> {
 
 plugins {
     id("com.diffplug.spotless") version "6.19.0"
-    kotlin("jvm") version "1.8.22"
+    kotlin("jvm") version "1.9.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.hidetake.swagger.generator") version "2.19.2" apply true
     id("org.cyclonedx.bom") version "1.7.4"
