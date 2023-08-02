@@ -11,6 +11,7 @@ import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.install
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.http.content.*
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
@@ -20,7 +21,6 @@ import io.ktor.server.routing.routing
 import java.util.UUID
 import no.nav.syfo.Environment
 import no.nav.syfo.application.api.registerNaisApi
-import no.nav.syfo.application.api.setupSwaggerDocApi
 import no.nav.syfo.application.metrics.monitorHttpRequests
 import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.legeerklaering.api.registrerLegeerklaeringApi
@@ -36,7 +36,7 @@ import no.nav.syfo.utenlandsk.api.registrerUtenlandskPapirsykmeldingApi
 import no.nav.syfo.utenlandsk.opprettJournalpostservice.UtenlandskSykmeldingService
 
 fun createApplicationEngine(
-    env: Environment,
+    environment: Environment,
     applicationState: ApplicationState,
     narmestelederService: NarmestelederService,
     sykmeldingService: SykmeldingService,
@@ -45,7 +45,7 @@ fun createApplicationEngine(
     papirsykmeldingService: PapirsykmeldingService,
     utenlandskSykmeldingService: UtenlandskSykmeldingService,
 ): ApplicationEngine =
-    embeddedServer(Netty, env.applicationPort) {
+    embeddedServer(Netty, environment.applicationPort) {
         install(ContentNegotiation) {
             jackson {
                 registerKotlinModule()
@@ -68,8 +68,10 @@ fun createApplicationEngine(
         }
 
         routing {
+            if (environment.clusterName == "dev-gcp") {
+                staticResources("/api/v1/docs/", "api") { default("api/index.html") }
+            }
             registerNaisApi(applicationState)
-            setupSwaggerDocApi()
             registrerNarmestelederApi(narmestelederService)
             registrerSykmeldingApi(sykmeldingService, slettSykmeldingService)
             registrerLegeerklaeringApi(legeerklaeringService)

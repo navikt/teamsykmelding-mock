@@ -12,7 +12,7 @@ val ktorVersion = "2.3.3"
 val logbackVersion = "1.4.8"
 val logstashEncoderVersion = "7.4"
 val prometheusVersion = "0.16.0"
-val smCommonVersion = "1.0.10"
+val smCommonVersion = "1.0.12"
 val mockkVersion = "1.13.5"
 val testContainerKafkaVersion = "1.18.3"
 val kotlinVersion = "1.9.0"
@@ -24,6 +24,7 @@ val sysfoXmlCodeGen = "1.0.4"
 val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.16.0"
 val ktfmtVersion = "0.44"
+val jvmVersion = "17"
 
 tasks.withType<Jar> {
     manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
@@ -125,7 +126,7 @@ tasks {
     }
 
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = jvmVersion
     }
 
 

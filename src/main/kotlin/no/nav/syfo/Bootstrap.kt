@@ -178,9 +178,9 @@ fun main() {
         )
 
     val producerProperties =
-        KafkaUtils.getAivenKafkaConfig()
+        KafkaUtils.getAivenKafkaConfig("nl-response-producer")
             .toProducerConfig(
-                "${env.applicationName}-producer",
+                env.applicationName,
                 JacksonKafkaSerializer::class,
                 StringSerializer::class
             )
@@ -190,11 +190,8 @@ fun main() {
 
     val tombstoneProducer =
         KafkaProducer<String, Any?>(
-            KafkaUtils.getAivenKafkaConfig()
-                .toProducerConfig(
-                    "${env.applicationName}-tombstone-producer",
-                    JacksonNullableKafkaSerializer::class
-                ),
+            KafkaUtils.getAivenKafkaConfig("tombstone-producer")
+                .toProducerConfig("env.applicationName", JacksonNullableKafkaSerializer::class),
         )
     val tombstoneKafkaProducer =
         TombstoneKafkaProducer(
