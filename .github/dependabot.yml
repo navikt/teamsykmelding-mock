@@ -1,10 +1,18 @@
 version: 2
+registries:
+  syfosm-common:
+    type: maven-repository
+    url: https://maven.pkg.github.com/navikt/syfosm-common
+    username: x-access-token
+    password: ${{ secrets.GITHUB_TOKEN }}
 updates:
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 15
+    registries:
+      - syfosm-common
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
