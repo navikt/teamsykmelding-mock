@@ -1,21 +1,17 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "no.nav.syfo"
 version = "1.0.0"
 
 val coroutinesVersion = "1.7.3"
 val jacksonVersion = "2.15.2"
 val kluentVersion = "1.73"
-val ktorVersion = "2.3.3"
+val ktorVersion = "2.3.4"
 val logbackVersion = "1.4.11"
 val logstashEncoderVersion = "7.4"
 val prometheusVersion = "0.16.0"
-val smCommonVersion = "1.0.12"
+val smCommonVersion = "1.0.14"
 val mockkVersion = "1.13.7"
 val testContainerKafkaVersion = "1.18.3"
-val kotlinVersion = "1.9.0"
+val kotlinVersion = "1.9.10"
 val kotestVersion = "5.6.2"
 val swaggerUiVersion = "5.3.1"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
@@ -24,23 +20,21 @@ val sysfoXmlCodeGen = "1.0.4"
 val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.16.0"
 val ktfmtVersion = "0.44"
-val jvmVersion = "17"
 
-tasks.withType<Jar> {
-    manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
-}
 
 plugins {
-    id("com.diffplug.spotless") version "6.20.0"
-    kotlin("jvm") version "1.9.0"
+    id("application")
+    id("com.diffplug.spotless") version "6.21.0"
+    kotlin("jvm") version "1.9.10"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.hidetake.swagger.generator") version "2.19.2" apply true
-    id("org.cyclonedx.bom") version "1.7.4"
 }
 
-buildscript {
-    dependencies {
-    }
+application {
+    mainClass.set("no.nav.syfo.BootstrapKt")
+
+    val isDevelopment: Boolean = project.ext.has("development")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
 val githubUser: String by project
@@ -120,38 +114,29 @@ swaggerSources {
 }
 
 tasks {
-
-    create("printVersion") {
-        println(project.version)
-    }
-
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = jvmVersion
-    }
-
-
-    withType<org.hidetake.gradle.swagger.generator.GenerateSwaggerUI> {
-        outputDir = File(buildDir.path + "/resources/main/api")
-        dependsOn("jar")
-    }
-
-    withType<ShadowJar> {
-        transform(ServiceFileTransformer::class.java) {
-            setPath("META-INF/cxf")
-            include("bus-extensions.txt")
+    shadowJar {
+        archiveBaseName.set("app")
+        archiveClassifier.set("")
+        isZip64 = true
+        manifest {
+            attributes(
+                mapOf(
+                    "Main-Class" to "no.nav.syfo.BootstrapKt",
+                ),
+            )
         }
-        dependsOn("generateSwaggerUI")
     }
 
-    withType<Test> {
-        useJUnitPlatform {
-        }
+
+    test {
+        useJUnitPlatform {}
         testLogging {
             events("skipped", "failed")
             showStackTraces = true
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
     }
+
 
     spotless {
         kotlin { ktfmt(ktfmtVersion).kotlinlangStyle() }
