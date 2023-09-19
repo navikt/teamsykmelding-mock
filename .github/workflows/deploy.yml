@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     permissions:
-      contents: "read"
+      contents: "write"
       id-token: "write"
     name: Checkout code and create docker tag
     runs-on: ubuntu-latest
