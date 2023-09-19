@@ -36,7 +36,7 @@ spec:
   vault:
     enabled: false
   ingresses:
-    - "https://teamsykmelding-mock-backend.dev.intern.nav.no"
+    - "https://teamsykmelding-mock-backend.intern.dev.nav.no"
   webproxy: false
   kafka:
     pool: nav-dev
