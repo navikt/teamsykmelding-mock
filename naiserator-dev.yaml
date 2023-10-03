@@ -50,10 +50,10 @@ spec:
         - application: syfosmregister
         - application: syfosmregler
         - application: syfosmpapirregler
+        - application: syfohelsenettproxy
       external:
         - host: pdl-api.dev-fss-pub.nais.io
         - host: dokarkiv.dev-fss-pub.nais.io
-        - host: syfohelsenettproxy.dev-fss-pub.nais.io
         - host: oppgave-q1.dev-fss-pub.nais.io
         - host: b27apvl221.preprod.local
           ports:
@@ -90,10 +90,8 @@ spec:
       value: api://dev-gcp.teamsykmelding.syfosmregler/.default
     - name: SYFOSMPAPIRREGLER_SCOPE
       value: api://dev-gcp.teamsykmelding.syfosmpapirregler/.default
-    - name: NORSKHELSENETT_URL
-      value: https://syfohelsenettproxy.dev-fss-pub.nais.io
     - name: NORSKHELSENETT_SCOPE
-      value: api://dev-fss.teamsykmelding.syfohelsenettproxy/.default
+      value: api://dev-gcp.teamsykmelding.syfohelsenettproxy/.default
     - name: OPPGAVE_SCOPE
       value: api://dev-fss.oppgavehandtering.oppgave-q1/.default
     - name: OPPGAVEBEHANDLING_URL

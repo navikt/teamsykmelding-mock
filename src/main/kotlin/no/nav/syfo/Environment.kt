@@ -28,7 +28,7 @@ data class Environment(
     val syfosmreglerScope: String = getEnvVar("SYFOSMREGLER_SCOPE"),
     val syfosmpapirreglerUrl: String = "http://syfosmpapirregler",
     val syfosmpapirreglerScope: String = getEnvVar("SYFOSMPAPIRREGLER_SCOPE"),
-    val norskHelsenettUrl: String = getEnvVar("NORSKHELSENETT_URL"),
+    val norskHelsenettUrl: String = "http://syfohelsenettproxy",
     val norskHelsenettScope: String = getEnvVar("NORSKHELSENETT_SCOPE"),
     val oppgaveUrl: String = getEnvVar("OPPGAVEBEHANDLING_URL"),
     val oppgaveScope: String = getEnvVar("OPPGAVE_SCOPE"),
