@@ -2,7 +2,7 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 val coroutinesVersion = "1.7.3"
-val jacksonVersion = "2.15.2"
+val jacksonVersion = "2.15.3"
 val kluentVersion = "1.73"
 val ktorVersion = "2.3.5"
 val logbackVersion = "1.4.11"
