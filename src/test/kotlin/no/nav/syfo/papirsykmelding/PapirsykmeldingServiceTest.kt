@@ -113,5 +113,16 @@ class PapirsykmeldingServiceTest :
                     )
                 }
             }
+            test("opprettPapirsykmelding med fnr = null") {
+                papirsykmeldingService.opprettPapirsykmelding(
+                    papirsykmeldingRequest.copy(fnr = null)
+                )
+
+                coVerify {
+                    dokarkivClient.opprettJournalpost(
+                        match { it.bruker.id == null }
+                    )
+                }
+            }
         }
     })
