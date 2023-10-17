@@ -103,7 +103,7 @@ fun opprettUtenlandskNavNoJournalpost(
 }
 
 fun opprettJournalpostPayload(
-    fnr: String,
+    fnr: String?,
     ocr: String?,
     pdf: String,
     metadata: String,

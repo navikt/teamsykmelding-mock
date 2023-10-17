@@ -27,7 +27,7 @@ data class AvsenderMottaker(
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Bruker(
-    val id: String,
+    val id: String?,
     val idType: String = "FNR",
 )
 

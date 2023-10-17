@@ -78,6 +78,9 @@ class PapirsykmeldingService(
     }
 
     suspend fun sjekkRegler(papirsykmeldingRequest: PapirsykmeldingRequest): ValidationResult {
+        if (papirsykmeldingRequest.fnr == null) {
+            throw RuntimeException("Kan ikke validere regler mot papirsykmelding uten fødselsnummer")
+        }
         val skanningMetadata = tilSkanningmetadata(papirsykmeldingRequest)
         val sykmeldingId = UUID.randomUUID().toString()
         val receivedSykmelding: ReceivedSykmelding
