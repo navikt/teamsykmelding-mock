@@ -46,6 +46,7 @@ class DokarkivClient(
             }
         } catch (e: Exception) {
             log.warn("Oppretting av journalpost feilet: ${e.message}, {}")
+            log.warn("request id: ${journalpostRequest.bruker.id}")
             throw e
         }
 }
