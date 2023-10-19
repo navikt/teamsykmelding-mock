@@ -133,7 +133,7 @@ fun opprettJournalpostPayload(
             ),
         )
     }
-    if (fnr == null) {
+    if (fnr.isNullOrEmpty()) {
         return JournalpostRequest(
             dokumenter =
                 listOf(
