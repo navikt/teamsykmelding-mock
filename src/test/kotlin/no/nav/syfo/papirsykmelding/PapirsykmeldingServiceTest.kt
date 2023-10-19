@@ -118,11 +118,7 @@ class PapirsykmeldingServiceTest :
                     papirsykmeldingRequest.copy(fnr = null)
                 )
 
-                coVerify {
-                    dokarkivClient.opprettJournalpost(
-                        match { it.bruker.id == null }
-                    )
-                }
+                coVerify { dokarkivClient.opprettJournalpost(match { it.bruker?.id == null }) }
             }
         }
     })

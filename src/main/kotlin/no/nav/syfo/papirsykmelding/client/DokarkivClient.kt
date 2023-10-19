@@ -46,7 +46,6 @@ class DokarkivClient(
             }
         } catch (e: Exception) {
             log.warn("Oppretting av journalpost feilet: ${e.message}, {}")
-            log.warn("request id: ${journalpostRequest.bruker.id}")
             throw e
         }
 }
@@ -132,6 +131,14 @@ fun opprettJournalpostPayload(
                 variantformat = "ORIGINAL",
                 fysiskDokument = ocr,
             ),
+        )
+    }
+    if (fnr == null) {
+        return JournalpostRequest(
+            dokumenter =
+                listOf(
+                    Dokument(dokumentvarianter = dokumentvarianter),
+                ),
         )
     }
     return JournalpostRequest(

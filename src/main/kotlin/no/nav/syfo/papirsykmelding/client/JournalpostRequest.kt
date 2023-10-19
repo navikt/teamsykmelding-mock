@@ -7,7 +7,7 @@ import java.util.UUID
 data class JournalpostRequest(
     val avsenderMottaker: AvsenderMottaker? = null,
     val behandlingstema: String? = null,
-    var bruker: Bruker,
+    var bruker: Bruker? = null,
     val dokumenter: List<Dokument>,
     val eksternReferanseId: String = UUID.randomUUID().toString(),
     val journalfoerendeEnhet: String? = null,
@@ -27,7 +27,7 @@ data class AvsenderMottaker(
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Bruker(
-    val id: String? = null,
+    val id: String,
     val idType: String = "FNR",
 )
 
