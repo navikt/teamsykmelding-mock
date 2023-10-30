@@ -119,15 +119,20 @@ fun lagHelseopplysninger(
                 }
             }
         meldingTilNav =
-            if (sykmeldingRequest.regelsettVersjon == "3") {
+            if (
+                sykmeldingRequest.regelsettVersjon == "3" &&
+                    sykmeldingRequest.beskrivBistandNav != null
+            ) {
                 HelseOpplysningerArbeidsuforhet.MeldingTilNav().apply {
-                    beskrivBistandNAV = "Trenger bistand"
+                    beskrivBistandNAV = sykmeldingRequest.beskrivBistandNav
                 }
-            } else {
+            } else if (sykmeldingRequest.beskrivBistandNav != null) {
                 HelseOpplysningerArbeidsuforhet.MeldingTilNav().apply {
                     isBistandNAVUmiddelbart = true
-                    beskrivBistandNAV = "Trenger bistand"
+                    beskrivBistandNAV = sykmeldingRequest.beskrivBistandNav
                 }
+            } else {
+                null
             }
         if (!sykmeldingRequest.meldingTilArbeidsgiver.isNullOrEmpty()) {
             meldingTilArbeidsgiver = sykmeldingRequest.meldingTilArbeidsgiver

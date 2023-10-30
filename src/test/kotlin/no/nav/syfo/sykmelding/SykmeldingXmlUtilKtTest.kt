@@ -47,6 +47,7 @@ class SykmeldingXmlUtilKtTest :
                         bidiagnoser = emptyList(),
                         arbeidsgiverNavn = null,
                         vedleggMedVirus = false,
+                        beskrivBistandNav = null,
                         yrkesskade = false,
                     )
                 val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
@@ -112,6 +113,7 @@ class SykmeldingXmlUtilKtTest :
                         bidiagnoser = null,
                         arbeidsgiverNavn = null,
                         vedleggMedVirus = false,
+                        beskrivBistandNav = null,
                         yrkesskade = false,
                     )
                 val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
@@ -156,8 +158,8 @@ class SykmeldingXmlUtilKtTest :
                 helseopplysninger.utdypendeOpplysninger.spmGruppe[0].spmGruppeId shouldBeEqualTo
                     "6.4"
                 helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo "Melding til arbeidsgiver"
-                helseopplysninger.meldingTilNav.isBistandNAVUmiddelbart shouldBeEqualTo true
-                helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"
+                helseopplysninger.meldingTilNav?.isBistandNAVUmiddelbart shouldBeEqualTo null
+                helseopplysninger.meldingTilNav?.beskrivBistandNAV shouldBeEqualTo null
                 helseopplysninger.prognose.erIArbeid shouldNotBeEqualTo null
                 helseopplysninger.tiltak shouldNotBeEqualTo null
                 helseopplysninger.regelSettVersjon shouldBeEqualTo "2"
@@ -191,6 +193,7 @@ class SykmeldingXmlUtilKtTest :
                         begrunnIkkeKontakt = "Hadde ikke tid",
                         vedlegg = false,
                         virksomhetsykmelding = false,
+                        beskrivBistandNav = null,
                         utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                         regelsettVersjon = "3",
                         meldingTilArbeidsgiver = "Viktig melding til arbeidsgiver",
@@ -254,8 +257,8 @@ class SykmeldingXmlUtilKtTest :
                     "6.5"
                 helseopplysninger.meldingTilArbeidsgiver shouldBeEqualTo
                     "Viktig melding til arbeidsgiver"
-                helseopplysninger.meldingTilNav.isBistandNAVUmiddelbart shouldBeEqualTo null
-                helseopplysninger.meldingTilNav.beskrivBistandNAV shouldBeEqualTo "Trenger bistand"
+                helseopplysninger.meldingTilNav?.isBistandNAVUmiddelbart shouldBeEqualTo null
+                helseopplysninger.meldingTilNav?.beskrivBistandNAV shouldBeEqualTo null
                 helseopplysninger.prognose.erIArbeid shouldBeEqualTo null
                 helseopplysninger.tiltak shouldBeEqualTo null
                 helseopplysninger.regelSettVersjon shouldBeEqualTo "3"
@@ -291,6 +294,7 @@ class SykmeldingXmlUtilKtTest :
                         begrunnIkkeKontakt = null,
                         vedlegg = false,
                         virksomhetsykmelding = false,
+                        beskrivBistandNav = null,
                         utdypendeOpplysninger = UtdypendeOpplysninger.UKE_39,
                         regelsettVersjon = "2",
                         meldingTilArbeidsgiver = null,
@@ -342,6 +346,7 @@ class SykmeldingXmlUtilKtTest :
                         bidiagnoser = null,
                         arbeidsgiverNavn = null,
                         vedleggMedVirus = false,
+                        beskrivBistandNav = null,
                         yrkesskade = false,
                     )
                 val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
@@ -375,6 +380,7 @@ class SykmeldingXmlUtilKtTest :
                         begrunnIkkeKontakt = null,
                         vedlegg = false,
                         virksomhetsykmelding = false,
+                        beskrivBistandNav = null,
                         utdypendeOpplysninger = UtdypendeOpplysninger.INGEN,
                         regelsettVersjon = "2",
                         meldingTilArbeidsgiver = null,
@@ -420,6 +426,7 @@ class SykmeldingXmlUtilKtTest :
                         begrunnIkkeKontakt = null,
                         vedlegg = false,
                         virksomhetsykmelding = false,
+                        beskrivBistandNav = null,
                         utdypendeOpplysninger = UtdypendeOpplysninger.INGEN,
                         regelsettVersjon = "2",
                         meldingTilArbeidsgiver = null,

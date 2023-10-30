@@ -55,7 +55,7 @@ fun HelseOpplysningerArbeidsuforhet.toSykmelding(
         tiltakArbeidsplassen = tiltak?.tiltakArbeidsplassen,
         tiltakNAV = tiltak?.tiltakNAV,
         andreTiltak = tiltak?.andreTiltak,
-        meldingTilNAV = meldingTilNav?.toMeldingTilNAV(regelSettVersjon),
+        meldingTilNAV = meldingTilNav?.toMeldingTilNAV(),
         meldingTilArbeidsgiver = meldingTilArbeidsgiver,
         kontaktMedPasient = kontaktMedPasient.toKontaktMedPasient(),
         behandletTidspunkt = kontaktMedPasient.behandletDato,
@@ -220,16 +220,10 @@ fun ArsakType.toMedisinskArsak() =
         arsak = arsakskode.mapNotNull(CS::toMedisinskArsakType),
     )
 
-fun HelseOpplysningerArbeidsuforhet.MeldingTilNav.toMeldingTilNAV(rulesetVersion: String?) =
+fun HelseOpplysningerArbeidsuforhet.MeldingTilNav.toMeldingTilNAV() =
     MeldingTilNAV(
-        bistandUmiddelbart =
-            if (rulesetVersion == "3" && !beskrivBistandNAV.isNullOrEmpty()) {
-                true
-            } else {
-                isBistandNAVUmiddelbart
-            }
-                ?: false,
-        beskrivBistand = beskrivBistandNAV,
+        bistandUmiddelbart = this.isBistandNAVUmiddelbart,
+        beskrivBistand = this.beskrivBistandNAV,
     )
 
 fun HelseOpplysningerArbeidsuforhet.KontaktMedPasient.toKontaktMedPasient() =

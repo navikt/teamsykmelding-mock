@@ -50,6 +50,7 @@ class SykmeldingServiceTest :
                         diagnosekode = "M674",
                         diagnosekodesystem = "icd10",
                         annenFraverGrunn = null,
+                        beskrivBistandNav = null,
                         perioder =
                             listOf(
                                 SykmeldingPeriode(
@@ -119,6 +120,7 @@ class SykmeldingServiceTest :
                         bidiagnoser = emptyList(),
                         arbeidsgiverNavn = null,
                         vedleggMedVirus = false,
+                        beskrivBistandNav = null,
                         yrkesskade = false,
                     )
                 val mottakId = "mottakId"
@@ -176,6 +178,7 @@ class SykmeldingServiceTest :
                             ),
                         arbeidsgiverNavn = null,
                         vedleggMedVirus = false,
+                        beskrivBistandNav = null,
                         yrkesskade = false,
                     )
                 val mottakId = "mottakId"
