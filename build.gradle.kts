@@ -11,7 +11,7 @@ val prometheusVersion = "0.16.0"
 val smCommonVersion = "2.0.4"
 val mockkVersion = "1.13.8"
 val testContainerKafkaVersion = "1.19.1"
-val kotlinVersion = "1.9.10"
+val kotlinVersion = "1.9.20"
 val kotestVersion = "5.7.2"
 val swaggerUiVersion = "5.9.0"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
@@ -25,7 +25,7 @@ val ktfmtVersion = "0.44"
 plugins {
     id("application")
     id("com.diffplug.spotless") version "6.22.0"
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.hidetake.swagger.generator") version "2.19.2" apply true
 }
