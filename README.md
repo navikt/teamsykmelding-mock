@@ -6,6 +6,7 @@ This project contains the application code and infrastructure for teamsykmelding
 * Ktor
 * Gradle
 * MQ
+* Jdk 21
 
 ## Getting started
 ### Building the application

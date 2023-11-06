@@ -8,7 +8,7 @@ val ktorVersion = "2.3.5"
 val logbackVersion = "1.4.11"
 val logstashEncoderVersion = "7.4"
 val prometheusVersion = "0.16.0"
-val smCommonVersion = "2.0.5"
+val smCommonVersion = "2.1.0-jdk"
 val mockkVersion = "1.13.8"
 val testContainerKafkaVersion = "1.19.1"
 val kotlinVersion = "1.9.20"
@@ -20,6 +20,8 @@ val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.16.0"
 val ktfmtVersion = "0.44"
+val javaVersion = JavaVersion.VERSION_21
+
 
 
 plugins {
@@ -107,6 +109,13 @@ swaggerSources {
 }
 
 tasks {
+
+compileKotlin {
+        kotlinOptions.jvmTarget = javaVersion.toString()
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = javaVersion.toString()
+    }
     shadowJar {
         archiveBaseName.set("app")
         archiveClassifier.set("")
