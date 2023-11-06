@@ -20,6 +20,8 @@ val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.16.0"
 val ktfmtVersion = "0.44"
+val javaVersion = JavaVersion.VERSION_21
+
 
 
 plugins {
@@ -107,6 +109,13 @@ swaggerSources {
 }
 
 tasks {
+
+compileKotlin {
+        kotlinOptions.jvmTarget = javaVersion.toString()
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = javaVersion.toString()
+    }
     shadowJar {
         archiveBaseName.set("app")
         archiveClassifier.set("")
