@@ -8,11 +8,10 @@ val ktorVersion = "2.3.6"
 val logbackVersion = "1.4.11"
 val logstashEncoderVersion = "7.4"
 val prometheusVersion = "0.16.0"
-val smCommonVersion = "2.0.5"
+val smCommonVersion = "2.0.6"
 val mockkVersion = "1.13.8"
 val testContainerKafkaVersion = "1.19.1"
 val kotlinVersion = "1.9.20"
-val kotestVersion = "5.8.0"
 val swaggerUiVersion = "5.9.0"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
@@ -21,7 +20,7 @@ val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.16.0"
 val ktfmtVersion = "0.44"
 val javaVersion = JavaVersion.VERSION_21
-
+val junitJupiterVersion = "5.10.1"
 
 
 plugins {
@@ -96,9 +95,9 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
-    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
-    testImplementation("io.kotest:kotest-property:$kotestVersion")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 
