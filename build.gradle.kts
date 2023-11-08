@@ -12,7 +12,6 @@ val smCommonVersion = "2.0.6"
 val mockkVersion = "1.13.8"
 val testContainerKafkaVersion = "1.19.1"
 val kotlinVersion = "1.9.20"
-val swaggerUiVersion = "5.9.0"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
@@ -28,7 +27,6 @@ plugins {
     id("com.diffplug.spotless") version "6.22.0"
     kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.hidetake.swagger.generator") version "2.19.2" apply true
 }
 
 application {
@@ -58,6 +56,8 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-call-id:$ktorVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
+    implementation("io.ktor:ktor-server-swagger:$ktorVersion")
+
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     constraints {
@@ -91,8 +91,6 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
-    swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
-
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:kafka:$testContainerKafkaVersion")
@@ -101,13 +99,6 @@ dependencies {
     }
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-
-swaggerSources {
-    create("teamsykmelding-mock-backend").apply {
-        setInputFile(file("api/oas3/teamsykmelding-mock-backend-api.yaml"))
-    }
 }
 
 tasks {

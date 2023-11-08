@@ -37,6 +37,10 @@ Finn nyeste versjon av gradle her: https://gradle.org/releases/
 ./gradlew wrapper --gradle-version $gradleVersjon
 ```
 
+### Swagger api doc
+The Swagger api doc is available here
+https://teamsykmelding-mock-backend.intern.dev.nav.no/swagger
+
 ## Contact
 
 This project is maintained by [navikt/teamsykmelding](CODEOWNERS)

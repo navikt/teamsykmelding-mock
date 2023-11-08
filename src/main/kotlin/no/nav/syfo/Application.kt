@@ -18,10 +18,10 @@ import io.ktor.network.sockets.SocketTimeoutException
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
-import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.plugins.swagger.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.prometheus.client.hotspot.DefaultExports
@@ -298,8 +298,9 @@ fun Application.configureRouting(
 
     routing {
         if (environmentVariables.clusterName == "dev-gcp") {
-            staticResources("/api/v1/docs/", "api") { default("api/index.html") }
+            swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
         }
+
         naisIsAliveRoute(applicationState)
         naisIsReadyRoute(applicationState)
         naisPrometheusRoute()
