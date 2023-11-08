@@ -1,6 +1,6 @@
 package no.nav.syfo.narmesteleder.api
 
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -8,8 +8,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import java.time.LocalDate
-import no.nav.syfo.application.HttpMessage
-import no.nav.syfo.log
+import no.nav.syfo.HttpMessage
+import no.nav.syfo.logger
 import no.nav.syfo.narmesteleder.NarmestelederService
 
 fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) {
@@ -28,7 +28,7 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
                     orgnummer = request.orgnummer.trim { it <= ' ' },
                 ),
             )
-            log.info("Opprettet nærmesteleder-kobling")
+            logger.info("Opprettet nærmesteleder-kobling")
             call.respond(HttpStatusCode.OK, HttpMessage("Nærmeste leder er registrert"))
         } else {
             call.respond(
@@ -52,7 +52,7 @@ fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) 
             sykmeldtFnr = fnrSykmeldt,
             orgnummer = orgnummer,
         )
-        log.info("Nullstilt nærmesteleder-koblinger for orgnummer $orgnummer")
+        logger.info("Nullstilt nærmesteleder-koblinger for orgnummer $orgnummer")
         call.respond(HttpStatusCode.OK, HttpMessage("Nullstilt nærmesteleder-koblinger for ansatt"))
     }
 }

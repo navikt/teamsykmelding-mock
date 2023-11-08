@@ -13,35 +13,52 @@ import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.http.*
 import io.ktor.network.sockets.SocketTimeoutException
 import io.ktor.serialization.jackson.jackson
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.http.content.*
+import io.ktor.server.netty.*
+import io.ktor.server.plugins.callid.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import io.prometheus.client.hotspot.DefaultExports
-import no.nav.syfo.application.ApplicationServer
-import no.nav.syfo.application.ApplicationState
-import no.nav.syfo.application.createApplicationEngine
-import no.nav.syfo.application.exception.ServiceUnavailableException
+import java.time.Duration
+import java.util.*
+import kotlinx.coroutines.DelicateCoroutinesApi
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toProducerConfig
 import no.nav.syfo.legeerklaering.LegeerklaeringService
+import no.nav.syfo.legeerklaering.api.registrerLegeerklaeringApi
+import no.nav.syfo.metrics.monitorHttpRequests
 import no.nav.syfo.mq.connectionFactory
 import no.nav.syfo.narmesteleder.NarmestelederService
+import no.nav.syfo.narmesteleder.api.registrerNarmestelederApi
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
 import no.nav.syfo.narmesteleder.kafka.model.NlResponseKafkaMessage
+import no.nav.syfo.no.nav.syfo.routes.nais.isready.naisPrometheusRoute
 import no.nav.syfo.oppgave.OppgaveClient
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
+import no.nav.syfo.papirsykmelding.api.registrerPapirsykmeldingApi
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
 import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
+import no.nav.syfo.routes.nais.isalive.naisIsAliveRoute
+import no.nav.syfo.routes.nais.isready.naisIsReadyRoute
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
+import no.nav.syfo.sykmelding.api.registrerSykmeldingApi
 import no.nav.syfo.sykmelding.client.SyfosmregisterClient
 import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.sykmelding.kafka.SykmeldingStatusKafkaProducer
 import no.nav.syfo.sykmelding.kafka.TombstoneKafkaProducer
-import no.nav.syfo.utenlandsk.opprettJournalpostservice.UtenlandskSykmeldingService
+import no.nav.syfo.utenlandsk.api.registrerUtenlandskPapirsykmeldingApi
+import no.nav.syfo.utenlandsk.service.UtenlandskSykmeldingService
 import no.nav.syfo.util.JacksonKafkaSerializer
 import no.nav.syfo.util.JacksonNullableKafkaSerializer
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -49,7 +66,7 @@ import org.apache.kafka.common.serialization.StringSerializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-val log: Logger = LoggerFactory.getLogger("no.nav.syfo.teamsykmelding-mock-backend")
+val logger: Logger = LoggerFactory.getLogger("no.nav.syfo.teamsykmelding-mock-backend")
 val objectMapper: ObjectMapper =
     ObjectMapper().apply {
         registerKotlinModule()
@@ -59,7 +76,29 @@ val objectMapper: ObjectMapper =
     }
 
 fun main() {
-    val env = Environment()
+
+    val embeddedServer =
+        embeddedServer(
+            Netty,
+            port = EnvironmentVariables().applicationPort,
+            module = Application::module,
+        )
+    Runtime.getRuntime()
+        .addShutdownHook(
+            Thread {
+                logger.info("Shutting down application from shutdown hook")
+                embeddedServer.stop(
+                    Duration.ofSeconds(10).toMillis(),
+                    Duration.ofSeconds(10).toMillis()
+                )
+            },
+        )
+    embeddedServer.start(true)
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+fun Application.module() {
+    val env = EnvironmentVariables()
     val serviceUser = ServiceUser()
     DefaultExports.initialize()
     val applicationState = ApplicationState()
@@ -93,12 +132,12 @@ fun main() {
         install(HttpRequestRetry) {
             constantDelay(100, 0, false)
             retryOnExceptionIf(3) { request, throwable ->
-                log.warn("Caught exception ${throwable.message}, for url ${request.url}")
+                logger.warn("Caught exception ${throwable.message}, for url ${request.url}")
                 true
             }
             retryIf(maxRetries) { request, response ->
                 if (response.status.value.let { it in 500..599 }) {
-                    log.warn(
+                    logger.warn(
                         "Retrying for statuscode ${response.status.value}, for url ${request.url}"
                     )
                     true
@@ -216,17 +255,72 @@ fun main() {
         PapirsykmeldingService(dokarkivClient, syfosmpapirreglerClient, norskHelsenettClient)
     val utenlandskSykmeldingService = UtenlandskSykmeldingService(dokarkivClient, oppgaveClient)
 
-    val applicationEngine =
-        createApplicationEngine(
-            env,
-            applicationState,
-            narmestelederService,
-            sykmeldingService,
-            slettSykmeldingService,
-            legeerklaeringService,
-            papirsykmeldingService,
-            utenlandskSykmeldingService,
-        )
-    val applicationServer = ApplicationServer(applicationEngine, applicationState)
-    applicationServer.start()
+    configureRouting(
+        env,
+        applicationState,
+        narmestelederService,
+        sykmeldingService,
+        slettSykmeldingService,
+        legeerklaeringService,
+        papirsykmeldingService,
+        utenlandskSykmeldingService,
+    )
 }
+
+fun Application.configureRouting(
+    environmentVariables: EnvironmentVariables,
+    applicationState: ApplicationState,
+    narmestelederService: NarmestelederService,
+    sykmeldingService: SykmeldingService,
+    slettSykmeldingService: SlettSykmeldingService,
+    legeerklaeringService: LegeerklaeringService,
+    papirsykmeldingService: PapirsykmeldingService,
+    utenlandskSykmeldingService: UtenlandskSykmeldingService,
+) {
+    install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) {
+        jackson {
+            registerKotlinModule()
+            registerModule(JavaTimeModule())
+            configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        }
+    }
+
+    install(CallId) {
+        generate { UUID.randomUUID().toString() }
+        verify { callId: String -> callId.isNotEmpty() }
+        header(HttpHeaders.XCorrelationId)
+    }
+    install(StatusPages) {
+        exception<Throwable> { call, cause ->
+            logger.error("Caught exception", cause)
+            call.respond(HttpStatusCode.InternalServerError, cause.message ?: "Unknown error")
+        }
+    }
+
+    routing {
+        if (environmentVariables.clusterName == "dev-gcp") {
+            staticResources("/api/v1/docs/", "api") { default("api/index.html") }
+        }
+        naisIsAliveRoute(applicationState)
+        naisIsReadyRoute(applicationState)
+        naisPrometheusRoute()
+        registrerNarmestelederApi(narmestelederService)
+        registrerSykmeldingApi(sykmeldingService, slettSykmeldingService)
+        registrerLegeerklaeringApi(legeerklaeringService)
+        registrerPapirsykmeldingApi(papirsykmeldingService)
+        registrerUtenlandskPapirsykmeldingApi(utenlandskSykmeldingService)
+    }
+    intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests())
+}
+
+data class ApplicationState(
+    var alive: Boolean = true,
+    var ready: Boolean = true,
+)
+
+data class HttpMessage(
+    val message: String,
+)
+
+class ServiceUnavailableException(message: String?) : Exception(message)

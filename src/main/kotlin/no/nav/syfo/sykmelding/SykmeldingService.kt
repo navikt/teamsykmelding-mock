@@ -11,7 +11,7 @@ import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.mq.MqProducer
@@ -135,7 +135,7 @@ class SykmeldingService(
         val lege = personer[sykmeldingRequest.fnrLege]
 
         if (sykmeldt == null || lege == null) {
-            log.error("Fant ikke sykmeldt eller lege i PDL")
+            logger.error("Fant ikke sykmeldt eller lege i PDL")
             throw RuntimeException("Fant ikke sykmeldt eller lege i PDL")
         }
 

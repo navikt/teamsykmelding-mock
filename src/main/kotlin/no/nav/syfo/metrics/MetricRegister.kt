@@ -1,4 +1,4 @@
-package no.nav.syfo.application.metrics
+package no.nav.syfo.metrics
 
 import io.prometheus.client.Histogram
 

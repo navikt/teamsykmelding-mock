@@ -25,7 +25,7 @@ import no.nav.helse.msgHead.XMLHealthcareProfessional
 import no.nav.helse.msgHead.XMLIdent
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.mq.MqProducer
 import no.nav.syfo.mq.producerForQueue
 import no.nav.syfo.pdl.model.PdlPerson
@@ -88,7 +88,7 @@ class LegeerklaeringService(
         val lege = personer[legeerklaeringRequest.fnrLege]
 
         if (pasient == null || lege == null) {
-            log.error("Fant ikke pasient eller lege i PDL")
+            logger.error("Fant ikke pasient eller lege i PDL")
             throw RuntimeException("Fant ikke pasient eller lege i PDL")
         }
 

@@ -1,14 +1,14 @@
 package no.nav.syfo.sykmelding.api
 
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
-import no.nav.syfo.application.HttpMessage
-import no.nav.syfo.log
+import no.nav.syfo.HttpMessage
+import no.nav.syfo.logger
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
@@ -30,7 +30,7 @@ fun Route.registrerSykmeldingApi(
 
         val mottakId = sykmeldingService.opprettSykmelding(request)
 
-        log.info("Opprettet sykmelding")
+        logger.info("Opprettet sykmelding")
         call.respond(HttpStatusCode.OK, HttpMessage("Opprettet sykmelding med mottakId $mottakId"))
     }
 
@@ -39,12 +39,12 @@ fun Route.registrerSykmeldingApi(
 
         val validationResult = sykmeldingService.sjekkRegler(request)
 
-        log.info("Har sjekket regler for sykmelding")
+        logger.info("Har sjekket regler for sykmelding")
         call.respond(validationResult)
     }
 
     delete("/sykmeldinger") {
-        log.info("going to delete sykmeldinger")
+        logger.info("going to delete sykmeldinger")
         val fnr = call.request.headers["Sykmeldt-Fnr"]
         if (fnr == null || fnr.length != 11) {
             call.respond(
@@ -54,7 +54,7 @@ fun Route.registrerSykmeldingApi(
             return@delete
         }
         val antallSlettede = slettSykmeldingService.slettAlleSykmeldinger(fnr = fnr)
-        log.info("Slettet $antallSlettede sykmeldinger")
+        logger.info("Slettet $antallSlettede sykmeldinger")
         call.respond(HttpStatusCode.OK, HttpMessage("Slettet $antallSlettede sykmeldinger"))
     }
 }

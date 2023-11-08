@@ -1,13 +1,13 @@
 package no.nav.syfo.papirsykmelding.api
 
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import no.nav.syfo.application.HttpMessage
-import no.nav.syfo.log
+import no.nav.syfo.HttpMessage
+import no.nav.syfo.logger
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
@@ -18,7 +18,7 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
 
         val journalpostId = papirsykmeldingService.opprettPapirsykmelding(request)
 
-        log.info("Opprettet papirsykmelding med journalpostId $journalpostId")
+        logger.info("Opprettet papirsykmelding med journalpostId $journalpostId")
         call.respond(
             HttpStatusCode.OK,
             HttpMessage("Opprettet papirsykmelding med journalpostId $journalpostId")
@@ -38,7 +38,7 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
         try {
             val validationResult = papirsykmeldingService.sjekkRegler(request)
 
-            log.info("Har sjekket regler for papirsykmelding")
+            logger.info("Har sjekket regler for papirsykmelding")
             call.respond(validationResult)
         } catch (e: PapirsykmeldingMappingException) {
             call.respond(
@@ -66,7 +66,7 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
 
         val journalpostId = papirsykmeldingService.opprettUtenlandskPapirsykmelding(fnrSykmeldt)
 
-        log.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
+        logger.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
         call.respond(
             HttpStatusCode.OK,
             HttpMessage("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")

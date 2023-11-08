@@ -1,6 +1,6 @@
 package no.nav.syfo.sykmelding.kafka
 
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 
@@ -14,7 +14,7 @@ class TombstoneKafkaProducer(
                 tombstoneProducer.send(ProducerRecord(topic, sykmeldingId, null)).get()
             }
         } catch (e: Exception) {
-            log.error(
+            logger.error(
                 "Kunne ikke skrive tombstone til topic for sykmeldingid $sykmeldingId: {}",
                 e.message
             )

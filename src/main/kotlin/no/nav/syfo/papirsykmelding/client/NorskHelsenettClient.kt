@@ -12,7 +12,7 @@ import io.ktor.http.HttpStatusCode.Companion.NotFound
 import java.io.IOException
 import java.util.UUID
 import no.nav.syfo.azuread.AccessTokenClient
-import no.nav.syfo.log
+import no.nav.syfo.logger
 
 class NorskHelsenettClient(
     private val norskHelsenettUrl: String,
@@ -34,11 +34,11 @@ class NorskHelsenettClient(
             }
         return when (httpResponse.status) {
             HttpStatusCode.InternalServerError -> {
-                log.error("Syfohelsenettproxy svarte med feilmelding")
+                logger.error("Syfohelsenettproxy svarte med feilmelding")
                 throw IOException("Syfohelsenettproxy svarte med feilmelding")
             }
             NotFound -> {
-                log.warn("Fant ikke behandler for HprNummer $hprNummer")
+                logger.warn("Fant ikke behandler for HprNummer $hprNummer")
                 null
             }
             else -> {

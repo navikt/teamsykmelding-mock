@@ -2,7 +2,7 @@ package no.nav.syfo.sykmelding
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.model.sykmeldingstatus.STATUS_SLETTET
 import no.nav.syfo.model.sykmeldingstatus.SykmeldingStatusKafkaEventDTO
 import no.nav.syfo.sykmelding.client.SyfosmregisterClient
@@ -15,9 +15,9 @@ class SlettSykmeldingService(
     private val tombstoneKafkaProducer: TombstoneKafkaProducer,
 ) {
     suspend fun slettAlleSykmeldinger(fnr: String): Int {
-        log.info("Henter ut alle sykmeldinger fra registeret")
+        logger.info("Henter ut alle sykmeldinger fra registeret")
         val sykmeldinger = syfosmregisterClient.hentSykmeldinger(fnr)
-        log.info("Sletter ${sykmeldinger.size} sykmeldinger")
+        logger.info("Sletter ${sykmeldinger.size} sykmeldinger")
 
         sykmeldinger.forEach {
             sykmeldingStatusKafkaProducer.send(

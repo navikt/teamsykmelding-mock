@@ -1,4 +1,4 @@
-package no.nav.syfo.application.metrics
+package no.nav.syfo.metrics
 
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.request.path

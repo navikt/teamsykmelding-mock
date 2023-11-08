@@ -1,7 +1,7 @@
-package no.nav.syfo.utenlandsk.opprettJournalpostservice
+package no.nav.syfo.utenlandsk.service
 
 import java.time.LocalDate
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.oppgave.OppgaveClient
 import no.nav.syfo.oppgave.OpprettOppgave
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
@@ -34,7 +34,7 @@ class UtenlandskSykmeldingService(
                     antallPdfs = utenlandskSykmeldingRequest.antallPdfs,
                 ),
             )
-        log.info("Opprettet journalpost med journalPostId $journalpostId")
+        logger.info("Opprettet journalpost med journalPostId $journalpostId")
         val opprettOppgave =
             OpprettOppgave(
                 opprettetAvEnhetsnr = "9999",
@@ -53,7 +53,7 @@ class UtenlandskSykmeldingService(
             )
 
         val opprettOppgaveResponse = oppgaveClient.opprettOppgave(opprettOppgave)
-        log.info("Oppgave id: ${opprettOppgaveResponse.id}")
+        logger.info("Oppgave id: ${opprettOppgaveResponse.id}")
         return opprettOppgaveResponse.id.toString()
     }
 
@@ -67,7 +67,7 @@ class UtenlandskSykmeldingService(
                     pdf = utenlandskPdf,
                 ),
             )
-        log.info("Opprettet journalpost med journalPostId $journalpostId")
+        logger.info("Opprettet journalpost med journalPostId $journalpostId")
         val opprettOppgave =
             OpprettOppgave(
                 opprettetAvEnhetsnr = "9999",
@@ -85,7 +85,7 @@ class UtenlandskSykmeldingService(
             )
 
         val opprettOppgaveResponse = oppgaveClient.opprettOppgave(opprettOppgave)
-        log.info("Oppgave id: ${opprettOppgaveResponse.id}")
+        logger.info("Oppgave id: ${opprettOppgaveResponse.id}")
         return opprettOppgaveResponse.id.toString()
     }
 }

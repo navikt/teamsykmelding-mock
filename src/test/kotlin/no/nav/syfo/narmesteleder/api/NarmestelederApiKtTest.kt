@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -19,8 +17,8 @@ import io.mockk.mockk
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import no.nav.syfo.application.ApplicationState
-import no.nav.syfo.application.HttpMessage
+import no.nav.syfo.ApplicationState
+import no.nav.syfo.HttpMessage
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer

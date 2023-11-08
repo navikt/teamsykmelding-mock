@@ -10,7 +10,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import no.nav.syfo.azuread.AccessTokenClient
-import no.nav.syfo.log
+import no.nav.syfo.logger
 
 class DokarkivClient(
     private val url: String,
@@ -22,9 +22,9 @@ class DokarkivClient(
         journalpostRequest: JournalpostRequest,
     ): String =
         try {
-            log.info("Oppretter papirsykmelding i dokarkiv")
+            logger.info("Oppretter papirsykmelding i dokarkiv")
             val token = accessTokenClient.getAccessToken(scope)
-            log.info("Got access_token for dokarkiv")
+            logger.info("Got access_token for dokarkiv")
             val httpResponse =
                 httpClient.post(url) {
                     contentType(ContentType.Application.Json)
@@ -39,13 +39,13 @@ class DokarkivClient(
             ) {
                 httpResponse.body<JournalpostResponse>().journalpostId
             } else {
-                log.error("Mottok uventet statuskode fra dokarkiv: {}, {}", httpResponse.status)
+                logger.error("Mottok uventet statuskode fra dokarkiv: {}, {}", httpResponse.status)
                 throw RuntimeException(
                     "Mottok uventet statuskode fra dokarkiv: ${httpResponse.status}"
                 )
             }
         } catch (e: Exception) {
-            log.warn("Oppretting av journalpost feilet: ${e.message}, {}")
+            logger.warn("Oppretting av journalpost feilet: ${e.message}, {}")
             throw e
         }
 }

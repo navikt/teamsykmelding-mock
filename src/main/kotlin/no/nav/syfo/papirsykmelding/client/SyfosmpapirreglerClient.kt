@@ -11,7 +11,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.io.IOException
 import no.nav.syfo.azuread.AccessTokenClient
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.ValidationResult
 
@@ -33,7 +33,7 @@ class SyfosmpapirreglerClient(
         if (httpResponse.status == HttpStatusCode.OK) {
             return httpResponse.body<ValidationResult>()
         } else {
-            log.error(
+            logger.error(
                 "Syfosmpapirregler svarte med feilkode ${httpResponse.status} for ${receivedSykmelding.sykmelding.msgId}"
             )
             throw IOException("Syfosmpapirregler svarte med feilkode ${httpResponse.status}")

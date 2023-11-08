@@ -32,7 +32,7 @@ import no.nav.helse.sm2013.Ident
 import no.nav.helse.sm2013.NavnType
 import no.nav.helse.sm2013.TeleCom
 import no.nav.helse.sm2013.URL
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.sm.Diagnosekoder
 
 fun mapOcrFilTilFellesformat(
@@ -591,7 +591,7 @@ fun tilPeriodeListe(
         )
     }
     if (periodeListe.isEmpty()) {
-        log.warn("Could not find aktivitetstype")
+        logger.warn("Could not find aktivitetstype")
         throw IllegalStateException("Cound not find aktivitetstype")
     }
     return periodeListe
@@ -630,7 +630,7 @@ fun tilArbeidsgiver(
                             v = "1"
                         }
                     else -> {
-                        log.warn(
+                        logger.warn(
                             "Klarte ikke å mappe {} til riktig harArbeidsgiver-verdi, bruker en arbeidsgiver som standard",
                             arbeidsgiverType?.harArbeidsgiver
                         )
@@ -653,7 +653,7 @@ fun tilMedisinskVurdering(
         medisinskVurderingType.hovedDiagnose.isNullOrEmpty() &&
             medisinskVurderingType.annenFraversArsak.isNullOrEmpty()
     ) {
-        log.warn("Sykmelding mangler hoveddiagnose og annenFraversArsak, avbryter..")
+        logger.warn("Sykmelding mangler hoveddiagnose og annenFraversArsak, avbryter..")
         throw IllegalStateException("Sykmelding mangler hoveddiagnose")
     }
 
@@ -735,7 +735,7 @@ fun toMedisinskVurderingDiagnose(
     when {
         identifisertKodeverk == Diagnosekoder.ICD10_CODE &&
             Diagnosekoder.icd10.containsKey(diagnosekode) -> {
-            log.info(
+            logger.info(
                 "Mappet $originalDiagnosekode til $diagnosekode for ICD10, basert på angitt diagnosekode og kodeverk/diagnosetekst"
             )
             return CV().apply {
@@ -746,7 +746,7 @@ fun toMedisinskVurderingDiagnose(
         }
         identifisertKodeverk == Diagnosekoder.ICPC2_CODE &&
             Diagnosekoder.icpc2.containsKey(diagnosekode) -> {
-            log.info(
+            logger.info(
                 "Mappet $originalDiagnosekode til $diagnosekode for ICPC2, basert på angitt diagnosekode og kodeverk/diagnosetekst"
             )
             return CV().apply {
@@ -758,7 +758,7 @@ fun toMedisinskVurderingDiagnose(
         identifisertKodeverk.isEmpty() &&
             Diagnosekoder.icd10.containsKey(diagnosekode) &&
             !Diagnosekoder.icpc2.containsKey(diagnosekode) -> {
-            log.info(
+            logger.info(
                 "Mappet $originalDiagnosekode til $diagnosekode for ICD10, basert på angitt diagnosekode (kodeverk ikke angitt)"
             )
             return CV().apply {
@@ -770,7 +770,7 @@ fun toMedisinskVurderingDiagnose(
         identifisertKodeverk.isEmpty() &&
             Diagnosekoder.icpc2.containsKey(diagnosekode) &&
             !Diagnosekoder.icd10.containsKey(diagnosekode) -> {
-            log.info(
+            logger.info(
                 "Mappet $originalDiagnosekode til $diagnosekode for ICPC2, basert på angitt diagnosekode (kodeverk ikke angitt)"
             )
             return CV().apply {
@@ -780,7 +780,7 @@ fun toMedisinskVurderingDiagnose(
             }
         }
         else -> {
-            log.warn("Diagnosekode $originalDiagnosekode tilhører ingen kjente kodeverk")
+            logger.warn("Diagnosekode $originalDiagnosekode tilhører ingen kjente kodeverk")
             throw IllegalStateException(
                 "Diagnosekode $originalDiagnosekode tilhører ingen kjente kodeverk"
             )
@@ -797,11 +797,11 @@ fun velgRiktigKontaktOgSignaturDato(
     }
 
     if (periodeliste.isEmpty()) {
-        log.warn("Periodeliste er tom, kan ikke fortsette")
+        logger.warn("Periodeliste er tom, kan ikke fortsette")
         throw IllegalStateException("Periodeliste er tom, kan ikke fortsette")
     }
     if (periodeliste.size > 1) {
-        log.info("Periodeliste inneholder mer enn en periode")
+        logger.info("Periodeliste inneholder mer enn en periode")
     }
 
     periodeliste.forEach {
@@ -809,7 +809,7 @@ fun velgRiktigKontaktOgSignaturDato(
             return LocalDateTime.of(it.periodeFOMDato, LocalTime.NOON)
         }
     }
-    log.info("Periodeliste mangler aktivitetIkkeMulig, bruker FOM fra første periode")
+    logger.info("Periodeliste mangler aktivitetIkkeMulig, bruker FOM fra første periode")
     return LocalDateTime.of(periodeliste.first().periodeFOMDato, LocalTime.NOON)
 }
 
@@ -834,6 +834,6 @@ fun velgRiktigSyketilfelleDato(
         }
     }
 
-    log.info("Periodeliste mangler aktivitetIkkeMulig, bruker FOM fra første periode")
+    logger.info("Periodeliste mangler aktivitetIkkeMulig, bruker FOM fra første periode")
     return periodeliste.first().periodeFOMDato
 }

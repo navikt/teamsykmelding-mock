@@ -1,7 +1,7 @@
 package no.nav.syfo.pdl.service
 
 import no.nav.syfo.azuread.AccessTokenClient
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.client.model.ResponseData
 import no.nav.syfo.pdl.model.Navn
@@ -18,9 +18,9 @@ class PdlPersonService(
         val pdlResponse = pdlClient.getPersoner(fnrs = fnrs, token = accessToken)
         if (pdlResponse.errors != null) {
             pdlResponse.errors.forEach {
-                log.error("PDL returnerte feilmelding: ${it.message}, ${it.extensions?.code}")
+                logger.error("PDL returnerte feilmelding: ${it.message}, ${it.extensions?.code}")
                 it.extensions?.details?.let { details ->
-                    log.error(
+                    logger.error(
                         "Type: ${details.type}, cause: ${details.cause}, policy: ${details.policy}"
                     )
                 }
@@ -30,12 +30,12 @@ class PdlPersonService(
             pdlResponse.data.hentPersonBolk == null ||
                 pdlResponse.data.hentPersonBolk.isNullOrEmpty()
         ) {
-            log.error("Fant ikke identer i PDL")
+            logger.error("Fant ikke identer i PDL")
             throw IllegalStateException("Fant ingen identer i PDL!")
         }
         pdlResponse.data.hentPersonBolk.forEach {
             if (it.code != "ok") {
-                log.warn("Mottok feilkode ${it.code} fra PDL for en eller flere personer")
+                logger.warn("Mottok feilkode ${it.code} fra PDL for en eller flere personer")
             }
         }
         return pdlResponse.data.toPdlPersonMap()

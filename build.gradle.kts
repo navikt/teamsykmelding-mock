@@ -32,7 +32,7 @@ plugins {
 }
 
 application {
-    mainClass.set("no.nav.syfo.BootstrapKt")
+    mainClass.set("no.nav.syfo.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
@@ -122,7 +122,7 @@ compileKotlin {
         manifest {
             attributes(
                 mapOf(
-                    "Main-Class" to "no.nav.syfo.BootstrapKt",
+                    "Main-Class" to "no.nav.syfo.ApplicationKt",
                 ),
             )
         }

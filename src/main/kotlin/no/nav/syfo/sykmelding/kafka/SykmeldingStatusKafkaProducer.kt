@@ -2,7 +2,7 @@ package no.nav.syfo.sykmelding.kafka
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.model.sykmeldingstatus.KafkaMetadataDTO
 import no.nav.syfo.model.sykmeldingstatus.SykmeldingStatusKafkaEventDTO
 import no.nav.syfo.model.sykmeldingstatus.SykmeldingStatusKafkaMessageDTO
@@ -14,7 +14,7 @@ class SykmeldingStatusKafkaProducer(
     private val statusTopic: String,
 ) {
     fun send(sykmeldingStatusKafkaEventDTO: SykmeldingStatusKafkaEventDTO, fnr: String) {
-        log.info(
+        logger.info(
             "Skriver slettet-status for sykmelding med id ${sykmeldingStatusKafkaEventDTO.sykmeldingId}"
         )
         val metadataDTO =
@@ -42,7 +42,7 @@ class SykmeldingStatusKafkaProducer(
                 )
                 .get()
         } catch (ex: Exception) {
-            log.error("Kunne ikke sende slettet-melding til topic", ex)
+            logger.error("Kunne ikke sende slettet-melding til topic", ex)
             throw ex
         }
     }

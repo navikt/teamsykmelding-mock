@@ -23,7 +23,7 @@ import no.nav.helse.papirsykemelding.KontaktMedPasientType
 import no.nav.helse.papirsykemelding.ReisetilskuddType
 import no.nav.helse.papirsykemelding.Skanningmetadata
 import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
-import no.nav.syfo.log
+import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
@@ -146,7 +146,7 @@ class PapirsykmeldingService(
                     utenlandskSykmelding = null,
                 )
         } catch (e: Exception) {
-            log.error("Kunne ikke mappe request til received sykmelding", e)
+            logger.error("Kunne ikke mappe request til received sykmelding", e)
             throw PapirsykmeldingMappingException(e.message)
         }
 

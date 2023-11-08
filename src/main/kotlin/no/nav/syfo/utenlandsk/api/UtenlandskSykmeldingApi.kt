@@ -1,16 +1,16 @@
 package no.nav.syfo.utenlandsk.api
 
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import no.nav.syfo.application.HttpMessage
-import no.nav.syfo.log
+import no.nav.syfo.HttpMessage
+import no.nav.syfo.logger
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingRequest
-import no.nav.syfo.utenlandsk.opprettJournalpostservice.UtenlandskSykmeldingService
+import no.nav.syfo.utenlandsk.service.UtenlandskSykmeldingService
 
 fun Route.registrerUtenlandskPapirsykmeldingApi(
     utenlandskSykeldingService: UtenlandskSykmeldingService
@@ -30,7 +30,7 @@ fun Route.registrerUtenlandskPapirsykmeldingApi(
                 )
             }
         } catch (exception: Exception) {
-            log.error("Exception", exception)
+            logger.error("Exception", exception)
             call.respond(
                 HttpStatusCode.InternalServerError,
                 HttpMessage(exception.message ?: "Unknown error")
@@ -48,7 +48,7 @@ fun Route.registrerUtenlandskPapirsykmeldingApi(
                 )
             )
         } catch (exception: Exception) {
-            log.error("Exception", exception)
+            logger.error("Exception", exception)
             call.respond(
                 HttpStatusCode.InternalServerError,
                 HttpMessage(exception.message ?: "Unknown error")
