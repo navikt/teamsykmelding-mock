@@ -60,8 +60,12 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("commons-codec:commons-codec:$commonsCodecVersion")
-    // override transient version 1.10 from io.ktor:ktor-client-apache
+    constraints {
+        implementation("commons-codec:commons-codec:$commonsCodecVersion"){
+            because("override transient version from io.ktor:ktor-client-apache")
+        }
+    }
+
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
@@ -95,7 +99,6 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
-
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

@@ -27,7 +27,6 @@ import io.ktor.server.routing.*
 import io.prometheus.client.hotspot.DefaultExports
 import java.time.Duration
 import java.util.*
-import kotlinx.coroutines.DelicateCoroutinesApi
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toProducerConfig
@@ -96,7 +95,6 @@ fun main() {
     embeddedServer.start(true)
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 fun Application.module() {
     val env = EnvironmentVariables()
     val serviceUser = ServiceUser()
