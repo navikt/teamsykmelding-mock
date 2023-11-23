@@ -11,6 +11,8 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.logger
+import no.nav.syfo.objectMapper
+import no.nav.syfo.securelog
 
 class DokarkivClient(
     private val url: String,
@@ -23,6 +25,7 @@ class DokarkivClient(
     ): String =
         try {
             logger.info("Oppretter papirsykmelding i dokarkiv")
+            securelog.info("journalpostRequest: ${objectMapper.writeValueAsString(journalpostRequest)}")
             val token = accessTokenClient.getAccessToken(scope)
             logger.info("Got access_token for dokarkiv")
             val httpResponse =
