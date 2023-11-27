@@ -10,7 +10,7 @@ val logstashEncoderVersion = "7.4"
 val prometheusVersion = "0.16.0"
 val smCommonVersion = "2.0.6"
 val mockkVersion = "1.13.8"
-val testContainerKafkaVersion = "1.19.2"
+val testContainerKafkaVersion = "1.19.3"
 val kotlinVersion = "1.9.21"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
@@ -24,7 +24,7 @@ val junitJupiterVersion = "5.10.1"
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "6.22.0"
+    id("com.diffplug.spotless") version "6.23.0"
     kotlin("jvm") version "1.9.21"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
