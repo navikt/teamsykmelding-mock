@@ -169,7 +169,7 @@ fun opprettUtenlandskJournalpostPayload(
             Dokumentvarianter(
                 filnavn = "xml-sykmeldingmetadata",
                 filtype = "XML",
-                variantformat = "SKANNING_META",
+                variantformat = "FULLVERSJON",
                 fysiskDokument = metadata,
             ),
         )
