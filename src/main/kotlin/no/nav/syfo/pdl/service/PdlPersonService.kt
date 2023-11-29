@@ -14,7 +14,6 @@ class PdlPersonService(
 ) {
     suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
         val accessToken = accessTokenClient.getAccessToken(pdlScope)
-        logger.info("Henter personer fra PDL $fnrs")
         val pdlResponse = pdlClient.getPersoner(fnrs = fnrs, token = accessToken)
         if (pdlResponse.errors != null) {
             pdlResponse.errors.forEach {
