@@ -138,7 +138,7 @@ class SykmeldingService(
             logger.error("Fant ikke sykmeldt eller lege i PDL")
             throw RuntimeException("Fant ikke sykmeldt eller lege i PDL")
         }
-
+        logger.info("fant sykmeldt $sykmeldt og lege $lege")
         val sykmelding =
             lagHelseopplysninger(
                 sykmeldingRequest = sykmeldingRequest,

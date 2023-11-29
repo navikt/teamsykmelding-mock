@@ -14,7 +14,7 @@ class PdlPersonService(
 ) {
     suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
         val accessToken = accessTokenClient.getAccessToken(pdlScope)
-
+        logger.info("Henter personer fra PDL $fnrs")
         val pdlResponse = pdlClient.getPersoner(fnrs = fnrs, token = accessToken)
         if (pdlResponse.errors != null) {
             pdlResponse.errors.forEach {
@@ -38,11 +38,12 @@ class PdlPersonService(
                 logger.warn("Mottok feilkode ${it.code} fra PDL for en eller flere personer")
             }
         }
+        logger.info("Hentet personer fra PDL $pdlResponse")
         return pdlResponse.data.toPdlPersonMap()
     }
 
     private fun ResponseData.toPdlPersonMap(): Map<String, PdlPerson> {
-        return hentPersonBolk!!.associate {
+        return hentPersonBolk!!.filter { it.person != null }.associate {
             it.ident to
                 PdlPerson(
                     navn = getNavn(it.person?.navn?.first()),
