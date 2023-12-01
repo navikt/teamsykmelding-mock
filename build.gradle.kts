@@ -24,7 +24,7 @@ val junitJupiterVersion = "5.10.1"
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "6.23.1"
+    id("com.diffplug.spotless") version "6.23.2"
     kotlin("jvm") version "1.9.21"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
