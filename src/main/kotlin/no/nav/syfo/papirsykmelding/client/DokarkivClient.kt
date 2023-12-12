@@ -25,7 +25,9 @@ class DokarkivClient(
     ): String =
         try {
             logger.info("Oppretter papirsykmelding i dokarkiv")
-            securelog.info("journalpostRequest: ${objectMapper.writeValueAsString(journalpostRequest)}")
+            securelog.info(
+                "journalpostRequest: ${objectMapper.writeValueAsString(journalpostRequest)}"
+            )
             val token = accessTokenClient.getAccessToken(scope)
             logger.info("Got access_token for dokarkiv")
             val httpResponse =
