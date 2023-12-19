@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: github/codeql-action/init@v2
+      - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
 
@@ -34,6 +34,6 @@ jobs:
 
       - run: ./gradlew shadowJar -x test
 
-      - uses: github/codeql-action/analyze@v2
+      - uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
