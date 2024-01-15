@@ -6,5 +6,5 @@ data class UtenlandskSykmeldingRequest(
 )
 
 data class UtenlandskSykmeldingNavNoRequest(
-    val fnr: String,
+    val fnr: String?,
 )
