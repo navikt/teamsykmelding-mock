@@ -50,13 +50,7 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
 
     post("/papirsykmelding/utenlandsk/opprett") {
         val fnrSykmeldt = call.request.headers["Sykmeldt-Fnr"]
-
-        if (fnrSykmeldt == null) {
-            call.respond(HttpStatusCode.BadRequest, HttpMessage("Sykmeldt-Fnr mangler"))
-            return@post
-        }
-
-        if (fnrSykmeldt.length != 11) {
+        if (fnrSykmeldt != null && fnrSykmeldt.length != 11) {
             call.respond(
                 HttpStatusCode.BadRequest,
                 HttpMessage("Sykmeldt-Fnr har feil lengde, er ${fnrSykmeldt.length}")

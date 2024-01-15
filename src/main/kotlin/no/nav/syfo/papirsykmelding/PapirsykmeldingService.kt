@@ -153,7 +153,7 @@ class PapirsykmeldingService(
         return syfosmpapirreglerClient.sjekkRegler(receivedSykmelding)
     }
 
-    suspend fun opprettUtenlandskPapirsykmelding(fnr: String): String {
+    suspend fun opprettUtenlandskPapirsykmelding(fnr: String?): String {
         return dokarkivClient.opprettJournalpost(
             opprettUtenlandskJournalpostPayload(
                 fnr = fnr,

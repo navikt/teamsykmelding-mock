@@ -157,7 +157,7 @@ fun opprettJournalpostPayload(
 }
 
 fun opprettUtenlandskJournalpostPayload(
-    fnr: String,
+    fnr: String?,
     pdf: String,
     metadata: String,
 ): JournalpostRequest {
@@ -176,8 +176,9 @@ fun opprettUtenlandskJournalpostPayload(
                 fysiskDokument = metadata,
             ),
         )
+    val bruker = if (fnr == null) null else Bruker(id = fnr)
     return JournalpostRequest(
-        bruker = Bruker(id = fnr),
+        bruker = bruker,
         dokumenter =
             listOf(
                 Dokument(

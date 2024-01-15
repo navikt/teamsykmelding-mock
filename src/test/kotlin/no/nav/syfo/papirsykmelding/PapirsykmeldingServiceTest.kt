@@ -136,4 +136,15 @@ internal class PapirsykmeldingServiceTest {
             coVerify { dokarkivClient.opprettJournalpost(match { it.bruker?.id == null }) }
         }
     }
+
+    @Test
+    internal fun `opprettUtenlandskPapirsykmelding med fnr = null`() {
+        coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
+        runBlocking {
+            papirsykmeldingService.opprettUtenlandskPapirsykmelding(
+                fnr = null,
+            )
+            coVerify { dokarkivClient.opprettJournalpost(match { it.bruker?.id == null }) }
+        }
+    }
 }
