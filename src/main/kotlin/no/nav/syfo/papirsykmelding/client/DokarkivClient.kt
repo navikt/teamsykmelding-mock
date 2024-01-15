@@ -56,12 +56,13 @@ class DokarkivClient(
 }
 
 fun opprettUtenlandskJournalpost(
-    fnr: String,
+    fnr: String?,
     pdf: String,
     antallPdfs: Int,
 ): JournalpostRequest {
+    val bruker = if (fnr == null) null else Bruker(id = fnr)
     return JournalpostRequest(
-        bruker = Bruker(id = fnr),
+        bruker = bruker,
         dokumenter =
             (0 until antallPdfs).map {
                 Dokument(

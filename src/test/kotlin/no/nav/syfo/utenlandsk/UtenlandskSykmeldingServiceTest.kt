@@ -8,6 +8,7 @@ import no.nav.syfo.oppgave.OppgaveClient
 import no.nav.syfo.oppgave.OpprettOppgaveResponse
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
+import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingPdfRequest
 import no.nav.syfo.utenlandsk.service.UtenlandskSykmeldingService
 import org.junit.jupiter.api.Test
 
@@ -42,6 +43,21 @@ internal class UtenlandskSykmeldingServiceTest {
         runBlocking {
             utenlandskSykmeldingService.opprettUtenlanskNavNo(
                 UtenlandskSykmeldingNavNoRequest(fnr = null),
+            )
+            coVerify { dokarkivClient.opprettJournalpost(match { it.bruker?.id == null }) }
+        }
+    }
+
+    @Test
+    internal fun `opprett utenlansk sykmelding pdf uten fnr`() {
+        coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
+        coEvery { oppgaveClient.opprettOppgave(any()) } returns OpprettOppgaveResponse(
+            1,
+            1,
+        )
+        runBlocking {
+            utenlandskSykmeldingService.opprettUtenlanskPdf(
+                UtenlandskSykmeldingPdfRequest(fnr = null),
             )
             coVerify { dokarkivClient.opprettJournalpost(match { it.bruker?.id == null }) }
         }
