@@ -57,8 +57,7 @@ spec:
         - host: oppgave-q1.dev-fss-pub.nais.io
         - host: b27apvl221.preprod.local
           ports:
-            - name: mq
-              port: 1413
+          - port: 1413
     inbound:
       rules:
         - application: teamsykmelding-mock
