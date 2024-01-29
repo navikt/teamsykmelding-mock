@@ -44,24 +44,25 @@ class DokarkivClient(
             ) {
                 httpResponse.body<JournalpostResponse>().journalpostId
             } else {
-                logger.error("Mottok uventet statuskode fra dokarkiv: {}, {}", httpResponse.status)
+                logger.error("Mottok uventet statuskode fra dokarkiv: {}", httpResponse.status)
                 throw RuntimeException(
                     "Mottok uventet statuskode fra dokarkiv: ${httpResponse.status}"
                 )
             }
         } catch (e: Exception) {
-            logger.warn("Oppretting av journalpost feilet: ${e.message}, {}")
+            logger.warn("Oppretting av journalpost feilet: ${e.message}")
             throw e
         }
 }
 
 fun opprettUtenlandskJournalpost(
-    fnr: String,
+    fnr: String?,
     pdf: String,
     antallPdfs: Int,
 ): JournalpostRequest {
+    val bruker = if (fnr == null) null else Bruker(id = fnr)
     return JournalpostRequest(
-        bruker = Bruker(id = fnr),
+        bruker = bruker,
         dokumenter =
             (0 until antallPdfs).map {
                 Dokument(
@@ -81,11 +82,12 @@ fun opprettUtenlandskJournalpost(
 }
 
 fun opprettUtenlandskNavNoJournalpost(
-    fnr: String,
+    fnr: String?,
     pdf: String,
 ): JournalpostRequest {
+    val bruker = if (fnr == null) null else Bruker(id = fnr)
     return JournalpostRequest(
-        bruker = Bruker(id = fnr),
+        bruker = bruker,
         dokumenter =
             (0 until 1).map {
                 Dokument(
@@ -156,7 +158,7 @@ fun opprettJournalpostPayload(
 }
 
 fun opprettUtenlandskJournalpostPayload(
-    fnr: String,
+    fnr: String?,
     pdf: String,
     metadata: String,
 ): JournalpostRequest {
@@ -175,8 +177,9 @@ fun opprettUtenlandskJournalpostPayload(
                 fysiskDokument = metadata,
             ),
         )
+    val bruker = if (fnr == null) null else Bruker(id = fnr)
     return JournalpostRequest(
-        bruker = Bruker(id = fnr),
+        bruker = bruker,
         dokumenter =
             listOf(
                 Dokument(

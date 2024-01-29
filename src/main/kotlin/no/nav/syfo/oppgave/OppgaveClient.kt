@@ -57,7 +57,7 @@ data class OpprettOppgave(
     val prioritet: String,
     val behandlingsTema: Nothing?,
     val metadata: Map<String, String?> = emptyMap(),
-    val personident: String,
+    val personident: String? = null,
 )
 
 data class OpprettOppgaveResponse(
