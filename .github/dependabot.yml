@@ -8,7 +8,6 @@ updates:
     ignore:
       - dependency-name: "org.apache.kafka:kafka_2.12"
         update-types: ["version-update:semver-major"]    
-    ignore:
       - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
         update-types: ["version-update:semver-major"]
     groups:
