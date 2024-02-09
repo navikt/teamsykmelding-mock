@@ -21,10 +21,11 @@ internal class UtenlandskSykmeldingServiceTest {
     @Test
     internal fun `opprett utenlansk sykmelding Nav med fnr`() {
         coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
-        coEvery { oppgaveClient.opprettOppgave(any()) } returns OpprettOppgaveResponse(
-            1,
-            1,
-        )
+        coEvery { oppgaveClient.opprettOppgave(any()) } returns
+            OpprettOppgaveResponse(
+                1,
+                1,
+            )
         runBlocking {
             utenlandskSykmeldingService.opprettUtenlanskNavNo(
                 UtenlandskSykmeldingNavNoRequest(fnr = "123"),
@@ -36,10 +37,11 @@ internal class UtenlandskSykmeldingServiceTest {
     @Test
     internal fun `opprett utenlansk sykmelding Nav uten fnr`() {
         coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
-        coEvery { oppgaveClient.opprettOppgave(any()) } returns OpprettOppgaveResponse(
-            1,
-            1,
-        )
+        coEvery { oppgaveClient.opprettOppgave(any()) } returns
+            OpprettOppgaveResponse(
+                1,
+                1,
+            )
         runBlocking {
             utenlandskSykmeldingService.opprettUtenlanskNavNo(
                 UtenlandskSykmeldingNavNoRequest(fnr = null),
@@ -51,10 +53,11 @@ internal class UtenlandskSykmeldingServiceTest {
     @Test
     internal fun `opprett utenlansk sykmelding pdf uten fnr`() {
         coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
-        coEvery { oppgaveClient.opprettOppgave(any()) } returns OpprettOppgaveResponse(
-            1,
-            1,
-        )
+        coEvery { oppgaveClient.opprettOppgave(any()) } returns
+            OpprettOppgaveResponse(
+                1,
+                1,
+            )
         runBlocking {
             utenlandskSykmeldingService.opprettUtenlanskPdf(
                 UtenlandskSykmeldingPdfRequest(fnr = null),

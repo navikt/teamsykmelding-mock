@@ -306,6 +306,9 @@ private fun tilPeriode(
                 } else null
             gradertSykmelding =
                 when (periode.type) {
+                    SykmeldingType.GRADERT_UNDER_20 -> {
+                        gradert(19, false)
+                    }
                     SykmeldingType.GRADERT_20 -> {
                         gradert(20, false)
                     }

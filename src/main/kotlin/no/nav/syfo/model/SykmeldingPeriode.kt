@@ -10,6 +10,7 @@ data class SykmeldingPeriode(
 
 enum class SykmeldingType {
     AVVENTENDE,
+    GRADERT_UNDER_20,
     GRADERT_20,
     GRADERT_40,
     GRADERT_50,
