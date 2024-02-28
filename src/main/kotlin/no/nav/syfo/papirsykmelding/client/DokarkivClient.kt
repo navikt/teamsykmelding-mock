@@ -60,24 +60,30 @@ fun opprettUtenlandskJournalpost(
     pdf: String,
     antallPdfs: Int,
 ): JournalpostRequest {
-    val bruker = if (fnr == null) null else Bruker(id = fnr)
-    return JournalpostRequest(
-        bruker = bruker,
-        dokumenter =
-            (0 until antallPdfs).map {
-                Dokument(
-                    dokumentvarianter =
-                        mutableListOf(
-                            Dokumentvarianter(
-                                filnavn = "pdf-sykmelding-$it",
-                                filtype = "PDFA",
-                                variantformat = "ARKIV",
-                                fysiskDokument = pdf,
-                            ),
+    val dokumenter =
+        (0 until antallPdfs).map {
+            Dokument(
+                dokumentvarianter =
+                    mutableListOf(
+                        Dokumentvarianter(
+                            filnavn = "pdf-sykmelding-$it",
+                            filtype = "PDFA",
+                            variantformat = "ARKIV",
+                            fysiskDokument = pdf,
                         ),
-                    tittel = "Sykmelding-doc-$it",
-                )
-            },
+                    ),
+                tittel = "Sykmelding-doc-$it",
+            )
+        }
+    if (fnr.isNullOrEmpty()) {
+        return JournalpostRequest(
+            dokumenter = dokumenter,
+        )
+    }
+
+    return JournalpostRequest(
+        bruker = Bruker(id = fnr),
+        dokumenter = dokumenter,
     )
 }
 
@@ -85,24 +91,32 @@ fun opprettUtenlandskNavNoJournalpost(
     fnr: String?,
     pdf: String,
 ): JournalpostRequest {
-    val bruker = if (fnr == null) null else Bruker(id = fnr)
+    val dokumenter =
+        (0 until 1).map {
+            Dokument(
+                dokumentvarianter =
+                    mutableListOf(
+                        Dokumentvarianter(
+                            filnavn = "pdf-sykmelding-$it",
+                            filtype = "PDFA",
+                            variantformat = "ARKIV",
+                            fysiskDokument = pdf,
+                        )
+                    ),
+                tittel = "Egenerklæring for utenlandske sykemeldinger-$it",
+            )
+        }
+    if (fnr.isNullOrEmpty()) {
+        return JournalpostRequest(
+            dokumenter = dokumenter,
+            kanal = "NAV_NO",
+            tema = "SYK",
+            tittel = "Egenerklæring for utenlandske sykemeldinger",
+        )
+    }
     return JournalpostRequest(
-        bruker = bruker,
-        dokumenter =
-            (0 until 1).map {
-                Dokument(
-                    dokumentvarianter =
-                        mutableListOf(
-                            Dokumentvarianter(
-                                filnavn = "pdf-sykmelding-$it",
-                                filtype = "PDFA",
-                                variantformat = "ARKIV",
-                                fysiskDokument = pdf,
-                            ),
-                        ),
-                    tittel = "Egenerklæring for utenlandske sykemeldinger-$it",
-                )
-            },
+        bruker = Bruker(id = fnr),
+        dokumenter = dokumenter,
         kanal = "NAV_NO",
         tema = "SYK",
         tittel = "Egenerklæring for utenlandske sykemeldinger",

@@ -1,6 +1,7 @@
 package no.nav.syfo.utenlandsk.service
 
 import java.time.LocalDate
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.syfo.logger
 import no.nav.syfo.oppgave.OppgaveClient
 import no.nav.syfo.oppgave.OpprettOppgave
@@ -35,6 +36,13 @@ class UtenlandskSykmeldingService(
                 ),
             )
         logger.info("Opprettet journalpost med journalPostId $journalpostId")
+        if (utenlandskSykmeldingPdfRequest.fnr.isNullOrEmpty()) {
+            logger.info(
+                "oppretter ikke oppgave for utenlandske sykmeldinger uten fnr {}",
+                kv("JournalpostId", journalpostId)
+            )
+            return journalpostId
+        }
         val opprettOppgave =
             OpprettOppgave(
                 opprettetAvEnhetsnr = "9999",
@@ -68,6 +76,13 @@ class UtenlandskSykmeldingService(
                 ),
             )
         logger.info("Opprettet journalpost med journalPostId $journalpostId")
+        if (utenlandskSykmeldingNavNoRequest.fnr.isNullOrEmpty()) {
+            logger.info(
+                "oppretter ikke oppgave for utenlandske sykmeldinger uten fnr {}",
+                kv("JournalpostId", journalpostId)
+            )
+            return journalpostId
+        }
         val opprettOppgave =
             OpprettOppgave(
                 opprettetAvEnhetsnr = "9999",
