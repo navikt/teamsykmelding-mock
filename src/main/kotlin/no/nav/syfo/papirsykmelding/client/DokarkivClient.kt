@@ -9,9 +9,11 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.logger
 import no.nav.syfo.objectMapper
+import no.nav.syfo.papirsykmelding.tilMedisinskVurdering
 import no.nav.syfo.securelog
 
 class DokarkivClient(
@@ -25,8 +27,8 @@ class DokarkivClient(
     ): String =
         try {
             logger.info("Oppretter papirsykmelding i dokarkiv")
-            securelog.info(
-                "journalpostRequest: ${objectMapper.writeValueAsString(journalpostRequest)}"
+            securelog.info("journalpostRequest info {}",
+                kv("fnr", journalpostRequest.bruker?.id),
             )
             val token = accessTokenClient.getAccessToken(scope)
             logger.info("Got access_token for dokarkiv")
@@ -191,9 +193,20 @@ fun opprettUtenlandskJournalpostPayload(
                 fysiskDokument = metadata,
             ),
         )
-    val bruker = if (fnr == null) null else Bruker(id = fnr)
+    if (fnr.isNullOrEmpty()) {
+        return JournalpostRequest(
+            dokumenter =
+            listOf(
+                Dokument(
+                    brevkode = "NAV 08-07.04 U",
+                    dokumentvarianter = dokumentvarianter,
+                ),
+            ),
+            tittel = "Utenlandsk papirsykmelding",
+        )
+    }
     return JournalpostRequest(
-        bruker = bruker,
+        bruker = Bruker(id = fnr),
         dokumenter =
             listOf(
                 Dokument(
