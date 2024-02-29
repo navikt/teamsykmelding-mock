@@ -11,6 +11,7 @@ import no.nav.syfo.logger
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
+import no.nav.syfo.papirsykmelding.model.UtenlandskPapirsykmeldingRequest
 
 fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingService) {
     post("/papirsykmelding/opprett") {
@@ -57,8 +58,10 @@ fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingSer
             )
             return@post
         }
-
-        val journalpostId = papirsykmeldingService.opprettUtenlandskPapirsykmelding(fnrSykmeldt)
+        logger.info("utenlandsk papirsykmelding med fnr fra header: $fnrSykmeldt")
+        val request = call.receive<UtenlandskPapirsykmeldingRequest>()
+        logger.info("utenlandsk papirsykmelding med fnr fra requestclas: ${request.fnr}")
+        val journalpostId = papirsykmeldingService.opprettUtenlandskPapirsykmelding(request.fnr)
 
         logger.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
         call.respond(

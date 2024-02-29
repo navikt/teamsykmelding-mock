@@ -13,3 +13,7 @@ data class PapirsykmeldingRequest(
     val diagnosekodesystem: String,
     val utenOcr: Boolean,
 )
+
+data class UtenlandskPapirsykmeldingRequest(
+    val fnr: String?,
+)
