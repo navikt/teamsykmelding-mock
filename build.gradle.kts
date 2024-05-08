@@ -1,31 +1,31 @@
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val coroutinesVersion = "1.7.3"
-val jacksonVersion = "2.16.0"
+val coroutinesVersion = "1.8.0"
+val jacksonVersion = "2.17.1"
 val kluentVersion = "1.73"
-val ktorVersion = "2.3.7"
-val logbackVersion = "1.4.14"
+val ktorVersion = "2.3.11"
+val logbackVersion = "1.5.6"
 val logstashEncoderVersion = "7.4"
 val prometheusVersion = "0.16.0"
 val smCommonVersion = "2.0.8"
-val mockkVersion = "1.13.8"
-val testContainerKafkaVersion = "1.19.3"
-val kotlinVersion = "1.9.21"
+val mockkVersion = "1.13.10"
+val testContainerKafkaVersion = "1.19.7"
+val kotlinVersion = "1.9.24"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
-val commonsCodecVersion = "1.16.0"
+val commonsCodecVersion = "1.17.0"
 val ktfmtVersion = "0.44"
 val javaVersion = JavaVersion.VERSION_21
-val junitJupiterVersion = "5.10.1"
+val junitJupiterVersion = "5.10.2"
 
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "6.23.3"
-    kotlin("jvm") version "1.9.21"
+    id("com.diffplug.spotless") version "6.25.0"
+    kotlin("jvm") version "1.9.24"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
