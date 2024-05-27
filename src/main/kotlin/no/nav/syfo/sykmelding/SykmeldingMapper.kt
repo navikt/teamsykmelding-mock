@@ -263,5 +263,5 @@ fun extractTlfFromKontaktInfo(kontaktInfo: List<TeleCom>?): String? =
     ) {
         kontaktInfo.firstOrNull()!!.teleAddress?.v?.removePrefix("tel:")
     } else {
-        kontaktInfo.firstOrNull()?.teleAddress?.v
+        kontaktInfo!!.firstOrNull()!!.teleAddress?.v
     }
