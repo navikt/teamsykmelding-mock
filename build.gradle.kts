@@ -98,7 +98,7 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:kafka:$testContainerKafkaVersion")
     constraints {
-        implementation("org.apache.commons:commons-compress:commonsCompressVersion") {
+        implementation("org.apache.commons:commons-compress:$commonsCompressVersion") {
             because("override transient version from org.testcontainers:kafka")
         }
     }
