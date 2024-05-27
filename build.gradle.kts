@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 group = "no.nav.syfo"
 version = "1.0.0"
 
@@ -18,14 +20,15 @@ val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.17.0"
 val ktfmtVersion = "0.44"
-val javaVersion = JavaVersion.VERSION_21
+val javaVersion = JvmTarget.JVM_21
 val junitJupiterVersion = "5.10.2"
+val commonsCompressVersion = "1.26.2"
 
 
 plugins {
     id("application")
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("jvm") version "1.9.24"
+    kotlin("jvm") version "2.0.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -61,7 +64,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     constraints {
-        implementation("commons-codec:commons-codec:$commonsCodecVersion"){
+        implementation("commons-codec:commons-codec:$commonsCodecVersion") {
             because("override transient version from io.ktor:ktor-client-apache")
         }
     }
@@ -94,6 +97,11 @@ dependencies {
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:kafka:$testContainerKafkaVersion")
+    constraints {
+        implementation("org.apache.commons:commons-compress:commonsCompressVersion") {
+            because("override transient version from org.testcontainers:kafka")
+        }
+    }
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
@@ -101,14 +109,14 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks {
 
-compileKotlin {
-        kotlinOptions.jvmTarget = javaVersion.toString()
+kotlin {
+    compilerOptions {
+        jvmTarget = javaVersion
     }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = javaVersion.toString()
-    }
+}
+
+tasks {
     shadowJar {
         archiveBaseName.set("app")
         archiveClassifier.set("")
