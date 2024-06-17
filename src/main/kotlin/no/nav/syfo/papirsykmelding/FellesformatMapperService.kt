@@ -341,7 +341,7 @@ fun tilBehandler(hprNummer: String, fnrLege: String): HelseOpplysningerArbeidsuf
                         v = "HP"
                         dn = "Hovedtelefon"
                     }
-                teleAddress = URL().apply { v = null }
+                teleAddress = URL().apply { v = "tel:12345678" }
             },
         )
     }
