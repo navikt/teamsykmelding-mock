@@ -23,6 +23,7 @@ class SyfosmreglerClient(
 ) {
     suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
         val accessToken = accessTokenClient.getAccessToken(syfosmreglerScope)
+        logger.info("Gjør kall mot syfosmregler api")
         val httpResponse =
             httpClient.post("$syfosmreglerUrl/v1/rules/validate") {
                 contentType(ContentType.Application.Json)
