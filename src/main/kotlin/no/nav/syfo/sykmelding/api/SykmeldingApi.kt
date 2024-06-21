@@ -37,6 +37,7 @@ fun Route.registrerSykmeldingApi(
     post("/sykmelding/regelsjekk") {
         val request = call.receive<SykmeldingRequest>()
 
+        logger.info("Sjekker regler for sykmelding")
         val validationResult = sykmeldingService.sjekkRegler(request)
 
         logger.info("Har sjekket regler for sykmelding")
