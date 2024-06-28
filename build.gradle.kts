@@ -21,7 +21,7 @@ val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.17.0"
 val ktfmtVersion = "0.44"
 val javaVersion = JvmTarget.JVM_21
-val junitJupiterVersion = "5.10.2"
+val junitJupiterVersion = "5.10.3"
 val commonsCompressVersion = "1.26.2"
 
 
