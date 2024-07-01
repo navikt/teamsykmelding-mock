@@ -21,7 +21,7 @@
         "@navikt/ds-react": "^6.7.1",
         "@navikt/ds-tailwind": "^6.7.1",
         "@navikt/next-api-proxy": "^3.4.1",
-        "@navikt/next-logger": "^1.24.0",
+        "@navikt/next-logger": "^1.25.0",
         "@reach/combobox": "^0.18.0",
         "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
