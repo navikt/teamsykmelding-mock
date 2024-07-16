@@ -12,8 +12,6 @@ import io.ktor.http.contentType
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.syfo.azuread.AccessTokenClient
 import no.nav.syfo.logger
-import no.nav.syfo.objectMapper
-import no.nav.syfo.papirsykmelding.tilMedisinskVurdering
 import no.nav.syfo.securelog
 
 class DokarkivClient(
@@ -27,7 +25,8 @@ class DokarkivClient(
     ): String =
         try {
             logger.info("Oppretter papirsykmelding i dokarkiv")
-            securelog.info("journalpostRequest info {}",
+            securelog.info(
+                "journalpostRequest info {}",
                 kv("fnr", journalpostRequest.bruker?.id),
             )
             val token = accessTokenClient.getAccessToken(scope)
@@ -196,12 +195,12 @@ fun opprettUtenlandskJournalpostPayload(
     if (fnr.isNullOrEmpty()) {
         return JournalpostRequest(
             dokumenter =
-            listOf(
-                Dokument(
-                    brevkode = "NAV 08-07.04 U",
-                    dokumentvarianter = dokumentvarianter,
+                listOf(
+                    Dokument(
+                        brevkode = "NAV 08-07.04 U",
+                        dokumentvarianter = dokumentvarianter,
+                    ),
                 ),
-            ),
             tittel = "Utenlandsk papirsykmelding",
         )
     }

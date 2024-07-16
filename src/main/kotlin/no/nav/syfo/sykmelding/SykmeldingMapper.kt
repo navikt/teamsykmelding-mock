@@ -255,13 +255,13 @@ fun HelseOpplysningerArbeidsuforhet.AvsenderSystem.toAvsenderSystem() =
         versjon = systemVersjon,
     )
 
-fun extractTlfFromKontaktInfo(kontaktInfo: List<TeleCom>?): String? =
+fun extractTlfFromKontaktInfo(kontaktInfo: List<TeleCom>): String? =
     if (
-        kontaktInfo?.size != 0 &&
-            kontaktInfo?.firstOrNull()!!.teleAddress != null &&
+        kontaktInfo.isNotEmpty() &&
+            kontaktInfo.firstOrNull()!!.teleAddress != null &&
             kontaktInfo.firstOrNull()!!.teleAddress?.v?.contains("tel:") == true
     ) {
-        kontaktInfo.firstOrNull()!!.teleAddress?.v?.removePrefix("tel:")
+        kontaktInfo.firstOrNull()?.teleAddress?.v?.removePrefix("tel:")
     } else {
-        kontaktInfo!!.firstOrNull()!!.teleAddress?.v
+        kontaktInfo.firstOrNull()?.teleAddress?.v
     }
