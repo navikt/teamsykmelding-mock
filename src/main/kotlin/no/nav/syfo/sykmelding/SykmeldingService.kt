@@ -5,7 +5,6 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
 import java.util.UUID
-import javax.jms.Connection
 import javax.jms.Session
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
@@ -14,6 +13,7 @@ import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
 import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.ValidationResult
+import no.nav.syfo.mq.MqClient
 import no.nav.syfo.mq.MqProducer
 import no.nav.syfo.mq.producerForQueue
 import no.nav.syfo.pdl.service.PdlPersonService
@@ -25,21 +25,24 @@ import no.nav.syfo.utils.marshallFellesformat
 
 class SykmeldingService(
     private val pdlPersonService: PdlPersonService,
-    private val connection: Connection,
+    private val mqClient: MqClient,
     private val sykmeldingQueue: String,
     private val syfosmreglerClient: SyfosmreglerClient,
 ) {
+
     suspend fun opprettSykmelding(sykmeldingRequest: SykmeldingRequest): String {
+        val connection = mqClient.getConnection()
         val mottakId = UUID.randomUUID().toString()
         val sykmelding = tilSykmeldingXml(sykmeldingRequest, mottakId)
         val sykmeldingXml = marshallFellesformat(sykmelding)
 
-        val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-        val messageProducer = session.producerForQueue(sykmeldingQueue)
-        val syfosmmottakMqProducer = MqProducer(session, messageProducer)
+        if (connection != null) {
+            val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
+            val messageProducer = session.producerForQueue(sykmeldingQueue)
+            val syfosmmottakMqProducer = MqProducer(session, messageProducer)
 
-        syfosmmottakMqProducer.send(sykmeldingXml)
-
+            syfosmmottakMqProducer.send(sykmeldingXml)
+        }
         return mottakId
     }
 

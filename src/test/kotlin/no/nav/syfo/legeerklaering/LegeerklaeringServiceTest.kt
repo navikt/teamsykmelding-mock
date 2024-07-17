@@ -1,5 +1,7 @@
 package no.nav.syfo.legeerklaering
 
+import io.ktor.server.testing.*
+import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.mockk
 import javax.jms.Connection
@@ -12,10 +14,14 @@ import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.utils.get
+import no.nav.syfo.utils.setupTestApplication
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 internal class LegeerklaeringServiceTest {
     private val pdlPersonService: PdlPersonService = mockk<PdlPersonService>()
@@ -25,13 +31,19 @@ internal class LegeerklaeringServiceTest {
     private val legeFnr = "10987654321"
 
     @BeforeEach
-    internal fun `Set up`() {
+    fun before() = testApplication {
+        setupTestApplication {
+            dependencies { modules(module { single { legeerklaeringService } }) }
+        }
+        clearMocks(connection)
         coEvery { pdlPersonService.getPersoner(any()) } returns
             mapOf(
                 fnr to PdlPerson(Navn("Syk", null, "Sykestad")),
                 legeFnr to PdlPerson(Navn("Doktor", null, "Dyregod")),
             )
     }
+
+    @AfterEach fun cleanup() = stopKoin()
 
     @Test
     internal fun `Oppretter korrekt legeerklaeringXml`() {

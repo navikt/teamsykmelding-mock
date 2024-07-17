@@ -24,6 +24,7 @@ fun main() {
 fun Application.module() {
     configureKoin()
     configureContentNegotiation()
+    configureAuth()
     configurePrometheus()
     configureSwagger()
     configureLifecycleHooks()

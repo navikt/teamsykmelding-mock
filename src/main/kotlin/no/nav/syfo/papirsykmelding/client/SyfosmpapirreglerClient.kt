@@ -10,19 +10,23 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.io.IOException
-import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.ValidationResult
 
-class SyfosmpapirreglerClient(
+interface SyfosmpapirreglerClient {
+    suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult
+}
+
+class SyfosmpapirreglerClientProduction(
     private val syfosmpapirreglerUrl: String,
-    private val accessTokenClient: AccessTokenClient,
+    private val accessTokenClientV2: AccessTokenClientV2,
     private val syfosmpapirreglerScope: String,
     private val httpClient: HttpClient,
-) {
-    suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
-        val accessToken = accessTokenClient.getAccessToken(syfosmpapirreglerScope)
+) : SyfosmpapirreglerClient {
+    override suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
+        val accessToken = accessTokenClientV2.getAccessTokenV2(syfosmpapirreglerScope)
         val httpResponse =
             httpClient.post("$syfosmpapirreglerUrl/api/v2/rules/validate") {
                 contentType(ContentType.Application.Json)

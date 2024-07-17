@@ -11,10 +11,11 @@ import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingPdfRequest
 import no.nav.syfo.utenlandsk.service.UtenlandskSykmeldingService
+import org.koin.ktor.ext.inject
 
-fun Route.registrerUtenlandskPapirsykmeldingApi(
-    utenlandskSykeldingService: UtenlandskSykmeldingService
-) {
+fun Route.registrerUtenlandskPapirsykmeldingApi() {
+    val utenlandskSykeldingService by inject<UtenlandskSykmeldingService>()
+
     post("/utenlands/opprett") {
         val request = call.receive<UtenlandskSykmeldingPdfRequest>()
         try {

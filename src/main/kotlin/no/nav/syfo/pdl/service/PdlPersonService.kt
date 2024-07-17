@@ -1,6 +1,6 @@
 package no.nav.syfo.pdl.service
 
-import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.logger
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.client.model.ResponseData
@@ -9,11 +9,11 @@ import no.nav.syfo.pdl.model.PdlPerson
 
 class PdlPersonService(
     private val pdlClient: PdlClient,
-    private val accessTokenClient: AccessTokenClient,
+    private val accessTokenClientV2: AccessTokenClientV2,
     private val pdlScope: String,
 ) {
     suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
-        val accessToken = accessTokenClient.getAccessToken(pdlScope)
+        val accessToken = accessTokenClientV2.getAccessTokenV2(pdlScope)
         val pdlResponse = pdlClient.getPersoner(fnrs = fnrs, token = accessToken)
         if (pdlResponse.errors != null) {
             pdlResponse.errors.forEach {

@@ -9,6 +9,7 @@ import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
+import no.nav.syfo.mq.MqClient
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
@@ -25,7 +26,7 @@ import org.junit.jupiter.api.Test
 internal class SykmeldingServiceTest {
     private val pdlPersonService = mockk<PdlPersonService>()
     private val syfosmreglerClient = mockk<SyfosmreglerClient>()
-    private val connection = mockk<Connection>()
+    private val connection = mockk<MqClient>()
     private val sykmeldingService =
         SykmeldingService(pdlPersonService, connection, "syfosmmottak", syfosmreglerClient)
     private val fnr = "12345678910"
@@ -38,6 +39,8 @@ internal class SykmeldingServiceTest {
                 fnr to PdlPerson(Navn("Syk", null, "Sykestad")),
                 legeFnr to PdlPerson(Navn("Doktor", null, "Dyregod")),
             )
+
+        coEvery { connection.getConnection() } returns mockk<Connection>()
     }
 
     @Test

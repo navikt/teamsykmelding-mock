@@ -1,6 +1,18 @@
 package no.nav.syfo.plugins
 
-import initPorductionModules
+import initProductionModules
+import io.mockk.mockk
+import no.nav.syfo.mq.MqClient
+import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
+import no.nav.syfo.narmesteleder.kafka.NlResponseProducerDevelopment
+import no.nav.syfo.papirsykmelding.client.DokarkivClient
+import no.nav.syfo.papirsykmelding.client.DokarkivClientDevelopment
+import no.nav.syfo.sykmelding.SlettSykmeldingService
+import no.nav.syfo.sykmelding.SykmeldingService
+import no.nav.syfo.sykmelding.kafka.SykmeldingStatusKafkaProducer
+import no.nav.syfo.sykmelding.kafka.SykmeldingStatusKafkaProducerDevelopment
+import no.nav.syfo.sykmelding.kafka.TombstoneKafkaProducer
+import no.nav.syfo.sykmelding.kafka.TombstoneKafkaProducerDevelopment
 import no.nav.syfo.utils.EnvironmentVariables
 import org.junit.jupiter.api.Test
 import org.koin.dsl.koinApplication
@@ -42,18 +54,30 @@ class CheckModulesTest : KoinTest {
             norskHelsenettUrl = "",
             norskHelsenettScope = "",
             oppgaveUrl = "",
+            jwkKeysUrl = "",
+            jwtIssuer = ""
         )
 
     @Test
     fun verifyKoinApp() {
         koinApplication {
-            initPorductionModules()
+            initProductionModules()
 
             modules(
                 module {
                     // Mock up any "leaf nodes" in the dependency tree that we don't want
                     // instantiated. That way we can verify that all dependencies are satisfied
                     single { testEnv }
+                    single { mockk<AuthConfiguration>() }
+                    single<TombstoneKafkaProducer>() { mockk<TombstoneKafkaProducerDevelopment>() }
+                    single<DokarkivClient>() { mockk<DokarkivClientDevelopment>() }
+                    single<SykmeldingStatusKafkaProducer>() {
+                        mockk<SykmeldingStatusKafkaProducerDevelopment>()
+                    }
+                    single<SlettSykmeldingService>() { mockk<SlettSykmeldingService>() }
+                    single<SykmeldingService>() { mockk<SykmeldingService>() }
+                    single<MqClient>() { mockk<MqClient>() }
+                    single<NlResponseProducer>() { mockk<NlResponseProducerDevelopment>() }
                 },
             )
             checkModules()

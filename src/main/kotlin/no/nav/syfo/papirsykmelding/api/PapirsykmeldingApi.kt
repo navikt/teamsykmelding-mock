@@ -12,8 +12,11 @@ import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
 import no.nav.syfo.papirsykmelding.model.UtenlandskPapirsykmeldingRequest
+import org.koin.ktor.ext.inject
 
-fun Route.registrerPapirsykmeldingApi(papirsykmeldingService: PapirsykmeldingService) {
+fun Route.registrerPapirsykmeldingApi() {
+    val papirsykmeldingService by inject<PapirsykmeldingService>()
+
     post("/papirsykmelding/opprett") {
         val request = call.receive<PapirsykmeldingRequest>()
 

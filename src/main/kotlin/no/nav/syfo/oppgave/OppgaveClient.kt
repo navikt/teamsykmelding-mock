@@ -10,21 +10,25 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.time.LocalDate
-import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.logger
 
-class OppgaveClient(
+interface OppgaveClient {
+    suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse
+}
+
+class OppgaveClientProduction(
     private val url: String,
-    private val accessTokenClient: AccessTokenClient,
+    private val accessTokenClientV2: AccessTokenClientV2,
     private val scope: String,
     private val httpClient: HttpClient,
-) {
-    suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
+) : OppgaveClient {
+    override suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
         logger.info("oppretter oppgave for ${opprettOppgave.journalpostId}")
         val response =
             httpClient.post(url) {
                 contentType(ContentType.Application.Json)
-                val token = accessTokenClient.getAccessToken(scope)
+                val token = accessTokenClientV2.getAccessTokenV2(scope)
                 logger.info("got token for opprett oppgave")
                 header("Authorization", "Bearer $token")
                 header("X-Correlation-ID", opprettOppgave.journalpostId)
@@ -37,6 +41,12 @@ class OppgaveClient(
                 "Noe gikk galt ved oppretting av oppgave for journalpostId ${opprettOppgave.journalpostId}: ${response.status}, ${response.bodyAsText()}"
             )
         }
+    }
+}
+
+class DevelopmentOppgaveClient : OppgaveClient {
+    override suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
+        TODO("Not yet implemented")
     }
 }
 
