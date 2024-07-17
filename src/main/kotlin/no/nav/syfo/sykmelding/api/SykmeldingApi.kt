@@ -7,8 +7,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
-import no.nav.syfo.HttpMessage
 import no.nav.syfo.logger
+import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.model.SykmeldingRequest

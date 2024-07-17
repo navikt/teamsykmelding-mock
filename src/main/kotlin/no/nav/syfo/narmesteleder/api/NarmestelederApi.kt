@@ -8,8 +8,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import java.time.LocalDate
-import no.nav.syfo.HttpMessage
 import no.nav.syfo.logger
+import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.narmesteleder.NarmestelederService
 
 fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) {

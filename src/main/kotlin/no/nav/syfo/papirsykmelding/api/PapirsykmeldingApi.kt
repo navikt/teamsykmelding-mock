@@ -6,8 +6,8 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import no.nav.syfo.HttpMessage
 import no.nav.syfo.logger
+import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest

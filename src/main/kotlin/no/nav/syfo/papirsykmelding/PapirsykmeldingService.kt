@@ -36,10 +36,10 @@ import no.nav.syfo.papirsykmelding.client.opprettUtenlandskJournalpostPayload
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
 import no.nav.syfo.sykmelding.toSykmelding
-import no.nav.syfo.util.XMLDateAdapter
-import no.nav.syfo.util.get
-import no.nav.syfo.util.jaxbContextSkanningmetadata
-import no.nav.syfo.util.marshallFellesformat
+import no.nav.syfo.utils.XMLDateAdapter
+import no.nav.syfo.utils.get
+import no.nav.syfo.utils.jaxbContextSkanningmetadata
+import no.nav.syfo.utils.marshallFellesformat
 
 class PapirsykmeldingService(
     private val dokarkivClient: DokarkivClient,

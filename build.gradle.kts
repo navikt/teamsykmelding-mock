@@ -19,10 +19,11 @@ val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.17.1"
-val ktfmtVersion = "0.44"
+val ktfmtVersion = "0.49"
 val javaVersion = JvmTarget.JVM_21
 val junitJupiterVersion = "5.10.3"
 val commonsCompressVersion = "1.26.2"
+val koinVersion = "3.5.6"
 val diagnosekoderVersion = "1.2024.0"
 
 
@@ -98,6 +99,9 @@ dependencies {
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:kafka:$testContainerKafkaVersion")
+
+    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
     constraints {
         implementation("org.apache.commons:commons-compress:$commonsCompressVersion") {
             because("override transient version from org.testcontainers:kafka")
@@ -108,6 +112,8 @@ dependencies {
     }
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("io.insert-koin:koin-test:$koinVersion")
+    testImplementation("io.insert-koin:koin-test-junit5:$koinVersion")
 }
 
 

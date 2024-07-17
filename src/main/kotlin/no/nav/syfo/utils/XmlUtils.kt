@@ -1,4 +1,4 @@
-package no.nav.syfo.util
+package no.nav.syfo.utils
 
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 

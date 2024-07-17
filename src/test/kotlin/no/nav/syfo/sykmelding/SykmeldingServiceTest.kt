@@ -16,7 +16,7 @@ import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
-import no.nav.syfo.util.get
+import no.nav.syfo.utils.get
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.jupiter.api.BeforeEach
