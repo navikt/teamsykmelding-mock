@@ -10,17 +10,23 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import net.logstash.logback.argument.StructuredArguments.kv
-import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.logger
 import no.nav.syfo.securelog
 
-class DokarkivClient(
+interface DokarkivClient {
+    suspend fun opprettJournalpost(
+        journalpostRequest: JournalpostRequest,
+    ): String
+}
+
+class DokarkivClientProduction(
     private val url: String,
-    private val accessTokenClient: AccessTokenClient,
+    private val accessTokenClientV2: AccessTokenClientV2,
     private val scope: String,
     private val httpClient: HttpClient,
-) {
-    suspend fun opprettJournalpost(
+) : DokarkivClient {
+    override suspend fun opprettJournalpost(
         journalpostRequest: JournalpostRequest,
     ): String =
         try {
@@ -29,7 +35,7 @@ class DokarkivClient(
                 "journalpostRequest info {}",
                 kv("fnr", journalpostRequest.bruker?.id),
             )
-            val token = accessTokenClient.getAccessToken(scope)
+            val token = accessTokenClientV2.getAccessTokenV2(scope)
             logger.info("Got access_token for dokarkiv")
             val httpResponse =
                 httpClient.post(url) {
@@ -215,4 +221,10 @@ fun opprettUtenlandskJournalpostPayload(
             ),
         tittel = "Utenlandsk papirsykmelding",
     )
+}
+
+class DokarkivClientDevelopment() : DokarkivClient {
+    override suspend fun opprettJournalpost(journalpostRequest: JournalpostRequest): String {
+        TODO("Not yet implemented")
+    }
 }

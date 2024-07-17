@@ -2,28 +2,49 @@ package no.nav.syfo.narmesteleder.kafka
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import no.nav.syfo.kafka.aiven.KafkaUtils
+import no.nav.syfo.kafka.toProducerConfig
 import no.nav.syfo.narmesteleder.kafka.model.KafkaMetadata
 import no.nav.syfo.narmesteleder.kafka.model.NlAvbrutt
 import no.nav.syfo.narmesteleder.kafka.model.NlResponse
 import no.nav.syfo.narmesteleder.kafka.model.NlResponseKafkaMessage
+import no.nav.syfo.utils.JacksonKafkaSerializer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 
-class NlResponseProducer(
-    private val kafkaProducer: KafkaProducer<String, NlResponseKafkaMessage>,
-    private val topic: String
-) {
-    fun sendNlResponse(nlResponse: NlResponse?, nlAvbrutt: NlAvbrutt?) {
+interface NlResponseProducer {
+    fun sendNlResponse(nlResponse: NlResponse?, nlAvbrutt: NlAvbrutt?)
+}
+
+class NlResponseProducerProduction(private val topic: String) : NlResponseProducer {
+    private val nlResponseProducer =
+        KafkaProducer<String, NlResponseKafkaMessage>(
+            KafkaUtils.getAivenKafkaConfig("nl-response-producer")
+                .toProducerConfig(
+                    "mock-nl-response-producer",
+                    JacksonKafkaSerializer::class,
+                )
+        )
+
+    override fun sendNlResponse(nlResponse: NlResponse?, nlAvbrutt: NlAvbrutt?) {
+        println("sendNlResponse called with nlResponse: $nlResponse, nlAvbrutt: $nlAvbrutt")
         val kafkaMessage =
             NlResponseKafkaMessage(
                 kafkaMetadata = KafkaMetadata(OffsetDateTime.now(ZoneOffset.UTC), "mock"),
                 nlResponse = nlResponse,
                 nlAvbrutt = nlAvbrutt,
             )
-        kafkaProducer
+        nlResponseProducer
             .send(
                 ProducerRecord(topic, nlResponse?.orgnummer ?: nlAvbrutt?.orgnummer, kafkaMessage)
             )
             .get()
+    }
+}
+
+class NlResponseProducerDevelopment() : NlResponseProducer {
+    override fun sendNlResponse(nlResponse: NlResponse?, nlAvbrutt: NlAvbrutt?) {
+        println("Kommer til dev mpde???$nlResponse, nlAvbrutt: $nlAvbrutt")
+        TODO("Not yet implemented")
     }
 }

@@ -23,6 +23,8 @@ class NarmestelederService(
         val sykmeldt = personer[opprettNarmestelederRequest.ansattFnr]
         val leder = personer[opprettNarmestelederRequest.lederFnr]
 
+        println("opprettNlKobling called with request:")
+
         nlResponseProducer.sendNlResponse(
             nlResponse =
                 NlResponse(

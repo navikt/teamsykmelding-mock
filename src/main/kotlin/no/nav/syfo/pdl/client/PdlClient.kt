@@ -10,15 +10,19 @@ import no.nav.syfo.pdl.client.model.GetPersonRequest
 import no.nav.syfo.pdl.client.model.GetPersonResponse
 import no.nav.syfo.pdl.client.model.GetPersonVariables
 
-class PdlClient(
+interface PdlClient {
+    suspend fun getPersoner(fnrs: List<String>, token: String): GetPersonResponse
+}
+
+class ProductionPdlClient(
     private val httpClient: HttpClient,
     private val basePath: String,
     private val graphQlQuery: String,
-) {
+) : PdlClient {
     private val temaHeader = "TEMA"
     private val tema = "SYM"
 
-    suspend fun getPersoner(fnrs: List<String>, token: String): GetPersonResponse {
+    override suspend fun getPersoner(fnrs: List<String>, token: String): GetPersonResponse {
         val getPersonRequest =
             GetPersonRequest(query = graphQlQuery, variables = GetPersonVariables(identer = fnrs))
         return httpClient
@@ -30,5 +34,11 @@ class PdlClient(
                 header(HttpHeaders.ContentType, "application/json")
             }
             .body()
+    }
+}
+
+class DevelopmentPdlClient : PdlClient {
+    override suspend fun getPersoner(fnrs: List<String>, token: String): GetPersonResponse {
+        TODO("Not yet implemented")
     }
 }

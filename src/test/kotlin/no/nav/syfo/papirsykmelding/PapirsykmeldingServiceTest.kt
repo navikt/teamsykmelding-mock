@@ -1,5 +1,6 @@
 package no.nav.syfo.papirsykmelding
 
+import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -12,8 +13,13 @@ import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
 import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
+import no.nav.syfo.utils.setupTestApplication
 import org.amshove.kluent.shouldBeEqualTo
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 internal class PapirsykmeldingServiceTest {
     private val dokarkivClient = mockk<DokarkivClient>()
@@ -46,6 +52,15 @@ internal class PapirsykmeldingServiceTest {
             diagnosekodesystem = "icpc2",
             utenOcr = false,
         )
+
+    @BeforeEach
+    fun before() = testApplication {
+        setupTestApplication {
+            dependencies { modules(module { single { papirsykmeldingService } }) }
+        }
+    }
+
+    @AfterEach fun cleanup() = stopKoin()
 
     @Test
     internal fun `tilSkanningmetadata oppretter riktig skanningmetadata`() {

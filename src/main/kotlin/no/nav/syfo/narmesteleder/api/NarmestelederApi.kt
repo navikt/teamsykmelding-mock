@@ -11,8 +11,11 @@ import java.time.LocalDate
 import no.nav.syfo.logger
 import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.narmesteleder.NarmestelederService
+import org.koin.ktor.ext.inject
 
-fun Route.registrerNarmestelederApi(narmestelederService: NarmestelederService) {
+fun Route.registrerNarmestelederApi() {
+    val narmestelederService by inject<NarmestelederService>()
+
     post("/narmesteleder/opprett") {
         val request = call.receive<OpprettNarmestelederRequest>()
 

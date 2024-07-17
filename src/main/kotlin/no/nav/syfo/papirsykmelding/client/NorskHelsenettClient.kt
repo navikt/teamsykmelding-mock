@@ -11,21 +11,25 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.NotFound
 import java.io.IOException
 import java.util.UUID
-import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.logger
 
-class NorskHelsenettClient(
+interface NorskHelsenettClient {
+    suspend fun finnBehandlerFnr(hprNummer: String): String?
+}
+
+class NorskHelsenettClientProduction(
     private val norskHelsenettUrl: String,
-    private val accessTokenClient: AccessTokenClient,
+    private val accessTokenClientV2: AccessTokenClientV2,
     private val norskHelsenettScope: String,
     private val httpClient: HttpClient,
-) {
+) : NorskHelsenettClient {
 
-    suspend fun finnBehandlerFnr(hprNummer: String): String? {
+    override suspend fun finnBehandlerFnr(hprNummer: String): String? {
         val httpResponse: HttpResponse =
             httpClient.get("$norskHelsenettUrl/api/v2/behandlerMedHprNummer") {
                 accept(ContentType.Application.Json)
-                val accessToken = accessTokenClient.getAccessToken(norskHelsenettScope)
+                val accessToken = accessTokenClientV2.getAccessTokenV2(norskHelsenettScope)
                 headers {
                     append("Authorization", "Bearer $accessToken")
                     append("Nav-CallId", UUID.randomUUID().toString())

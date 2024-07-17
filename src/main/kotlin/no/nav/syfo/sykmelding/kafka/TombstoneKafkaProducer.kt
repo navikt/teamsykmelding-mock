@@ -1,14 +1,26 @@
 package no.nav.syfo.sykmelding.kafka
 
+import no.nav.syfo.kafka.aiven.KafkaUtils
+import no.nav.syfo.kafka.toProducerConfig
 import no.nav.syfo.logger
+import no.nav.syfo.utils.JacksonNullableKafkaSerializer
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 
-class TombstoneKafkaProducer(
-    private val tombstoneProducer: KafkaProducer<String, Any?>,
+interface TombstoneKafkaProducer {
+    fun sendTombstone(sykmeldingId: String)
+}
+
+class TombstoneKafkaProducerProduction(
     private val topics: List<String>,
-) {
-    fun sendTombstone(sykmeldingId: String) {
+) : TombstoneKafkaProducer {
+    private val tombstoneProducer =
+        KafkaProducer<String, Any?>(
+            KafkaUtils.getAivenKafkaConfig("tombstone-producer")
+                .toProducerConfig("mock-tombstone-producer", JacksonNullableKafkaSerializer::class),
+        )
+
+    override fun sendTombstone(sykmeldingId: String) {
         try {
             topics.forEach { topic ->
                 tombstoneProducer.send(ProducerRecord(topic, sykmeldingId, null)).get()
@@ -20,5 +32,11 @@ class TombstoneKafkaProducer(
             )
             throw e
         }
+    }
+}
+
+class TombstoneKafkaProducerDevelopment() : TombstoneKafkaProducer {
+    override fun sendTombstone(sykmeldingId: String) {
+        logger.info("sending tombstone til topic for sykmeldingid $sykmeldingId")
     }
 }

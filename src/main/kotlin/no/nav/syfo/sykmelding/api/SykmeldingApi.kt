@@ -12,11 +12,11 @@ import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
+import org.koin.ktor.ext.inject
 
-fun Route.registrerSykmeldingApi(
-    sykmeldingService: SykmeldingService,
-    slettSykmeldingService: SlettSykmeldingService
-) {
+fun Route.registrerSykmeldingApi() {
+    val sykmeldingService by inject<SykmeldingService>()
+    val slettSykmeldingService by inject<SlettSykmeldingService>()
     post("/sykmelding/opprett") {
         val request = call.receive<SykmeldingRequest>()
 

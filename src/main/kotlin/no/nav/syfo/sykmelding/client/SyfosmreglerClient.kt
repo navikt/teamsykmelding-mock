@@ -10,19 +10,25 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.io.IOException
-import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
+import no.nav.syfo.model.RuleInfo
+import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
 
-class SyfosmreglerClient(
+interface SyfosmreglerClient {
+    suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult
+}
+
+class SyfosmreglerClientProduction(
     private val syfosmreglerUrl: String,
-    private val accessTokenClient: AccessTokenClient,
+    private val accessTokenClientV2: AccessTokenClientV2,
     private val syfosmreglerScope: String,
     private val httpClient: HttpClient,
-) {
-    suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
-        val accessToken = accessTokenClient.getAccessToken(syfosmreglerScope)
+) : SyfosmreglerClient {
+    override suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
+        val accessToken = accessTokenClientV2.getAccessTokenV2(syfosmreglerScope)
         logger.info("Gjør kall mot syfosmregler api")
         val httpResponse =
             httpClient.post("$syfosmreglerUrl/v1/rules/validate") {
@@ -39,5 +45,11 @@ class SyfosmreglerClient(
             )
             throw IOException("Syfosmregler svarte med feilkode ${httpResponse.status}")
         }
+    }
+}
+
+class SyfosmreglerClientDevelopment() : SyfosmreglerClient {
+    override suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
+        return ValidationResult(Status.OK, listOf(RuleInfo("regel", "", "", Status.OK)))
     }
 }

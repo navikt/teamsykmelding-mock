@@ -1,18 +1,36 @@
 package no.nav.syfo.metrics
 
-import io.ktor.server.application.ApplicationCall
-import io.ktor.server.request.path
+import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.util.pipeline.PipelineContext
+import no.nav.syfo.logging.logger
 
-val REGEX =
-    """[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}""".toRegex()
-
-fun monitorHttpRequests(): suspend PipelineContext<Unit, ApplicationCall>.(Unit) -> Unit {
+fun monitorHttpRequests(
+    developmentMode: Boolean
+): suspend PipelineContext<Unit, ApplicationCall>.(Unit) -> Unit {
     return {
-        val path = context.request.path()
-        val label = REGEX.replace(path, ":id")
-        val timer = HTTP_HISTOGRAM.labels(label).startTimer()
-        proceed()
-        timer.observeDuration()
+        try {
+            logger.info("Received request: ${call.request.uri}")
+            val label = context.request.path()
+            val timer = HTTP_HISTOGRAM.labels(label).startTimer()
+            proceed()
+            timer.observeDuration()
+        } catch (e: Exception) {
+            if (developmentMode) {
+                logger.error(
+                    "Exception during '${call.request.uri}': ${e.javaClass.simpleName}: ${e.message}",
+                    e,
+                )
+            } else {
+                logger.error(
+                    "Feil under behandling av HTTP-forespørsel til '${call.request.uri}': ${e.javaClass.simpleName}. Se securelogs for detaljert exception"
+                )
+            }
+            logger.error(
+                "Feil under behandling av HTTP-forespørsel til '${call.request.uri}': ${e.javaClass.simpleName}: ${e.message}. Se exception for detaljer.",
+                e,
+            )
+            throw e
+        }
     }
 }

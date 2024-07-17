@@ -10,8 +10,10 @@ import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
 import no.nav.syfo.logger
 import no.nav.syfo.model.HttpMessage
+import org.koin.ktor.ext.inject
 
-fun Route.registrerLegeerklaeringApi(legeerklaeringService: LegeerklaeringService) {
+fun Route.registrerLegeerklaeringApi() {
+    val legeerklaeringService by inject<LegeerklaeringService>()
     post("/legeerklaering/opprett") {
         logger.info("revice request to create legeerklaering")
         val request = call.receive<LegeerklaeringRequest>()

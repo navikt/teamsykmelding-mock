@@ -1,10 +1,9 @@
 package no.nav.syfo.sykmelding.api
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.http.headers
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -16,12 +15,17 @@ import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.model.RuleInfo
 import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
-import no.nav.syfo.plugins.ApplicationState
 import no.nav.syfo.sm.Diagnosekoder.objectMapper
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
-import org.amshove.kluent.shouldBeEqualTo
+import no.nav.syfo.utils.generateJWT
+import no.nav.syfo.utils.setupTestApplication
+import no.nav.syfo.utils.testClient
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 internal class SykmeldingApiTest {
     val sykmeldingService = mockk<SykmeldingService>()
@@ -41,231 +45,192 @@ internal class SykmeldingApiTest {
             ),
         )
 
+    @AfterEach fun cleanup() = stopKoin()
+
     @Test
-    internal fun `Creating sykmelding with bidiagnoser`() {
+    internal fun `Creating sykmelding with bidiagnoser`() = testApplication {
+        setupTestApplication {
+            dependencies { modules(module { single { sykmeldingService } }) }
+            authedRoutes { registrerSykmeldingApi() }
+        }
+
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
-
-        with(TestApplicationEngine()) {
-            start()
-            val applicationState = ApplicationState()
-            applicationState.ready = true
-            applicationState.alive = true
-            application.install(ContentNegotiation) {
-                jackson {
-                    registerKotlinModule()
-                    registerModule(JavaTimeModule())
-                    configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        val response =
+            testClient().post("/sykmelding/opprett") {
+                headers {
+                    append("Content-Type", ContentType.Application.Json.toString())
+                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
                 }
-            }
-            application.routing {
-                registrerSykmeldingApi(
-                    sykmeldingService,
-                    slettSykmeldingService,
+                setBody(
+                    "{\n" +
+                        "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
+                        "  \"behandletDato\": \"2022-09-27\",\n" +
+                        "  \"perioder\": [\n" +
+                        "    {\n" +
+                        "      \"fom\": \"2022-09-27\",\n" +
+                        "      \"tom\": \"2022-10-03\",\n" +
+                        "      \"type\": \"HUNDREPROSENT\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"hoveddiagnose\": {\n" +
+                        "    \"code\": \"A90\",\n" +
+                        "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
+                        "    \"system\": \"ICPC2\"\n" +
+                        "  },\n" +
+                        "  \"fnr\": \"20086600138\",\n" +
+                        "  \"fnrLege\": \"01117302624\",\n" +
+                        "  \"herId\": null,\n" +
+                        "  \"hprNummer\": \"7125186\",\n" +
+                        "  \"meldingTilArbeidsgiver\": null,\n" +
+                        "  \"annenFraverGrunn\": null,\n" +
+                        "  \"begrunnIkkeKontakt\": null,\n" +
+                        "  \"vedlegg\": false,\n" +
+                        "  \"virksomhetsykmelding\": false,\n" +
+                        "  \"utenUtdypendeOpplysninger\": false,\n" +
+                        "  \"regelsettVersjon\": \"2\",\n" +
+                        "  \"kontaktDato\": null,\n" +
+                        "  \"bidiagnoser\": [\n" +
+                        "    {\n" +
+                        "      \"code\": \"Z999\",\n" +
+                        "      \"text\": \"Avhengighet av ikke spes. teknisk hjelpemiddel og innretning\",\n" +
+                        "      \"system\": \"ICD10\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"diagnosekodesystem\": \"ICPC2\",\n" +
+                        "  \"diagnosekode\": \"A90\",\n" +
+                        "  \"arbeidsgiverNavn\": null\n" +
+                        "}",
                 )
             }
 
-            with(
-                handleRequest(HttpMethod.Post, "/sykmelding/opprett") {
-                    addHeader("Content-Type", ContentType.Application.Json.toString())
-                    setBody(
-                        "{\n" +
-                            "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
-                            "  \"behandletDato\": \"2022-09-27\",\n" +
-                            "  \"perioder\": [\n" +
-                            "    {\n" +
-                            "      \"fom\": \"2022-09-27\",\n" +
-                            "      \"tom\": \"2022-10-03\",\n" +
-                            "      \"type\": \"HUNDREPROSENT\"\n" +
-                            "    }\n" +
-                            "  ],\n" +
-                            "  \"hoveddiagnose\": {\n" +
-                            "    \"code\": \"A90\",\n" +
-                            "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
-                            "    \"system\": \"ICPC2\"\n" +
-                            "  },\n" +
-                            "  \"fnr\": \"20086600138\",\n" +
-                            "  \"fnrLege\": \"01117302624\",\n" +
-                            "  \"herId\": null,\n" +
-                            "  \"hprNummer\": \"7125186\",\n" +
-                            "  \"meldingTilArbeidsgiver\": null,\n" +
-                            "  \"annenFraverGrunn\": null,\n" +
-                            "  \"begrunnIkkeKontakt\": null,\n" +
-                            "  \"vedlegg\": false,\n" +
-                            "  \"virksomhetsykmelding\": false,\n" +
-                            "  \"utenUtdypendeOpplysninger\": false,\n" +
-                            "  \"regelsettVersjon\": \"2\",\n" +
-                            "  \"kontaktDato\": null,\n" +
-                            "  \"bidiagnoser\": [\n" +
-                            "    {\n" +
-                            "      \"code\": \"Z999\",\n" +
-                            "      \"text\": \"Avhengighet av ikke spes. teknisk hjelpemiddel og innretning\",\n" +
-                            "      \"system\": \"ICD10\"\n" +
-                            "    }\n" +
-                            "  ],\n" +
-                            "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                            "  \"diagnosekode\": \"A90\",\n" +
-                            "  \"arbeidsgiverNavn\": null\n" +
-                            "}",
-                    )
-                },
-            ) {
-                response.status() shouldBeEqualTo HttpStatusCode.OK
-                response.content shouldBeEqualTo
-                    objectMapper.writeValueAsString(
-                        HttpMessage("Opprettet sykmelding med mottakId 123-123--21321313"),
-                    )
-            }
-        }
+        assertEquals(response.status, HttpStatusCode.OK)
+
+        val responseBody = response.bodyAsText()
+        val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
+        assertEquals("Opprettet sykmelding med mottakId 123-123--21321313", httpMessage.message)
     }
 
     @Test
-    internal fun `Creating sykmelding with empty bidiagnoser`() {
+    internal fun `Creating sykmelding with empty bidiagnoser`() = testApplication {
+        setupTestApplication {
+            dependencies { modules(module { single { sykmeldingService } }) }
+            authedRoutes { registrerSykmeldingApi() }
+        }
+
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
-
-        with(TestApplicationEngine()) {
-            start()
-            val applicationState = ApplicationState()
-            applicationState.ready = true
-            applicationState.alive = true
-            application.install(ContentNegotiation) {
-                jackson {
-                    registerKotlinModule()
-                    registerModule(JavaTimeModule())
-                    configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        val response =
+            testClient().post("/sykmelding/opprett") {
+                headers {
+                    append("Content-Type", ContentType.Application.Json.toString())
+                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
                 }
-            }
-            application.routing {
-                registrerSykmeldingApi(
-                    sykmeldingService,
-                    slettSykmeldingService,
+                setBody(
+                    "{\n" +
+                        "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
+                        "  \"behandletDato\": \"2022-09-27\",\n" +
+                        "  \"perioder\": [\n" +
+                        "    {\n" +
+                        "      \"fom\": \"2022-09-27\",\n" +
+                        "      \"tom\": \"2022-10-03\",\n" +
+                        "      \"type\": \"HUNDREPROSENT\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"hoveddiagnose\": {\n" +
+                        "    \"code\": \"A90\",\n" +
+                        "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
+                        "    \"system\": \"ICPC2\"\n" +
+                        "  },\n" +
+                        "  \"fnr\": \"20086600138\",\n" +
+                        "  \"fnrLege\": \"01117302624\",\n" +
+                        "  \"herId\": null,\n" +
+                        "  \"hprNummer\": \"7125186\",\n" +
+                        "  \"meldingTilArbeidsgiver\": null,\n" +
+                        "  \"annenFraverGrunn\": null,\n" +
+                        "  \"begrunnIkkeKontakt\": null,\n" +
+                        "  \"vedlegg\": false,\n" +
+                        "  \"virksomhetsykmelding\": false,\n" +
+                        "  \"utenUtdypendeOpplysninger\": false,\n" +
+                        "  \"regelsettVersjon\": \"2\",\n" +
+                        "  \"kontaktDato\": null,\n" +
+                        "  \"bidiagnoser\": [],\n" +
+                        "  \"diagnosekodesystem\": \"ICPC2\",\n" +
+                        "  \"diagnosekode\": \"A90\",\n" +
+                        "  \"arbeidsgiverNavn\": \"NAV\"\n" +
+                        "}",
                 )
             }
 
-            with(
-                handleRequest(HttpMethod.Post, "/sykmelding/opprett") {
-                    addHeader("Content-Type", ContentType.Application.Json.toString())
-                    setBody(
-                        "{\n" +
-                            "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
-                            "  \"behandletDato\": \"2022-09-27\",\n" +
-                            "  \"perioder\": [\n" +
-                            "    {\n" +
-                            "      \"fom\": \"2022-09-27\",\n" +
-                            "      \"tom\": \"2022-10-03\",\n" +
-                            "      \"type\": \"HUNDREPROSENT\"\n" +
-                            "    }\n" +
-                            "  ],\n" +
-                            "  \"hoveddiagnose\": {\n" +
-                            "    \"code\": \"A90\",\n" +
-                            "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
-                            "    \"system\": \"ICPC2\"\n" +
-                            "  },\n" +
-                            "  \"fnr\": \"20086600138\",\n" +
-                            "  \"fnrLege\": \"01117302624\",\n" +
-                            "  \"herId\": null,\n" +
-                            "  \"hprNummer\": \"7125186\",\n" +
-                            "  \"meldingTilArbeidsgiver\": null,\n" +
-                            "  \"annenFraverGrunn\": null,\n" +
-                            "  \"begrunnIkkeKontakt\": null,\n" +
-                            "  \"vedlegg\": false,\n" +
-                            "  \"virksomhetsykmelding\": false,\n" +
-                            "  \"utenUtdypendeOpplysninger\": false,\n" +
-                            "  \"regelsettVersjon\": \"2\",\n" +
-                            "  \"kontaktDato\": null,\n" +
-                            "  \"bidiagnoser\": [],\n" +
-                            "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                            "  \"diagnosekode\": \"A90\",\n" +
-                            "  \"arbeidsgiverNavn\": \"NAV\"\n" +
-                            "}",
-                    )
-                },
-            ) {
-                response.status() shouldBeEqualTo HttpStatusCode.OK
-                response.content shouldBeEqualTo
-                    objectMapper.writeValueAsString(
-                        HttpMessage("Opprettet sykmelding med mottakId 123-123--21321313"),
-                    )
-            }
-        }
+        assertEquals(response.status, HttpStatusCode.OK)
+
+        val responseBody = response.bodyAsText()
+        val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
+        assertEquals("Opprettet sykmelding med mottakId 123-123--21321313", httpMessage.message)
     }
 
     @Test
-    internal fun `Regelsjekk`() {
+    internal fun `Regelsjekk`() = testApplication {
+        setupTestApplication {
+            dependencies { modules(module { single { sykmeldingService } }) }
+            authedRoutes { registrerSykmeldingApi() }
+        }
+
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
 
-        with(TestApplicationEngine()) {
-            start()
-            val applicationState = ApplicationState()
-            applicationState.ready = true
-            applicationState.alive = true
-            application.install(ContentNegotiation) {
-                jackson {
-                    registerKotlinModule()
-                    registerModule(JavaTimeModule())
-                    configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        val response =
+            testClient().post("/sykmelding/regelsjekk") {
+                headers {
+                    append("Content-Type", ContentType.Application.Json.toString())
+                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
                 }
-            }
-            application.routing {
-                registrerSykmeldingApi(
-                    sykmeldingService,
-                    slettSykmeldingService,
+                setBody(
+                    "{\n" +
+                        "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
+                        "  \"behandletDato\": \"2022-09-27\",\n" +
+                        "  \"perioder\": [\n" +
+                        "    {\n" +
+                        "      \"fom\": \"2022-09-27\",\n" +
+                        "      \"tom\": \"2022-10-03\",\n" +
+                        "      \"type\": \"HUNDREPROSENT\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"hoveddiagnose\": {\n" +
+                        "    \"code\": \"A90\",\n" +
+                        "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
+                        "    \"system\": \"ICPC2\"\n" +
+                        "  },\n" +
+                        "  \"fnr\": \"20086600138\",\n" +
+                        "  \"fnrLege\": \"01117302624\",\n" +
+                        "  \"herId\": null,\n" +
+                        "  \"hprNummer\": \"7125186\",\n" +
+                        "  \"meldingTilArbeidsgiver\": null,\n" +
+                        "  \"annenFraverGrunn\": null,\n" +
+                        "  \"begrunnIkkeKontakt\": null,\n" +
+                        "  \"vedlegg\": false,\n" +
+                        "  \"virksomhetsykmelding\": false,\n" +
+                        "  \"utenUtdypendeOpplysninger\": false,\n" +
+                        "  \"regelsettVersjon\": \"2\",\n" +
+                        "  \"kontaktDato\": null,\n" +
+                        "  \"bidiagnoser\": [\n" +
+                        "    {\n" +
+                        "      \"code\": \"Z999\",\n" +
+                        "      \"text\": \"Avhengighet av ikke spes. teknisk hjelpemiddel og innretning\",\n" +
+                        "      \"system\": \"ICD10\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"diagnosekodesystem\": \"ICPC2\",\n" +
+                        "  \"diagnosekode\": \"A90\",\n" +
+                        "  \"arbeidsgiverNavn\": null\n" +
+                        "}",
                 )
             }
 
-            with(
-                handleRequest(HttpMethod.Post, "/sykmelding/regelsjekk") {
-                    addHeader("Content-Type", ContentType.Application.Json.toString())
-                    setBody(
-                        "{\n" +
-                            "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
-                            "  \"behandletDato\": \"2022-09-27\",\n" +
-                            "  \"perioder\": [\n" +
-                            "    {\n" +
-                            "      \"fom\": \"2022-09-27\",\n" +
-                            "      \"tom\": \"2022-10-03\",\n" +
-                            "      \"type\": \"HUNDREPROSENT\"\n" +
-                            "    }\n" +
-                            "  ],\n" +
-                            "  \"hoveddiagnose\": {\n" +
-                            "    \"code\": \"A90\",\n" +
-                            "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
-                            "    \"system\": \"ICPC2\"\n" +
-                            "  },\n" +
-                            "  \"fnr\": \"20086600138\",\n" +
-                            "  \"fnrLege\": \"01117302624\",\n" +
-                            "  \"herId\": null,\n" +
-                            "  \"hprNummer\": \"7125186\",\n" +
-                            "  \"meldingTilArbeidsgiver\": null,\n" +
-                            "  \"annenFraverGrunn\": null,\n" +
-                            "  \"begrunnIkkeKontakt\": null,\n" +
-                            "  \"vedlegg\": false,\n" +
-                            "  \"virksomhetsykmelding\": false,\n" +
-                            "  \"utenUtdypendeOpplysninger\": false,\n" +
-                            "  \"regelsettVersjon\": \"2\",\n" +
-                            "  \"kontaktDato\": null,\n" +
-                            "  \"bidiagnoser\": [\n" +
-                            "    {\n" +
-                            "      \"code\": \"Z999\",\n" +
-                            "      \"text\": \"Avhengighet av ikke spes. teknisk hjelpemiddel og innretning\",\n" +
-                            "      \"system\": \"ICD10\"\n" +
-                            "    }\n" +
-                            "  ],\n" +
-                            "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                            "  \"diagnosekode\": \"A90\",\n" +
-                            "  \"arbeidsgiverNavn\": null\n" +
-                            "}",
-                    )
-                },
-            ) {
-                response.status() shouldBeEqualTo HttpStatusCode.OK
-                response.content shouldBeEqualTo objectMapper.writeValueAsString(validationResult)
-            }
-        }
+        assertEquals(response.status, HttpStatusCode.OK)
+        val responseBody = response.bodyAsText()
+        val validationResultFromResponse =
+            objectMapper.readValue(responseBody, ValidationResult::class.java)
+        assertEquals(validationResult, validationResultFromResponse)
     }
 }
