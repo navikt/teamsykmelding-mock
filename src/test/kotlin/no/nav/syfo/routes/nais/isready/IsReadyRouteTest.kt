@@ -3,7 +3,7 @@ package no.nav.syfo.routes.nais.isready
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
-import no.nav.syfo.ApplicationState
+import no.nav.syfo.plugins.ApplicationState
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -17,7 +17,7 @@ class IsReadyRouteTest {
             applicationState.alive = true
             application.routing { naisIsReadyRoute(applicationState) }
 
-            with(handleRequest(HttpMethod.Get, "/internal/is_ready")) {
+            with(handleRequest(HttpMethod.Get, "/is_ready")) {
                 Assertions.assertEquals(HttpStatusCode.OK, response.status())
                 Assertions.assertEquals("I'm ready! :)", response.content)
             }
@@ -33,7 +33,7 @@ class IsReadyRouteTest {
             applicationState.alive = false
             application.routing { naisIsReadyRoute(applicationState) }
 
-            with(handleRequest(HttpMethod.Get, "/internal/is_ready")) {
+            with(handleRequest(HttpMethod.Get, "/is_ready")) {
                 Assertions.assertEquals(HttpStatusCode.InternalServerError, response.status())
                 Assertions.assertEquals("Please wait! I'm not ready :(", response.content)
             }

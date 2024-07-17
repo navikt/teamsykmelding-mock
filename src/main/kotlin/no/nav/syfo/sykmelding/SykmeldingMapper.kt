@@ -181,8 +181,7 @@ fun HelseOpplysningerArbeidsuforhet.UtdypendeOpplysninger.toMap() =
                                 restriksjoner =
                                     svar.restriksjon
                                         ?.restriksjonskode
-                                        ?.mapNotNull(CS::toSvarRestriksjon)
-                                        ?: listOf()
+                                        ?.mapNotNull(CS::toSvarRestriksjon) ?: listOf()
                             )
                     }
                     .toMap()

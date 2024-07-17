@@ -3,12 +3,11 @@ package no.nav.syfo.no.nav.syfo.routes.nais.isready
 import io.ktor.http.*
 import io.ktor.server.application.call
 import io.ktor.server.response.*
-import io.ktor.server.routing.Routing
-import io.ktor.server.routing.get
+import io.ktor.server.routing.*
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
 
-fun Routing.naisPrometheusRoute(
+fun Route.naisPrometheusRoute(
     collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry,
 ) {
     get("/prometheus") {

@@ -1,4 +1,4 @@
-package no.nav.syfo.util
+package no.nav.syfo.utils
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

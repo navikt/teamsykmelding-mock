@@ -6,10 +6,10 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import no.nav.syfo.HttpMessage
 import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
 import no.nav.syfo.logger
+import no.nav.syfo.model.HttpMessage
 
 fun Route.registrerLegeerklaeringApi(legeerklaeringService: LegeerklaeringService) {
     post("/legeerklaering/opprett") {

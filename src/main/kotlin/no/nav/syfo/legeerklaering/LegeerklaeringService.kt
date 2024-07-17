@@ -31,9 +31,9 @@ import no.nav.syfo.mq.producerForQueue
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.convertToXmlGregorianCalendar
-import no.nav.syfo.util.get
-import no.nav.syfo.util.legeerklaeringUnmarshaller
-import no.nav.syfo.util.marshallLegeerklaering
+import no.nav.syfo.utils.get
+import no.nav.syfo.utils.legeerklaeringUnmarshaller
+import no.nav.syfo.utils.marshallLegeerklaering
 
 class LegeerklaeringService(
     private val pdlPersonService: PdlPersonService,

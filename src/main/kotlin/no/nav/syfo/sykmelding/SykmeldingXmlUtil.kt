@@ -264,8 +264,7 @@ private fun tilDiagnosekode(bidiagnoser: Diagnoser): CV {
                 Diagnosekoder.icpc2[bidiagnoser.code]?.text
             } else {
                 Diagnosekoder.icd10[bidiagnoser.code]?.text
-            }
-                ?: ""
+            } ?: ""
     }
 }
 
@@ -284,8 +283,7 @@ private fun tilDiagnosekode(kode: String, system: String): CV {
                 Diagnosekoder.icpc2[kode]?.text
             } else {
                 Diagnosekoder.icd10[kode]?.text
-            }
-                ?: ""
+            } ?: ""
     }
 }
 

@@ -19,9 +19,9 @@ import no.nav.syfo.mq.producerForQueue
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
-import no.nav.syfo.util.fellesformatUnmarshaller
-import no.nav.syfo.util.get
-import no.nav.syfo.util.marshallFellesformat
+import no.nav.syfo.utils.fellesformatUnmarshaller
+import no.nav.syfo.utils.get
+import no.nav.syfo.utils.marshallFellesformat
 
 class SykmeldingService(
     private val pdlPersonService: PdlPersonService,

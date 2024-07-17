@@ -12,12 +12,12 @@ import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.mockk
-import no.nav.syfo.ApplicationState
-import no.nav.syfo.HttpMessage
+import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.model.RuleInfo
 import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
-import no.nav.syfo.objectMapper
+import no.nav.syfo.plugins.ApplicationState
+import no.nav.syfo.sm.Diagnosekoder.objectMapper
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import org.amshove.kluent.shouldBeEqualTo

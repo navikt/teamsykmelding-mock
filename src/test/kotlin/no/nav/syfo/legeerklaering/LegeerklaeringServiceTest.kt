@@ -11,7 +11,7 @@ import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
-import no.nav.syfo.util.get
+import no.nav.syfo.utils.get
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeEqualTo
 import org.junit.jupiter.api.BeforeEach

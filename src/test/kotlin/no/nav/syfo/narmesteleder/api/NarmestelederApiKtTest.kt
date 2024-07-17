@@ -17,15 +17,13 @@ import io.mockk.mockk
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import no.nav.syfo.ApplicationState
-import no.nav.syfo.HttpMessage
 import no.nav.syfo.azuread.AccessTokenClient
+import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.narmesteleder.NarmestelederService
 import no.nav.syfo.narmesteleder.kafka.NlResponseProducer
 import no.nav.syfo.narmesteleder.kafka.model.Leder
 import no.nav.syfo.narmesteleder.kafka.model.NlResponse
 import no.nav.syfo.narmesteleder.kafka.model.Sykmeldt
-import no.nav.syfo.objectMapper
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.client.model.GetPersonResponse
 import no.nav.syfo.pdl.client.model.HentPersonBolk
@@ -33,6 +31,8 @@ import no.nav.syfo.pdl.client.model.Navn
 import no.nav.syfo.pdl.client.model.Person
 import no.nav.syfo.pdl.client.model.ResponseData
 import no.nav.syfo.pdl.service.PdlPersonService
+import no.nav.syfo.plugins.ApplicationState
+import no.nav.syfo.sm.Diagnosekoder.objectMapper
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
