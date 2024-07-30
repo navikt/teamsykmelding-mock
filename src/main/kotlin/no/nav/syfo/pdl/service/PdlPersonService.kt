@@ -7,12 +7,16 @@ import no.nav.syfo.pdl.client.model.ResponseData
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 
-class PdlPersonService(
+interface PdlPersonService {
+    suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson>
+}
+
+class PdlPersonServiceProduction(
     private val pdlClient: PdlClient,
     private val accessTokenClientV2: AccessTokenClientV2,
     private val pdlScope: String,
-) {
-    suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
+) : PdlPersonService {
+    override suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
         val accessToken = accessTokenClientV2.getAccessTokenV2(pdlScope)
         val pdlResponse = pdlClient.getPersoner(fnrs = fnrs, token = accessToken)
         if (pdlResponse.errors != null) {
@@ -58,4 +62,12 @@ class PdlPersonService(
             mellomnavn = navn?.mellomnavn,
             etternavn = navn?.etternavn ?: "Etternavn"
         )
+}
+
+class PdlPersonServiceDevelopment() : PdlPersonService {
+    override suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
+        return mapOf(
+            "person" to PdlPerson(Navn("Fornavn", null, "Etternavn")),
+        )
+    }
 }

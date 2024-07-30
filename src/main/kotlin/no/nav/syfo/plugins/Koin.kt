@@ -2,6 +2,7 @@ import io.ktor.server.application.*
 import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.azuread.ProductionAccessTokenClientV2
 import no.nav.syfo.clients.createHttpClient
+import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.mq.MqClient
 import no.nav.syfo.mq.MqClientProduction
 import no.nav.syfo.narmesteleder.NarmestelederService
@@ -19,6 +20,7 @@ import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClientProduction
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.client.ProductionPdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
+import no.nav.syfo.pdl.service.PdlPersonServiceProduction
 import no.nav.syfo.plugins.ApplicationState
 import no.nav.syfo.plugins.getProductionAuthConfig
 import no.nav.syfo.sykmelding.SlettSykmeldingService
@@ -66,6 +68,7 @@ fun KoinApplication.initProductionModules() {
         norskhelsenettModule,
         narmestelederModule,
         sykmeldingModule,
+        legeerklaeringModule,
     )
 }
 
@@ -102,7 +105,9 @@ val pdlModule = module {
                     .replace(Regex("[\n\t]"), ""),
         )
     }
-    single { PdlPersonService(get(), get(), get<EnvironmentVariables>().pdlScope) }
+    single<PdlPersonService> {
+        PdlPersonServiceProduction(get(), get(), get<EnvironmentVariables>().pdlScope)
+    }
 }
 
 val kafkaModules = module {
@@ -214,6 +219,17 @@ val narmestelederModule = module {
         NarmestelederService(
             nlResponseProducer = get(),
             pdlPersonService = get(),
+        )
+    }
+}
+
+val legeerklaeringModule = module {
+    single {
+        val env = get<EnvironmentVariables>()
+        LegeerklaeringService(
+            pdlPersonService = get(),
+            mqClient = get(),
+            legeerklaeringQueue = env.legeerklaeringQueue
         )
     }
 }

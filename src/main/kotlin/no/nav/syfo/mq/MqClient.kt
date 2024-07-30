@@ -29,9 +29,8 @@ class MqClientProduction(
 }
 
 class MqClientDevelopment() : MqClient {
-
     override fun getConnection(): Connection? {
-        logger.info("Dev??")
+        logger.info("MqClient development connection")
         return null
     }
 }

@@ -13,11 +13,9 @@ import no.nav.syfo.utenlandsk.api.registrerUtenlandskPapirsykmeldingApi
 
 fun Application.configureFeatures() {
     routing {
-        logger.info("Her da?")
         authenticate(if (application.developmentMode) "local" else "jwt") {
             logger.info("authentisering?? ${application.developmentMode}")
             route("/api") {
-                logger.info("Her da apiapi?")
                 registrerSykmeldingApi()
                 registrerUtenlandskPapirsykmeldingApi()
                 registrerPapirsykmeldingApi()

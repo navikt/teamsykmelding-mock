@@ -46,7 +46,8 @@ class OppgaveClientProduction(
 
 class DevelopmentOppgaveClient : OppgaveClient {
     override suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
-        TODO("Not yet implemented")
+        logger.info("later som vi oppretter oppgave for ${opprettOppgave.journalpostId}")
+        return OpprettOppgaveResponse(1, 1)
     }
 }
 

@@ -4,12 +4,12 @@ import io.ktor.server.testing.*
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.mockk
-import javax.jms.Connection
 import kotlinx.coroutines.runBlocking
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.legeerklaering.Legeerklaring
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
+import no.nav.syfo.mq.MqClient
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
@@ -25,7 +25,7 @@ import org.koin.dsl.module
 
 internal class LegeerklaeringServiceTest {
     private val pdlPersonService: PdlPersonService = mockk<PdlPersonService>()
-    private val connection = mockk<Connection>()
+    private val connection = mockk<MqClient>()
     private val legeerklaeringService = LegeerklaeringService(pdlPersonService, connection, "pale2")
     private val fnr = "12345678910"
     private val legeFnr = "10987654321"

@@ -4,7 +4,6 @@ import java.io.StringReader
 import java.math.BigInteger
 import java.time.LocalDate
 import java.util.UUID
-import javax.jms.Connection
 import javax.jms.Session
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
@@ -26,6 +25,7 @@ import no.nav.helse.msgHead.XMLIdent
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
 import no.nav.syfo.logger
+import no.nav.syfo.mq.MqClient
 import no.nav.syfo.mq.MqProducer
 import no.nav.syfo.mq.producerForQueue
 import no.nav.syfo.pdl.model.PdlPerson
@@ -37,20 +37,22 @@ import no.nav.syfo.utils.marshallLegeerklaering
 
 class LegeerklaeringService(
     private val pdlPersonService: PdlPersonService,
-    private val connection: Connection,
+    private val mqClient: MqClient,
     private val legeerklaeringQueue: String,
 ) {
     suspend fun opprettLegeerklaering(legeerklaeringRequest: LegeerklaeringRequest): String {
+        val connection = mqClient.getConnection()
         val mottakId = UUID.randomUUID().toString()
-        val legeerklaering = tilLegeerklaeringXml(legeerklaeringRequest, mottakId)
-        val legeerklaeringXml = marshallLegeerklaering(legeerklaering)
+        if (connection != null) {
+            val legeerklaering = tilLegeerklaeringXml(legeerklaeringRequest, mottakId)
+            val legeerklaeringXml = marshallLegeerklaering(legeerklaering)
 
-        val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-        val messageProducer = session.producerForQueue(legeerklaeringQueue)
-        val pale2MqProducer = MqProducer(session, messageProducer)
+            val session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
+            val messageProducer = session.producerForQueue(legeerklaeringQueue)
+            val pale2MqProducer = MqProducer(session, messageProducer)
 
-        pale2MqProducer.send(legeerklaeringXml)
-
+            pale2MqProducer.send(legeerklaeringXml)
+        }
         return mottakId
     }
 

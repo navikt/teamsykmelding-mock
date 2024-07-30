@@ -68,7 +68,7 @@ class SykmeldingStatusKafkaProducerProduction(
 class SykmeldingStatusKafkaProducerDevelopment : SykmeldingStatusKafkaProducer {
     override fun send(sykmeldingStatusKafkaEventDTO: SykmeldingStatusKafkaEventDTO, fnr: String) {
         logger.info(
-            "Skriver statusendring for sykmelding med id {} til topic",
+            "Later som vi skriver statusendring for sykmelding med id {} til topic",
             sykmeldingStatusKafkaEventDTO.sykmeldingId,
         )
     }

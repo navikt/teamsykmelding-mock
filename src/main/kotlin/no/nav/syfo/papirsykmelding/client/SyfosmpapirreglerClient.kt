@@ -13,6 +13,8 @@ import java.io.IOException
 import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
+import no.nav.syfo.model.RuleInfo
+import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
 
 interface SyfosmpapirreglerClient {
@@ -42,5 +44,15 @@ class SyfosmpapirreglerClientProduction(
             )
             throw IOException("Syfosmpapirregler svarte med feilkode ${httpResponse.status}")
         }
+    }
+}
+
+class SyfosmpapirreglerClientDevelopment() : SyfosmpapirreglerClient {
+    override suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
+        logger.info("later som vi sjekker regler for ${receivedSykmelding.sykmelding.id}")
+        return ValidationResult(
+            status = Status.OK,
+            ruleHits = listOf(RuleInfo("testregel", "", "", Status.OK))
+        )
     }
 }

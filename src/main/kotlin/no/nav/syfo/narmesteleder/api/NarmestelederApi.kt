@@ -18,7 +18,6 @@ fun Route.registrerNarmestelederApi() {
 
     post("/narmesteleder/opprett") {
         val request = call.receive<OpprettNarmestelederRequest>()
-
         if (
             request.ansattFnr.trim { it <= ' ' }.length == 11 &&
                 request.lederFnr.trim { it <= ' ' }.length == 11 &&

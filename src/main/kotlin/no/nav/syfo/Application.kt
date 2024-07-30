@@ -22,7 +22,6 @@ fun main() {
 }
 
 fun Application.module() {
-    logger.info("her da?")
     configureKoin()
     configureContentNegotiation()
     configureAuth()
