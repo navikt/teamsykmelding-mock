@@ -4,6 +4,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toProducerConfig
+import no.nav.syfo.logging.logger
 import no.nav.syfo.narmesteleder.kafka.model.KafkaMetadata
 import no.nav.syfo.narmesteleder.kafka.model.NlAvbrutt
 import no.nav.syfo.narmesteleder.kafka.model.NlResponse
@@ -44,7 +45,6 @@ class NlResponseProducerProduction(private val topic: String) : NlResponseProduc
 
 class NlResponseProducerDevelopment() : NlResponseProducer {
     override fun sendNlResponse(nlResponse: NlResponse?, nlAvbrutt: NlAvbrutt?) {
-        println("Kommer til dev mpde???$nlResponse, nlAvbrutt: $nlAvbrutt")
-        TODO("Not yet implemented")
+        logger.info("sending NL response: $nlResponse, nlAvbrutt: $nlAvbrutt")
     }
 }

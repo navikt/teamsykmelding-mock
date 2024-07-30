@@ -29,13 +29,6 @@ class SykmeldingService(
     private val sykmeldingQueue: String,
     private val syfosmreglerClient: SyfosmreglerClient,
 ) {
-    init {
-
-        logger.info("mqClient = $mqClient")
-        logger.info("pdlPersonSrrvice = $pdlPersonService")
-        logger.info("sykmeldingQueuee = $sykmeldingQueue")
-        logger.info("syfosmreglerclient = $syfosmreglerClient")
-    }
 
     suspend fun opprettSykmelding(sykmeldingRequest: SykmeldingRequest): String {
         val connection = mqClient.getConnection()
@@ -74,7 +67,7 @@ class SykmeldingService(
                 sykmelding = sykmelding,
                 personNrPasient = sykmeldingRequest.fnr,
                 tlfPasient =
-                extractTlfFromKontaktInfo(helseOpplysningerArbeidsuforhet.pasient.kontaktInfo),
+                    extractTlfFromKontaktInfo(helseOpplysningerArbeidsuforhet.pasient.kontaktInfo),
                 personNrLege = sykmeldingRequest.fnrLege,
                 navLogId = UUID.randomUUID().toString(),
                 msgId = UUID.randomUUID().toString(),
@@ -85,13 +78,13 @@ class SykmeldingService(
                 legekontorHerId = "",
                 legekontorReshId = "",
                 mottattDato =
-                sykmeldingXml
-                    .get<XMLMottakenhetBlokk>()
-                    .mottattDatotid
-                    .toGregorianCalendar()
-                    .toZonedDateTime()
-                    .withZoneSameInstant(ZoneOffset.UTC)
-                    .toLocalDateTime(),
+                    sykmeldingXml
+                        .get<XMLMottakenhetBlokk>()
+                        .mottattDatotid
+                        .toGregorianCalendar()
+                        .toZonedDateTime()
+                        .withZoneSameInstant(ZoneOffset.UTC)
+                        .toLocalDateTime(),
                 rulesetVersion = sykmeldingRequest.regelsettVersjon,
                 fellesformat = marshallFellesformat(sykmeldingXml),
                 tssid = "",

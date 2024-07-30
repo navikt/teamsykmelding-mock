@@ -225,6 +225,9 @@ fun opprettUtenlandskJournalpostPayload(
 
 class DokarkivClientDevelopment() : DokarkivClient {
     override suspend fun opprettJournalpost(journalpostRequest: JournalpostRequest): String {
-        TODO("Not yet implemented")
+        logger.info(
+            "later som vi oppretter journalpost i dokarkiv: ${journalpostRequest.eksternReferanseId}"
+        )
+        return journalpostRequest.eksternReferanseId
     }
 }

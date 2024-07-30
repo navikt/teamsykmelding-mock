@@ -6,8 +6,7 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.NotFound
 import java.io.IOException
 import java.util.UUID
@@ -49,6 +48,14 @@ class NorskHelsenettClientProduction(
                 httpResponse.call.response.body<Behandler>().fnr
             }
         }
+    }
+}
+
+class NorskHelsenettClientDevelopment() : NorskHelsenettClient {
+
+    override suspend fun finnBehandlerFnr(hprNummer: String): String? {
+        logger.info("later som vi finner behandler fra norsk  helsenett for HprNummer $hprNummer")
+        return "behandler"
     }
 }
 

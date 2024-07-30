@@ -37,6 +37,6 @@ class TombstoneKafkaProducerProduction(
 
 class TombstoneKafkaProducerDevelopment() : TombstoneKafkaProducer {
     override fun sendTombstone(sykmeldingId: String) {
-        logger.info("sending tombstone til topic for sykmeldingid $sykmeldingId")
+        logger.info("later som vi sender tombstone til topic for sykmeldingid $sykmeldingId")
     }
 }

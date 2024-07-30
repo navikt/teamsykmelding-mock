@@ -28,9 +28,6 @@ fun Route.registrerSykmeldingApi() {
             )
             return@post
         }
-
-        logger.info("prøver å opprette sykmeldign")
-
         val mottakId = sykmeldingService.opprettSykmelding(request)
 
         logger.info("Opprettet sykmelding")

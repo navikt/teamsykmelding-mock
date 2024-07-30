@@ -20,6 +20,7 @@ class NarmestelederService(
             pdlPersonService.getPersoner(
                 listOf(opprettNarmestelederRequest.ansattFnr, opprettNarmestelederRequest.lederFnr)
             )
+
         val sykmeldt = personer[opprettNarmestelederRequest.ansattFnr]
         val leder = personer[opprettNarmestelederRequest.lederFnr]
 
