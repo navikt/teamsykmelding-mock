@@ -16,6 +16,9 @@ import no.nav.syfo.sykmelding.kafka.TombstoneKafkaProducerDevelopment
 import no.nav.syfo.utils.EnvironmentVariables
 import org.koin.core.KoinApplication
 import org.koin.dsl.module
+import org.slf4j.LoggerFactory
+
+val logger = LoggerFactory.getLogger("no.nav.syfo.sykmelding-syfosmregister")
 
 fun KoinApplication.initDevelopmentModules() {
     modules(
@@ -23,63 +26,26 @@ fun KoinApplication.initDevelopmentModules() {
         developmentmqModule,
         developmentPdlModule,
         developmentSyfosmreglerModule,
-        developmentSykmeldingModule,
         developmentSyfosmregisterModule,
-        developmentKafkaModules
+        developmentKafkaModules,
+        developmentSykmeldingModule,
     )
-}
-
-val developmentmqModule = module { single<MqClient> { MqClientDevelopment() } }
-val developmentPdlModule = module {
-    single<PdlClient> { DevelopmentPdlClient() }
-    single { PdlPersonService(get(), get(), get<EnvironmentVariables>().pdlScope) }
-}
-val developmentSyfosmreglerModule = module {
-    single<SyfosmreglerClient> { SyfosmreglerClientDevelopment() }
-}
-
-val developmentSyfosmregisterModule = module {
-    single<SyfosmregisterClient> { SyfosmregisterClientDevelopment() }
-}
-
-val developmentKafkaModules = module {
-    single<TombstoneKafkaProducer> { TombstoneKafkaProducerDevelopment() }
-
-    single<SykmeldingStatusKafkaProducer> { SykmeldingStatusKafkaProducerDevelopment() }
-}
-
-val developmentSykmeldingModule = module {
-    single {
-        val env = get<EnvironmentVariables>()
-        SykmeldingService(
-            pdlPersonService = get(),
-            mqClient = get(),
-            sykmeldingQueue = env.sykmeldingQueue,
-            syfosmreglerClient = get()
-        )
-    }
-    single {
-        SlettSykmeldingService(
-            syfosmregisterClient = get(),
-            sykmeldingStatusKafkaProducer = get(),
-            tombstoneKafkaProducer = get()
-        )
-    }
 }
 
 val developmentEnv = module {
     single {
+        logger.info("initialiseing developmentenv")
         EnvironmentVariables(
             applicationPort = 8080,
             applicationName = "dummy-value",
-            oppgaveScope = "dummy-value",
-            pdlGraphqlPath = "dummy-value",
-            pdlScope = "dummy-value",
-            clusterName = "dummy-value",
             narmestelederTopic = "dummy-value",
+            pdlScope = "dummy-value",
+            pdlGraphqlPath = "dummy-value",
             aadAccessTokenUrl = "dummy-value",
             clientId = "dummy-value",
             clientSecret = "dummy-value",
+            jwkKeysUrl = "dummy-value",
+            jwtIssuer = "dummy-value",
             mqHostname = "dummy-value",
             mqPort = 1,
             mqGatewayName = "dummy-value",
@@ -100,6 +66,61 @@ val developmentEnv = module {
             norskHelsenettUrl = "dummy-value",
             norskHelsenettScope = "dummy-value",
             oppgaveUrl = "dummy-value",
+            oppgaveScope = "dummy-value",
+            clusterName = "dummy-value",
+        )
+    }
+}
+
+val developmentmqModule = module {
+    single<MqClient> {
+        MqClientDevelopment()
+    }
+}
+
+val developmentPdlModule = module {
+    single<PdlClient> {
+        DevelopmentPdlClient()
+    }
+    single {
+        val env = get<EnvironmentVariables>()
+        PdlPersonService(get(), get(), env.pdlScope)
+    }
+}
+
+val developmentSyfosmreglerModule = module {
+    single<SyfosmreglerClient> { SyfosmreglerClientDevelopment() }
+}
+
+val developmentSyfosmregisterModule = module {
+    single<SyfosmregisterClient> { SyfosmregisterClientDevelopment() }
+}
+
+val developmentKafkaModules = module {
+    single<TombstoneKafkaProducer> {
+        TombstoneKafkaProducerDevelopment()
+    }
+    single<SykmeldingStatusKafkaProducer> {
+        SykmeldingStatusKafkaProducerDevelopment()
+    }
+}
+
+val developmentSykmeldingModule = module {
+    single {
+        val env = get<EnvironmentVariables>()
+        SykmeldingService(
+            pdlPersonService = get(),
+            mqClient = get(),
+            sykmeldingQueue = env.sykmeldingQueue,
+            syfosmreglerClient = get(),
+        )
+    }
+
+    single {
+        SlettSykmeldingService(
+            syfosmregisterClient = get(),
+            sykmeldingStatusKafkaProducer = get(),
+            tombstoneKafkaProducer = get(),
         )
     }
 }

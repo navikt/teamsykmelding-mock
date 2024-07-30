@@ -1,0 +1,32 @@
+.periodeFieldRow {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.periodeFields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.periodeButton {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.commonFormElement {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.buttons {
+    display: flex;
+    gap: var(--a-spacing-4);
+}
+
+.buttons > button:last-of-type {
+    margin-left: auto;
+}

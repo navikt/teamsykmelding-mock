@@ -15,7 +15,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import no.nav.syfo.logger
 
-
 interface AccessTokenClientV2 {
     suspend fun getAccessTokenV2(resource: String): String
 }
@@ -25,6 +24,7 @@ class DevelopmentAccessTokenClientV2 : AccessTokenClientV2 {
         return "token"
     }
 }
+
 class ProductionAccessTokenClientV2(
     private val aadAccessTokenUrl: String,
     private val clientId: String,
@@ -39,36 +39,36 @@ class ProductionAccessTokenClientV2(
         val omToMinutter = Instant.now().plusSeconds(120L)
         return mutex.withLock {
             (tokenMap[resource]?.takeUnless { it.expiresOn.isBefore(omToMinutter) }
-                ?: run {
-                    logger.debug("Henter nytt token fra Azure AD")
-                    val response: AadAccessTokenV2 =
-                        httpClient
-                            .post(aadAccessTokenUrl) {
-                                accept(ContentType.Application.Json)
-                                method = HttpMethod.Post
-                                setBody(
-                                    FormDataContent(
-                                        Parameters.build {
-                                            append("client_id", clientId)
-                                            append("scope", resource)
-                                            append("grant_type", "client_credentials")
-                                            append("client_secret", clientSecret)
-                                        },
-                                    ),
-                                )
-                            }
-                            .body()
-                    val tokenMedExpiry =
-                        AadAccessTokenMedExpiry(
-                            access_token = response.access_token,
-                            expires_in = response.expires_in,
-                            expiresOn = Instant.now().plusSeconds(response.expires_in.toLong()),
-                        )
-                    tokenMap[resource] = tokenMedExpiry
+                    ?: run {
+                        logger.debug("Henter nytt token fra Azure AD")
+                        val response: AadAccessTokenV2 =
+                            httpClient
+                                .post(aadAccessTokenUrl) {
+                                    accept(ContentType.Application.Json)
+                                    method = HttpMethod.Post
+                                    setBody(
+                                        FormDataContent(
+                                            Parameters.build {
+                                                append("client_id", clientId)
+                                                append("scope", resource)
+                                                append("grant_type", "client_credentials")
+                                                append("client_secret", clientSecret)
+                                            },
+                                        ),
+                                    )
+                                }
+                                .body()
+                        val tokenMedExpiry =
+                            AadAccessTokenMedExpiry(
+                                access_token = response.access_token,
+                                expires_in = response.expires_in,
+                                expiresOn = Instant.now().plusSeconds(response.expires_in.toLong()),
+                            )
+                        tokenMap[resource] = tokenMedExpiry
 
-                    logger.debug("Har hentet accesstoken")
-                    return@run tokenMedExpiry
-                })
+                        logger.debug("Har hentet accesstoken")
+                        return@run tokenMedExpiry
+                    })
                 .access_token
         }
     }
