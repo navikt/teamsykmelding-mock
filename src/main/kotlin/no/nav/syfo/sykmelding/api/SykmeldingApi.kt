@@ -19,6 +19,7 @@ fun Route.registrerSykmeldingApi() {
     val slettSykmeldingService by inject<SlettSykmeldingService>()
     post("/sykmelding/opprett") {
         val request = call.receive<SykmeldingRequest>()
+        logger.info("sykmeldingRequesten fra frontend: $request")
 
         if (request.fnr.length != 11) {
             call.respond(
@@ -27,6 +28,8 @@ fun Route.registrerSykmeldingApi() {
             )
             return@post
         }
+
+        logger.info("prøver å opprette sykmeldign")
 
         val mottakId = sykmeldingService.opprettSykmelding(request)
 

@@ -15,6 +15,7 @@ class MqClientProduction(
 ) : MqClient {
 
     override fun getConnection(): Connection? {
+        logger.info("vi skal ikke hit når vi er i dev")
         val connection =
             connectionFactory(env)
                 .apply {

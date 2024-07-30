@@ -1,0 +1,63 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "20"
+  },
+  "packageManager": "yarn@4.2.2",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@navikt/aksel-icons": "^6.13.0",
+    "@navikt/diagnosekoder": "^1.2024.0",
+    "@navikt/ds-css": "^6.13.0",
+    "@navikt/ds-react": "^6.13.0",
+    "@navikt/ds-tailwind": "^6.13.0",
+    "@navikt/next-api-proxy": "^3.4.2",
+    "@navikt/next-logger": "^1.25.0",
+    "@reach/combobox": "^0.18.0",
+    "autoprefixer": "^10.4.19",
+    "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
+    "fuse.js": "^7.0.0",
+    "http-proxy-middleware": "^3.0.0",
+    "next": "14.2.5",
+    "next-logger": "^5.0.0",
+    "pino": "^9.3.1",
+    "pino-pretty": "^11.2.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.52.1",
+    "react-router-dom": "^6.25.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.3"
+  },
+  "resolutions": {
+    "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705"
+  },
+  "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@navikt/eslint-config-teamsykmelding",
+      "next/core-web-vitals"
+    ]
+  },
+  "lint-staged": {
+    "*.{md,html,css,json,graphql,graphqls,yml,md,mdx}": "yarn prettier --write",
+    "*.{ts,tsx}": "yarn eslint --fix --max-warnings=0"
+  }
+}
