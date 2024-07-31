@@ -28,6 +28,7 @@ fun Application.module() {
     configurePrometheus()
     configureSwagger()
     configureLifecycleHooks()
+    configureWebApp()
     configureNaisResources()
     configureFeatures()
 }

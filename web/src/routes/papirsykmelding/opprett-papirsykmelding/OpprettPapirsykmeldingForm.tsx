@@ -3,16 +3,15 @@ import { ReactElement } from 'react'
 import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
 import { format, sub } from 'date-fns'
 
-
 import styles from './OpprettPapirsykmelding.module.css'
 import Behandletdato from './Behandletdato'
 import SyketilfelleStartdato from './SyketilfelleStartdato'
-import {Periode, SykmeldingType} from "../../../types/sykmelding/Periode.ts";
-import DiagnosePicker, {Diagnose} from "../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx";
-import PeriodePicker from "../../../components/formComponents/PeriodePicker/PeriodePicker.tsx";
-import FnrTextField from "../../../components/formComponents/FnrTextField.tsx";
-import ProxyFeedback from "../../../api/proxy/proxy-feedback.tsx";
-import {useProxyAction} from "../../../api/proxy/api-hooks.ts";
+import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
+import DiagnosePicker, { Diagnose } from '../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx'
+import PeriodePicker from '../../../components/formComponents/PeriodePicker/PeriodePicker.tsx'
+import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
+import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
+import { useAction } from '../../../api/proxy/api-hooks.ts'
 
 export interface PapirsykmeldingFormValues {
     fnr: string | null
@@ -38,7 +37,11 @@ function OpprettPapirsykmeldingForm(): ReactElement {
             syketilfelleStartdato: enUkeSiden,
             behandletDato: enUkeSiden,
             perioder: [{ fom: enUkeSiden, tom: iGar, type: SykmeldingType.Enum.HUNDREPROSENT }],
-            hoveddiagnose: { system: 'icd10', code: 'H100', text: 'Mukopurulent konjunktivitt' },
+            hoveddiagnose: {
+                system: 'icd10',
+                code: 'H100',
+                text: 'Mukopurulent konjunktivitt',
+            },
         },
     })
     const control = form.control
@@ -52,9 +55,9 @@ function OpprettPapirsykmeldingForm(): ReactElement {
     })
 
     const [postData, { error, result, loading, reset }] =
-        useProxyAction<OpprettPapirsykmeldingApiBody>('/papirsykmelding/opprett')
+        useAction<OpprettPapirsykmeldingApiBody>('/papirsykmelding/opprett')
     const [postDataRegelsjekk, { error: regelError, result: regelResult, loading: regelLoading, reset: regelReset }] =
-        useProxyAction<OpprettPapirsykmeldingApiBody>('/papirsykmelding/regelsjekk')
+        useAction<OpprettPapirsykmeldingApiBody>('/papirsykmelding/regelsjekk')
 
     return (
         <FormProvider {...form}>
@@ -101,7 +104,13 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                 <div className={styles.periodeButton}>
                     <Button
                         type="button"
-                        onClick={() => append({ fom: enUkeSiden, tom: iGar, type: SykmeldingType.Enum.HUNDREPROSENT })}
+                        onClick={() =>
+                            append({
+                                fom: enUkeSiden,
+                                tom: iGar,
+                                type: SykmeldingType.Enum.HUNDREPROSENT,
+                            })
+                        }
                     >
                         Legg til periode
                     </Button>
@@ -124,7 +133,7 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                 <DiagnosePicker name="hoveddiagnose" diagnoseType="hoveddiagnose" />
 
                 <Checkbox {...form.register('utenOcr')}>Opprett papirsykmelding uten OCR</Checkbox>
-                <ProxyFeedback error={regelError ?? error} result={regelResult ?? result}>
+                <ActionFeedback error={regelError ?? error} result={regelResult ?? result}>
                     <Button type="submit" loading={loading} disabled={regelLoading}>
                         Opprett
                     </Button>
@@ -134,7 +143,9 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                         loading={regelLoading}
                         disabled={loading}
                         onClick={async () => {
-                            const validationResult = await form.trigger(undefined, { shouldFocus: true })
+                            const validationResult = await form.trigger(undefined, {
+                                shouldFocus: true,
+                            })
                             if (!validationResult) {
                                 return
                             }
@@ -159,7 +170,7 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                     >
                         Valider mot regler
                     </Button>
-                </ProxyFeedback>
+                </ActionFeedback>
             </form>
         </FormProvider>
     )

@@ -4,8 +4,7 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react'
 import { format } from 'date-fns'
 
 import { toDate } from '../../../utils/dateUtils.ts'
-import {PapirsykmeldingFormValues} from "./OpprettPapirsykmeldingForm.tsx";
-
+import { PapirsykmeldingFormValues } from './OpprettPapirsykmeldingForm.tsx'
 
 function Behandletdato(): ReactElement {
     const { field } = useController<PapirsykmeldingFormValues, 'behandletDato'>({

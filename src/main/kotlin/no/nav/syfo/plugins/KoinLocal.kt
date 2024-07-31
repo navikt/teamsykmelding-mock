@@ -55,7 +55,6 @@ fun KoinApplication.initDevelopmentModules() {
 
 val developmentEnv = module {
     single {
-        logger.info("initialiseing developmentenv")
         EnvironmentVariables(
             applicationPort = 8080,
             applicationName = "dummy-value",

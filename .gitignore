@@ -7,9 +7,6 @@ out/
 build/
 .gradle/
 
-# Generated sources
-src/generated
-
 # OS specific
 .DS_Store
-node_modules
+src/main/resources/web-app

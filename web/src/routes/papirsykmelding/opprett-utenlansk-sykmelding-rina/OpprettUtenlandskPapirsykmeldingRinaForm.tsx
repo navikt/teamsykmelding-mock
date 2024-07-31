@@ -1,9 +1,9 @@
 import { Button, TextField } from '@navikt/ds-react'
 import { ReactElement } from 'react'
 import { useForm } from 'react-hook-form'
-import FnrTextField from "../../../components/formComponents/FnrTextField.tsx";
-import {useProxyAction} from "../../../api/proxy/api-hooks.ts";
-import ProxyFeedback from "../../../api/proxy/proxy-feedback.tsx";
+import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
+import { useAction } from '../../../api/proxy/api-hooks.ts'
+import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
 
 interface FormValues {
     fnr: string | null
@@ -21,7 +21,7 @@ function OpprettUtenlandskPapirsykmeldingRinaForm(): ReactElement {
         },
     })
 
-    const [postData, { result, error, loading }] = useProxyAction<FormValues>('/utenlands/opprett')
+    const [postData, { result, error, loading }] = useAction<FormValues>('/utenlands/opprett')
 
     return (
         <form onSubmit={handleSubmit((values) => postData(values))} className="flex flex-col gap-4">
@@ -31,11 +31,11 @@ function OpprettUtenlandskPapirsykmeldingRinaForm(): ReactElement {
                 {...register('antallPdfs', { required: true })}
                 error={errors.antallPdfs && 'Antall PDFs mangler'}
             />
-            <ProxyFeedback error={error} result={result}>
+            <ActionFeedback error={error} result={result}>
                 <Button type="submit" loading={loading}>
                     Opprett
                 </Button>
-            </ProxyFeedback>
+            </ActionFeedback>
         </form>
     )
 }

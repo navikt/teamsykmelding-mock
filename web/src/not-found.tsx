@@ -1,7 +1,6 @@
 import { ReactElement } from 'react'
 import { Heading, BodyShort } from '@navikt/ds-react'
 
-
 function NotFound(): ReactElement {
     return (
         <div>

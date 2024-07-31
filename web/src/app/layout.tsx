@@ -1,3 +1,4 @@
+/*
 import '../styles/globals.css'
 import '@reach/combobox/styles.css'
 
@@ -23,3 +24,4 @@ export default function RootLayout({ children }: PropsWithChildren): ReactElemen
         </html>
     )
 }
+*/

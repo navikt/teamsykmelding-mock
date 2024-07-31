@@ -11,7 +11,6 @@ fun monitorHttpRequests(
     return {
         try {
             logger.info("Received request: ${call.request.uri}")
-            logger.info("devmode?? $developmentMode")
             val label = context.request.path()
             val timer = HTTP_HISTOGRAM.labels(label).startTimer()
             proceed()

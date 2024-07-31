@@ -1,7 +1,6 @@
 import { ReactElement } from 'react'
 import { BodyShort } from '@navikt/ds-react'
 
-
 function Page(): ReactElement {
     return (
         <div className="p-4">

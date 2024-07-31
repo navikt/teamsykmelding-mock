@@ -37,6 +37,19 @@ jobs:
       - name: Build jar
         run: |
           ./gradlew shadowJar -x test
+      - name: setup frontend
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: corepack enable
+      - run: yarn --immutable
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+        working-directory: web
+      - run: yarn build
+        working-directory: web
+      - run: yarn copy
+        working-directory: web
       - name: docker-build-push
         uses: nais/docker-build-push@v0
         id: docker-build-push

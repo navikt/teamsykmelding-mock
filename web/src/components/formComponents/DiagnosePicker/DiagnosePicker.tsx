@@ -28,7 +28,11 @@ function DiagnosePicker({ name, diagnoseType, onRemove, children }: PropsWithChi
                 <Select
                     label="Kodesystem"
                     onChange={(event) => {
-                        field.onChange({ system: event.target.value, code: null, text: null })
+                        field.onChange({
+                            system: event.target.value,
+                            code: null,
+                            text: null,
+                        })
                     }}
                 >
                     <option>ICD10</option>

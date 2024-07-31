@@ -1,8 +1,6 @@
 import { ReactElement } from 'react'
-import BasicPage from "../../../components/layout/BasicPage.tsx";
-import OpprettSykmeldingForm from "./OpprettSykmeldingForm.tsx";
-
-
+import BasicPage from '../../../components/layout/BasicPage.tsx'
+import OpprettSykmeldingForm from './OpprettSykmeldingForm.tsx'
 
 function OpprettSykmelding(): ReactElement {
     return (

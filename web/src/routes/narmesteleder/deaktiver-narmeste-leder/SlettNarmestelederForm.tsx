@@ -1,10 +1,9 @@
 import { ReactElement } from 'react'
 import { Button, TextField } from '@navikt/ds-react'
 import { useForm } from 'react-hook-form'
-import {useProxyDelete} from "../../../api/proxy/api-hooks.ts";
-import FnrTextField from "../../../components/formComponents/FnrTextField.tsx";
-import ProxyFeedback from "../../../api/proxy/proxy-feedback.tsx";
-
+import { useDelete } from '../../../api/proxy/api-hooks.ts'
+import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
+import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
 
 interface FormValues {
     fnr: string
@@ -18,7 +17,7 @@ function SlettNarmestelederForm(): ReactElement {
         formState: { errors },
     } = useForm<FormValues>()
 
-    const [postData, { result, error, loading }] = useProxyDelete('/narmesteleder')
+    const [postData, { result, error, loading }] = useDelete('/narmesteleder')
 
     return (
         <form
@@ -40,11 +39,11 @@ function SlettNarmestelederForm(): ReactElement {
                 label="Organisasjonsnummer"
                 error={errors.orgnummer && 'Organisasjonsnummer mangler'}
             />
-            <ProxyFeedback error={error} result={result}>
+            <ActionFeedback error={error} result={result}>
                 <Button type="submit" loading={loading}>
                     Deaktiver
                 </Button>
-            </ProxyFeedback>
+            </ActionFeedback>
         </form>
     )
 }
