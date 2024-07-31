@@ -3,8 +3,8 @@ import '@reach/combobox/styles.css'
 
 import { PropsWithChildren, ReactElement } from 'react'
 
-import Sidebar from '../components/Sidebar'
-import Header from '../components/Header'
+import Sidebar from '../components/layout/Sidebar.tsx'
+import Header from '../components/layout/Header.tsx'
 
 export default function RootLayout({ children }: PropsWithChildren): ReactElement {
     return (

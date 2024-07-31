@@ -1,10 +1,6 @@
 import { ReactElement } from 'react'
-import { Metadata } from 'next'
 import { BodyShort } from '@navikt/ds-react'
 
-export const metadata: Metadata = {
-    title: 'Team Sykmelding Mock',
-}
 
 function Page(): ReactElement {
     return (
