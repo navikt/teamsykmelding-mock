@@ -1,11 +1,11 @@
 package no.nav.syfo.pdl.service
 
 import no.nav.syfo.azuread.AccessTokenClientV2
-import no.nav.syfo.logger
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.client.model.ResponseData
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
+import no.nav.syfo.utils.logger
 
 interface PdlPersonService {
     suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson>

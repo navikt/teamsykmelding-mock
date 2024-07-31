@@ -1,13 +1,11 @@
 package no.nav.syfo.sykmelding.api
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.kotlinModule
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.http.headers
-import io.ktor.serialization.jackson.*
-import io.ktor.server.application.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -15,10 +13,8 @@ import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.model.RuleInfo
 import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
-import no.nav.syfo.sm.Diagnosekoder.objectMapper
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
-import no.nav.syfo.utils.generateJWT
 import no.nav.syfo.utils.setupTestApplication
 import no.nav.syfo.utils.testClient
 import org.junit.jupiter.api.AfterEach
@@ -28,6 +24,8 @@ import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 
 internal class SykmeldingApiTest {
+    val objectMapper =
+        jacksonObjectMapper().registerModule(kotlinModule()).registerModule(JavaTimeModule())
     val sykmeldingService = mockk<SykmeldingService>()
     val slettSykmeldingService = mockk<SlettSykmeldingService>()
 
@@ -51,17 +49,14 @@ internal class SykmeldingApiTest {
     internal fun `Creating sykmelding with bidiagnoser`() = testApplication {
         setupTestApplication {
             dependencies { modules(module { single { sykmeldingService } }) }
-            authedRoutes { registrerSykmeldingApi() }
+            openRoutes { registrerSykmeldingApi() }
         }
 
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
         val response =
             testClient().post("/sykmelding/opprett") {
-                headers {
-                    append("Content-Type", ContentType.Application.Json.toString())
-                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
-                }
+                headers { append("Content-Type", ContentType.Application.Json.toString()) }
                 setBody(
                     "{\n" +
                         "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
@@ -115,17 +110,14 @@ internal class SykmeldingApiTest {
     internal fun `Creating sykmelding with empty bidiagnoser`() = testApplication {
         setupTestApplication {
             dependencies { modules(module { single { sykmeldingService } }) }
-            authedRoutes { registrerSykmeldingApi() }
+            openRoutes { registrerSykmeldingApi() }
         }
 
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
         val response =
             testClient().post("/sykmelding/opprett") {
-                headers {
-                    append("Content-Type", ContentType.Application.Json.toString())
-                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
-                }
+                headers { append("Content-Type", ContentType.Application.Json.toString()) }
                 setBody(
                     "{\n" +
                         "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
@@ -173,7 +165,7 @@ internal class SykmeldingApiTest {
     internal fun `Regelsjekk`() = testApplication {
         setupTestApplication {
             dependencies { modules(module { single { sykmeldingService } }) }
-            authedRoutes { registrerSykmeldingApi() }
+            openRoutes { registrerSykmeldingApi() }
         }
 
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
@@ -181,10 +173,7 @@ internal class SykmeldingApiTest {
 
         val response =
             testClient().post("/sykmelding/regelsjekk") {
-                headers {
-                    append("Content-Type", ContentType.Application.Json.toString())
-                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
-                }
+                headers { append("Content-Type", ContentType.Application.Json.toString()) }
                 setBody(
                     "{\n" +
                         "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +

@@ -2717,44 +2717,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"frontend@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "frontend@workspace:."
-  dependencies:
-    "@navikt/aksel-icons": "npm:^6.8.0"
-    "@navikt/diagnosekoder": "npm:^1.2024.0"
-    "@navikt/ds-css": "npm:^6.8.0"
-    "@navikt/ds-react": "npm:^6.8.0"
-    "@navikt/ds-tailwind": "npm:^6.8.0"
-    "@navikt/eslint-config-teamsykmelding": "npm:^6.2.0"
-    "@navikt/next-logger": "npm:^1.25.0"
-    "@reach/combobox": "npm:^0.18.0"
-    "@tanstack/react-query": "npm:^5.36.2"
-    "@types/react": "npm:^18.2.66"
-    "@types/react-dom": "npm:^18.2.22"
-    "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
-    "@typescript-eslint/parser": "npm:^7.2.0"
-    "@vitejs/plugin-react": "npm:^4.2.1"
-    autoprefixer: "npm:^10.4.19"
-    eslint: "npm:^8.57.0"
-    eslint-plugin-import: "npm:^2.29.1"
-    eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-react-refresh: "npm:^0.4.6"
-    fuse.js: "npm:^7.0.0"
-    postcss: "npm:^8.4.38"
-    prettier: "npm:^3.2.5"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-hook-form: "npm:^7.52.1"
-    react-router-dom: "npm:^6.23.1"
-    tailwind-merge: "npm:^2.3.0"
-    tailwindcss: "npm:^3.4.3"
-    typescript: "npm:^5.2.2"
-    vite: "npm:^5.2.0"
-    zod: "npm:^3.23.8"
-  languageName: unknown
-  linkType: soft
-
 "fs-minipass@npm:^2.0.0":
   version: 2.1.0
   resolution: "fs-minipass@npm:2.1.0"
@@ -5230,6 +5192,44 @@ __metadata:
   checksum: 10c0/795c7e0dbc94b96c4a0aff0d5d4b349dd28ad8b7b70979c1010f96b4d83f7d6c1700ebd6fed91de2e021b0a3689b9abc2d8017f6dfa8c9a6ca5c7af637d6afc6
   languageName: node
   linkType: hard
+
+"web@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "web@workspace:."
+  dependencies:
+    "@navikt/aksel-icons": "npm:^6.8.0"
+    "@navikt/diagnosekoder": "npm:^1.2024.0"
+    "@navikt/ds-css": "npm:^6.8.0"
+    "@navikt/ds-react": "npm:^6.8.0"
+    "@navikt/ds-tailwind": "npm:^6.8.0"
+    "@navikt/eslint-config-teamsykmelding": "npm:^6.2.0"
+    "@navikt/next-logger": "npm:^1.25.0"
+    "@reach/combobox": "npm:^0.18.0"
+    "@tanstack/react-query": "npm:^5.36.2"
+    "@types/react": "npm:^18.2.66"
+    "@types/react-dom": "npm:^18.2.22"
+    "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
+    "@typescript-eslint/parser": "npm:^7.2.0"
+    "@vitejs/plugin-react": "npm:^4.2.1"
+    autoprefixer: "npm:^10.4.19"
+    eslint: "npm:^8.57.0"
+    eslint-plugin-import: "npm:^2.29.1"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
+    eslint-plugin-react-refresh: "npm:^0.4.6"
+    fuse.js: "npm:^7.0.0"
+    postcss: "npm:^8.4.38"
+    prettier: "npm:^3.2.5"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-hook-form: "npm:^7.52.1"
+    react-router-dom: "npm:^6.23.1"
+    tailwind-merge: "npm:^2.3.0"
+    tailwindcss: "npm:^3.4.3"
+    typescript: "npm:^5.2.2"
+    vite: "npm:^5.2.0"
+    zod: "npm:^3.23.8"
+  languageName: unknown
+  linkType: soft
 
 "which-boxed-primitive@npm:^1.0.2":
   version: 1.0.2

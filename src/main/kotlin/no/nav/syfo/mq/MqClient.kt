@@ -1,9 +1,9 @@
 package no.nav.syfo.mq
 
 import javax.jms.Connection
-import no.nav.syfo.logger
 import no.nav.syfo.utils.EnvironmentVariables
 import no.nav.syfo.utils.ServiceUser
+import no.nav.syfo.utils.logger
 
 interface MqClient {
     fun getConnection(): Connection?

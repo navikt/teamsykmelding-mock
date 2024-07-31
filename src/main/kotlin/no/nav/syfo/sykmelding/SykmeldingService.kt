@@ -10,7 +10,6 @@ import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
-import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.mq.MqClient
@@ -21,6 +20,7 @@ import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.utils.fellesformatUnmarshaller
 import no.nav.syfo.utils.get
+import no.nav.syfo.utils.logger
 import no.nav.syfo.utils.marshallFellesformat
 
 class SykmeldingService(

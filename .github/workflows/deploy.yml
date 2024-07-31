@@ -33,9 +33,6 @@ jobs:
       - name: Run tests
         run: |
           ./gradlew test
-      - name: Build jar
-        run: |
-          ./gradlew shadowJar -x test
       - name: setup frontend
         uses: actions/setup-node@v4
         with:
@@ -49,7 +46,9 @@ jobs:
         working-directory: web
       - run: yarn copy
         working-directory: web
-
+      - name: Build jar
+        run: |
+          ./gradlew shadowJar -x test
       - name: docker-build-push
         uses: nais/docker-build-push@v0
         id: docker-build-push

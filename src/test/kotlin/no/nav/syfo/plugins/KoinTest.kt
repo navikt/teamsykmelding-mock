@@ -68,7 +68,6 @@ class CheckModulesTest : KoinTest {
                     // Mock up any "leaf nodes" in the dependency tree that we don't want
                     // instantiated. That way we can verify that all dependencies are satisfied
                     single { testEnv }
-                    single { mockk<AuthConfiguration>() }
                     single<TombstoneKafkaProducer>() { mockk<TombstoneKafkaProducerDevelopment>() }
                     single<DokarkivClient>() { mockk<DokarkivClientDevelopment>() }
                     single<SykmeldingStatusKafkaProducer>() {

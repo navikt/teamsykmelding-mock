@@ -1,4 +1,4 @@
-package no.nav.syfo.logging
+package no.nav.syfo.utils
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

@@ -2,7 +2,6 @@ package no.nav.syfo.utenlandsk.service
 
 import java.time.LocalDate
 import net.logstash.logback.argument.StructuredArguments.kv
-import no.nav.syfo.logger
 import no.nav.syfo.oppgave.OppgaveClient
 import no.nav.syfo.oppgave.OpprettOppgave
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
@@ -11,6 +10,7 @@ import no.nav.syfo.papirsykmelding.client.opprettUtenlandskJournalpost
 import no.nav.syfo.papirsykmelding.client.opprettUtenlandskNavNoJournalpost
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingPdfRequest
+import no.nav.syfo.utils.logger
 
 class UtenlandskSykmeldingService(
     private val dokarkivClient: DokarkivClient,

@@ -22,7 +22,6 @@ import no.nav.syfo.pdl.client.ProductionPdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.pdl.service.PdlPersonServiceProduction
 import no.nav.syfo.plugins.ApplicationState
-import no.nav.syfo.plugins.getProductionAuthConfig
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.client.SyfosmregisterClient
@@ -55,7 +54,6 @@ fun KoinApplication.initProductionModules() {
     modules(
         environmentModule,
         applicationStateModule,
-        authModule,
         httpClientModule,
         pdlModule,
         kafkaModules,
@@ -75,8 +73,6 @@ fun KoinApplication.initProductionModules() {
 val environmentModule = module { single { EnvironmentVariables() } }
 
 val applicationStateModule = module { single { ApplicationState() } }
-
-val authModule = module { single { getProductionAuthConfig(get()) } }
 
 val httpClientModule = module {
     single { createHttpClient() }

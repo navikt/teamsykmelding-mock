@@ -1,27 +1,30 @@
+:root {
+    --a-border-radius-medium: 4px;
+    --a-search-color-border: #dc1313;
+    --a-shadow-medium: 0px 4px 6px rgba(224, 10, 10, 0.5); /* Juster etter behov */
+    --a-semantic-color-text-muted: #df08ee;
+    --a-global-color-blue-100: rgba(203, 179, 179, 0.5); /* Eksempel på gjennomsiktig bakgrunn */
+}
+
 .suggestionPopover[data-reach-combobox-popover] {
     border-radius: var(--a-border-radius-medium);
     border-color: var(--a-search-color-border);
     box-shadow: var(--a-shadow-medium);
     max-height: 320px;
     overflow: auto;
-
-    /* Laveste mulige verdi for å vises over Popover-komponenten */
+    background-color: rgba(255, 255, 255, 0.9); /* Hvit bakgrunn med 90% opasitet */
     z-index: 1000;
-}
-
-.suggestionNoResult {
-    padding: 0.5rem;
-    color: var(--a-semantic-color-text-muted);
 }
 
 .suggestion[data-reach-combobox-option][data-highlighted],
 .suggestion[data-reach-combobox-option]:hover {
-    background-color: var(--a-global-color-blue-100);
+    background-color: var(--a-global-color-blue-100); /* Juster opasiteten her */
 }
 
 .suggestion[data-reach-combobox-option] {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.9); /* Hvit bakgrunn med 90% opasitet */
 }
 
 .suggestion:first-child {
