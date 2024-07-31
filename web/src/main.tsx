@@ -3,20 +3,20 @@ import "./global.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-import OpprettNarmesteleder from "@/components/narmesteleder/OpprettNarmesteleder";
-import SlettNarmesteleder from "@/components/narmesteleder/SlettNarmesteleder";
-import OpprettLegeerklaering from "@/components/legeerklaering/OpprettLegeerklaering";
-import OpprettSykmelding from "@/components/sykmelding/OpprettSykmelding";
-import SlettSykmelding from "@/components/sykmelding/SlettSykmelding";
-import OpprettPapirsykmelding from "@/components/papirsykmelding/OpprettPapirsykmelding";
-import OpprettUtenlandskPapirSM from "@/app/papirsykmelding-utland/opprett/page";
-import OpprettUtenlandskPapirSMRina from "@/app/papirsykmelding-utland-rina/opprett/page";
-import OpprettUtenlandskPapirSMNavNo from "@/app/papirsykmelding-utland-nav-no/opprett/page";
-import NotFound from "@/app/not-found";
-import {Root} from "postcss";
-import ErrorPage from "@/error-page";
-import Page from "@/app/page";
+import Page from "./app/page.tsx";
+import NotFound from "./not-found.tsx";
+import Root from "./routes/root.tsx";
+import Providers from "./providers.tsx";
+import OpprettNarmesteleder from "./routes/narmesteleder/registrer-narmeste-leder/opprett.tsx";
+import SlettNarmesteleder from "./routes/narmesteleder/deaktiver-narmeste-leder/slett.tsx";
+import OpprettLegeerklaering from "./routes/legeerklaering/opprett-legeerklaering/opprett.tsx";
+import OpprettSykmelding from "./routes/sykmelding/opprett-sykmelding/opprett.tsx";
+import SlettSykmelding from "./routes/sykmelding/slett-alle-sykmeldinger/slett.tsx";
+import OpprettPapirsykmelding from "./routes/papirsykmelding/opprett-papirsykmelding/opprett.tsx";
+import OpprettUtenlandskPapirSM from "./routes/papirsykmelding/opprett-utenlandsk-papirsykmelding/opprett.tsx";
+import OpprettUtenlandskPapirSMRina from "./routes/papirsykmelding/opprett-utenlansk-sykmelding-rina/opprett.tsx";
+import ErrorPage from "./error-page.tsx";
+import OpprettUtenlandskPapirSMNavNo from "./routes/papirsykmelding/opprett-utenlansk-sykmelding-navno/opprett.tsx";
 
 const router = createBrowserRouter([
   {

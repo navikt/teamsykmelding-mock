@@ -1,4 +1,3 @@
-'use server'
 
 import { ICD10, ICPC2 } from '@navikt/diagnosekoder'
 import Fuse from 'fuse.js'

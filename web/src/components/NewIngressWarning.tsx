@@ -1,17 +1,8 @@
-'use client'
 
 import { Alert } from '@navikt/ds-react'
-import { useSearchParams } from 'next/navigation'
 import { ReactElement } from 'react'
 
 function NewIngressWarning(): ReactElement | null {
-    const params = useSearchParams()
-    const cameFromoldIngress = params?.get('was-old') ?? false
-
-    if (!cameFromoldIngress) {
-        return null
-    }
-
     return (
         <div className="grow mx-8">
             <div className="flex items-center">

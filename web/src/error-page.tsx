@@ -1,7 +1,7 @@
 import { useRouteError } from "react-router-dom";
 import { BodyShort, Heading } from "@navikt/ds-react";
 
-import image from "./images/error-page-image.webp";
+import image from "./images/gostolen-error.webp";
 
 export default function ErrorPage() {
   const error = useRouteError();
