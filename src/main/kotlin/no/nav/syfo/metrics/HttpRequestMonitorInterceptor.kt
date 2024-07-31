@@ -3,14 +3,20 @@ package no.nav.syfo.metrics
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.util.pipeline.PipelineContext
-import no.nav.syfo.logging.logger
+import no.nav.syfo.utils.logger
 
 fun monitorHttpRequests(
     developmentMode: Boolean
 ): suspend PipelineContext<Unit, ApplicationCall>.(Unit) -> Unit {
     return {
         try {
-            logger.info("Received request: ${call.request.uri}")
+            if (
+                !(call.request.uri.contains("assets") ||
+                    call.request.uri.contains("internal") ||
+                    call.request.uri.contains("favicon"))
+            ) {
+                logger.info("Received request: ${call.request.uri}")
+            }
             val label = context.request.path()
             val timer = HTTP_HISTOGRAM.labels(label).startTimer()
             proceed()
@@ -23,7 +29,7 @@ fun monitorHttpRequests(
                 )
             } else {
                 logger.error(
-                    "Feil under behandling av HTTP-forespørsel til '${call.request.uri}': ${e.javaClass.simpleName}. Se securelogs for detaljert exception"
+                    "Feil under behandling av HTTP-forespørsel til '${call.request.uri}': ${e.javaClass.simpleName}"
                 )
             }
             logger.error(

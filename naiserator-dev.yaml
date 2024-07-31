@@ -36,8 +36,9 @@ spec:
   vault:
     enabled: false
   ingresses:
-    - "https://teamsykmelding-mock-backend.intern.dev.nav.no"
-  webproxy: false
+    - "https://teamsykmelding-mock.ansatt.dev.nav.no"
+    - "https://teamsykmelding-mock.intern.dev.nav.no"
+  webproxy: true
   kafka:
     pool: nav-dev
   azure:
@@ -65,8 +66,6 @@ spec:
           cluster: dev-gcp
   envFrom:
     - secret: mockbackend-secrets
-  secureLogs:
-    enabled: true
   env:
     - name: PDL_GRAPHQL_PATH
       value: https://pdl-api.dev-fss-pub.nais.io/graphql

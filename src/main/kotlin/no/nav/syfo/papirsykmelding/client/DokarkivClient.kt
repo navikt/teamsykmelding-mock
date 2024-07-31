@@ -11,8 +11,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.syfo.azuread.AccessTokenClientV2
-import no.nav.syfo.logger
-import no.nav.syfo.securelog
+import no.nav.syfo.utils.logger
 
 interface DokarkivClient {
     suspend fun opprettJournalpost(
@@ -31,7 +30,7 @@ class DokarkivClientProduction(
     ): String =
         try {
             logger.info("Oppretter papirsykmelding i dokarkiv")
-            securelog.info(
+            logger.info(
                 "journalpostRequest info {}",
                 kv("fnr", journalpostRequest.bruker?.id),
             )

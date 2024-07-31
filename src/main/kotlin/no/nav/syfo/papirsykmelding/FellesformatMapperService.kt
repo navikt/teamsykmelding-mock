@@ -33,7 +33,7 @@ import no.nav.helse.sm2013.Ident
 import no.nav.helse.sm2013.NavnType
 import no.nav.helse.sm2013.TeleCom
 import no.nav.helse.sm2013.URL
-import no.nav.syfo.logger
+import no.nav.syfo.utils.logger
 
 fun mapOcrFilTilFellesformat(
     skanningmetadata: Skanningmetadata,

@@ -13,7 +13,7 @@ import io.ktor.http.Parameters
 import java.time.Instant
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import no.nav.syfo.logger
+import no.nav.syfo.utils.logger
 
 interface AccessTokenClientV2 {
     suspend fun getAccessTokenV2(resource: String): String

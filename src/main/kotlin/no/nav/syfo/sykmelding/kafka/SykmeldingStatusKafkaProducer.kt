@@ -4,11 +4,11 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toProducerConfig
-import no.nav.syfo.logger
 import no.nav.syfo.model.sykmeldingstatus.KafkaMetadataDTO
 import no.nav.syfo.model.sykmeldingstatus.SykmeldingStatusKafkaEventDTO
 import no.nav.syfo.model.sykmeldingstatus.SykmeldingStatusKafkaMessageDTO
 import no.nav.syfo.utils.JacksonKafkaSerializer
+import no.nav.syfo.utils.logger
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer

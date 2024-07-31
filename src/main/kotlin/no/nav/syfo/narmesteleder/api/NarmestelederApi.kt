@@ -8,15 +8,16 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.post
 import java.time.LocalDate
-import no.nav.syfo.logger
 import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.narmesteleder.NarmestelederService
+import no.nav.syfo.utils.logger
 import org.koin.ktor.ext.inject
 
 fun Route.registrerNarmestelederApi() {
     val narmestelederService by inject<NarmestelederService>()
 
     post("/narmesteleder/opprett") {
+        println("hit?")
         val request = call.receive<OpprettNarmestelederRequest>()
         if (
             request.ansattFnr.trim { it <= ' ' }.length == 11 &&

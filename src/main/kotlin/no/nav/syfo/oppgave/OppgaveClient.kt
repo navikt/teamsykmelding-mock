@@ -11,7 +11,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.time.LocalDate
 import no.nav.syfo.azuread.AccessTokenClientV2
-import no.nav.syfo.logger
+import no.nav.syfo.utils.logger
 
 interface OppgaveClient {
     suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse

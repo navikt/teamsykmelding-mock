@@ -23,7 +23,6 @@ import no.nav.helse.papirsykemelding.KontaktMedPasientType
 import no.nav.helse.papirsykemelding.ReisetilskuddType
 import no.nav.helse.papirsykemelding.Skanningmetadata
 import no.nav.helse.sm2013.HelseOpplysningerArbeidsuforhet
-import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
@@ -39,6 +38,7 @@ import no.nav.syfo.sykmelding.toSykmelding
 import no.nav.syfo.utils.XMLDateAdapter
 import no.nav.syfo.utils.get
 import no.nav.syfo.utils.jaxbContextSkanningmetadata
+import no.nav.syfo.utils.logger
 import no.nav.syfo.utils.marshallFellesformat
 
 class PapirsykmeldingService(

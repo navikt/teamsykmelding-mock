@@ -8,8 +8,8 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
-import no.nav.syfo.logger
 import no.nav.syfo.model.HttpMessage
+import no.nav.syfo.utils.logger
 import org.koin.ktor.ext.inject
 
 fun Route.registrerLegeerklaeringApi() {

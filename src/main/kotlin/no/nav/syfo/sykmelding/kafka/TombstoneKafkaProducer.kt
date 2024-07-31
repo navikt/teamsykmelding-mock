@@ -2,8 +2,8 @@ package no.nav.syfo.sykmelding.kafka
 
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toProducerConfig
-import no.nav.syfo.logger
 import no.nav.syfo.utils.JacksonNullableKafkaSerializer
+import no.nav.syfo.utils.logger
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 

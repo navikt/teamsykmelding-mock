@@ -24,7 +24,6 @@ import no.nav.helse.msgHead.XMLHealthcareProfessional
 import no.nav.helse.msgHead.XMLIdent
 import no.nav.helse.msgHead.XMLMsgHead
 import no.nav.syfo.legeerklaering.model.LegeerklaeringRequest
-import no.nav.syfo.logger
 import no.nav.syfo.mq.MqClient
 import no.nav.syfo.mq.MqProducer
 import no.nav.syfo.mq.producerForQueue
@@ -33,6 +32,7 @@ import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.convertToXmlGregorianCalendar
 import no.nav.syfo.utils.get
 import no.nav.syfo.utils.legeerklaeringUnmarshaller
+import no.nav.syfo.utils.logger
 import no.nav.syfo.utils.marshallLegeerklaering
 
 class LegeerklaeringService(

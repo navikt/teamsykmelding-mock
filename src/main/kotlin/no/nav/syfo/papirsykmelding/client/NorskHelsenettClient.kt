@@ -11,7 +11,7 @@ import io.ktor.http.HttpStatusCode.Companion.NotFound
 import java.io.IOException
 import java.util.UUID
 import no.nav.syfo.azuread.AccessTokenClientV2
-import no.nav.syfo.logger
+import no.nav.syfo.utils.logger
 
 interface NorskHelsenettClient {
     suspend fun finnBehandlerFnr(hprNummer: String): String?

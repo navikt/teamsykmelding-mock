@@ -1,15 +1,12 @@
 package no.nav.syfo.narmesteleder.api
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.kotlinModule
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.http.headers
-import io.ktor.serialization.jackson.*
-import io.ktor.server.application.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.routing.*
 import io.ktor.server.testing.*
-import io.ktor.util.*
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -25,8 +22,6 @@ import no.nav.syfo.narmesteleder.kafka.model.Sykmeldt
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
-import no.nav.syfo.sm.Diagnosekoder.objectMapper
-import no.nav.syfo.utils.generateJWT
 import no.nav.syfo.utils.setupTestApplication
 import no.nav.syfo.utils.testClient
 import org.junit.jupiter.api.AfterEach
@@ -36,6 +31,8 @@ import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 
 internal class NarmestelederApiKtTest {
+    val objectMapper =
+        jacksonObjectMapper().registerModule(kotlinModule()).registerModule(JavaTimeModule())
     val nlResponseProducer = mockk<NlResponseProducer>(relaxed = true)
     val pdlPersonService = mockk<PdlPersonService>(relaxed = true)
 
@@ -50,7 +47,7 @@ internal class NarmestelederApiKtTest {
         val narmestelederService = NarmestelederService(nlResponseProducer, pdlPersonService)
         setupTestApplication {
             dependencies { modules(module { single { narmestelederService } }) }
-            authedRoutes { registrerNarmestelederApi() }
+            openRoutes { registrerNarmestelederApi() }
         }
         coEvery { pdlPersonService.getPersoner(any()) } returns
             mapOf(
@@ -70,14 +67,11 @@ internal class NarmestelederApiKtTest {
 
         val response =
             testClient().post("/narmesteleder/opprett") {
-                headers {
-                    append("Content-Type", "application/json")
-                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
-                }
+                headers { append("Content-Type", "application/json") }
                 setBody(objectMapper.writeValueAsString(opprettNarmestelederRequest))
             }
 
-        assertEquals(response.status, HttpStatusCode.OK)
+        assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
         val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
@@ -138,7 +132,7 @@ internal class NarmestelederApiKtTest {
         val narmestelederService = NarmestelederService(nlResponseProducer, pdlPersonService)
         setupTestApplication {
             dependencies { modules(module { single { narmestelederService } }) }
-            authedRoutes { registrerNarmestelederApi() }
+            openRoutes { registrerNarmestelederApi() }
         }
         coEvery { pdlPersonService.getPersoner(any()) } returns
             mapOf(
@@ -150,7 +144,6 @@ internal class NarmestelederApiKtTest {
             testClient().delete("/narmesteleder/$orgnummer") {
                 headers {
                     append("Content-Type", "application/json")
-                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
                     append("Sykmeldt-Fnr", ansattFnr)
                 }
             }
@@ -169,14 +162,11 @@ internal class NarmestelederApiKtTest {
         val narmestelederService = NarmestelederService(nlResponseProducer, pdlPersonService)
         setupTestApplication {
             dependencies { modules(module { single { narmestelederService } }) }
-            authedRoutes { registrerNarmestelederApi() }
+            openRoutes { registrerNarmestelederApi() }
         }
         val response =
             testClient().delete("/narmesteleder/$orgnummer") {
-                headers {
-                    append("Content-Type", "application/json")
-                    append(HttpHeaders.Authorization, "Bearer ${generateJWT("2", "clientId")}")
-                }
+                headers { append("Content-Type", "application/json") }
             }
         assertEquals(response.status, HttpStatusCode.BadRequest)
         coVerify(exactly = 0) { nlResponseProducer.sendNlResponse(any(), any()) }

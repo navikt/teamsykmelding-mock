@@ -11,11 +11,11 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.io.IOException
 import no.nav.syfo.azuread.AccessTokenClientV2
-import no.nav.syfo.logger
 import no.nav.syfo.model.ReceivedSykmelding
 import no.nav.syfo.model.RuleInfo
 import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
+import no.nav.syfo.utils.logger
 
 interface SyfosmreglerClient {
     suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult
