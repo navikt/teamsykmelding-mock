@@ -1,12 +1,12 @@
 import { PropsWithChildren, ReactElement } from 'react'
 import { Alert } from '@navikt/ds-react'
 
-type ProxyFeedbackProps = {
+type ActionFeedbackProps = {
     error: string | null
     result: string | null
 }
 
-function ProxyFeedback({ result, error, children }: PropsWithChildren<ProxyFeedbackProps>): ReactElement | null {
+function ActionFeedback({ result, error, children }: PropsWithChildren<ActionFeedbackProps>): ReactElement | null {
     const feedback = error ? (
         <Alert variant="error">{error}</Alert>
     ) : result ? (
@@ -21,4 +21,4 @@ function ProxyFeedback({ result, error, children }: PropsWithChildren<ProxyFeedb
     )
 }
 
-export default ProxyFeedback
+export default ActionFeedback

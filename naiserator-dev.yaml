@@ -13,19 +13,19 @@ spec:
     cpuThresholdPercentage: 90
   port: 8080
   liveness:
-    path: /internal/is_alive
+    path: /api/internal/is_alive
     initialDelay: 10
     timeout: 5
     periodSeconds: 5
     failureThreshold: 30
   readiness:
-    path: /internal/is_ready
+    path: /api/internal/is_ready
     initialDelay: 30
     periodSeconds: 5
     timeout: 5
   prometheus:
     enabled: true
-    path: /prometheus
+    path: /api/internal/prometheus
   resources:
     limits:
       cpu: 700m

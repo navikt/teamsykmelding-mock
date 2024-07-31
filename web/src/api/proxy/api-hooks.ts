@@ -7,7 +7,7 @@ type ActionOpts = {
     responseMapper?: (response: any) => string
 }
 
-export function useProxyDelete(path: string): [
+export function useDelete(path: string): [
     mutation: (actionOptions: ActionOpts) => void,
     status: {
         loading: boolean
@@ -15,12 +15,12 @@ export function useProxyDelete(path: string): [
         result: string | null
     },
 ] {
-    const [mutation, result] = useProxyAction<never>(path, 'DELETE')
+    const [mutation, result] = useAction<never>(path, 'DELETE')
 
     return [(actionOptions) => mutation(undefined, actionOptions), result]
 }
 
-export function useProxyAction<BodyType>(
+export function useAction<BodyType>(
     path: string,
     method: 'DELETE' | 'POST' = 'POST',
 ): [
@@ -44,7 +44,7 @@ export function useProxyAction<BodyType>(
 
             try {
                 const extraHeaders = fnr ? { 'Sykmeldt-Fnr': fnr } : undefined
-                const response = await fetch(`/api/proxy${path}${pathParam ?? ''}`, {
+                const response = await fetch(`/api/${path}${pathParam ?? ''}`, {
                     method,
                     headers: { 'Content-Type': 'application/json', ...extraHeaders },
                     body: data ? JSON.stringify(data) : undefined,

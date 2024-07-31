@@ -1,15 +1,15 @@
 .content {
-  display: grid;
-  grid-template-columns: 320px 1fr;
+    display: grid;
+    grid-template-columns: 320px 1fr;
 
-  height: calc(100vh - 80px);
-  max-height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
 }
 
 .sidebar {
-  @apply p-4 overflow-auto h-full border-r border-r-border-subtle;
+    @apply p-4 overflow-auto h-full border-r border-r-border-subtle;
 }
 
 .pageBlock {
-  @apply p-4 overflow-auto;
+    @apply p-4 overflow-auto;
 }

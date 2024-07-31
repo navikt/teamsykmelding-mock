@@ -1,10 +1,9 @@
 import { Button } from '@navikt/ds-react'
-import  { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { useForm } from 'react-hook-form'
-import FnrTextField from "../../../components/formComponents/FnrTextField.tsx";
-import {useProxyDelete} from "../../../api/proxy/api-hooks.ts";
-import ProxyFeedback from "../../../api/proxy/proxy-feedback.tsx";
-
+import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
+import { useDelete } from '../../../api/proxy/api-hooks.ts'
+import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
 
 interface FormValues {
     fnr: string
@@ -17,7 +16,7 @@ function SlettSykmeldingForm(): ReactElement {
         formState: { errors },
     } = useForm<FormValues>()
 
-    const [postData, { result, error, loading }] = useProxyDelete('/sykmeldinger')
+    const [postData, { result, error, loading }] = useDelete('/sykmeldinger')
 
     return (
         <form
@@ -32,11 +31,11 @@ function SlettSykmeldingForm(): ReactElement {
                 label="Sykmeldtes fødselsnummer"
                 error={errors.fnr && 'Fødselsnummer for den sykmeldte mangler'}
             />
-            <ProxyFeedback error={error} result={result}>
+            <ActionFeedback error={error} result={result}>
                 <Button type="submit" loading={loading}>
                     Slett
                 </Button>
-            </ProxyFeedback>
+            </ActionFeedback>
         </form>
     )
 }

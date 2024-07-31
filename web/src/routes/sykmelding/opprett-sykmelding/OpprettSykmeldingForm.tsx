@@ -9,12 +9,12 @@ import SyketilfelleStartdato from './SyketilfelleStartdato'
 import Behandletdato from './Behandletdato'
 import Kontaktdato from './Kontaktdato'
 import Scenarios from './Scenarios'
-import FnrTextField from "../../../components/formComponents/FnrTextField.tsx";
-import PeriodePicker from "../../../components/formComponents/PeriodePicker/PeriodePicker.tsx";
-import {Periode, SykmeldingType} from "../../../types/sykmelding/Periode.ts";
-import DiagnosePicker, {Diagnose} from "../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx";
-import {useProxyAction} from "../../../api/proxy/api-hooks.ts";
-import ProxyFeedback from "../../../api/proxy/proxy-feedback.tsx";
+import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
+import PeriodePicker from '../../../components/formComponents/PeriodePicker/PeriodePicker.tsx'
+import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
+import DiagnosePicker, { Diagnose } from '../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx'
+import { useAction } from '../../../api/proxy/api-hooks.ts'
+import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
 
 export interface SykmeldingFormValues {
     fnr: string
@@ -54,7 +54,11 @@ function OpprettSykmeldingForm(): ReactElement {
             syketilfelleStartdato: enUkeSiden,
             behandletDato: enUkeSiden,
             perioder: [{ fom: enUkeSiden, tom: iGar, type: SykmeldingType.Enum.HUNDREPROSENT }],
-            hoveddiagnose: { system: 'icd10', code: 'H100', text: 'Mukopurulent konjunktivitt' },
+            hoveddiagnose: {
+                system: 'icd10',
+                code: 'H100',
+                text: 'Mukopurulent konjunktivitt',
+            },
             arbeidsgiverNavn: 'Eksempel Arbeidsgiversen AS',
         },
     })
@@ -77,9 +81,9 @@ function OpprettSykmeldingForm(): ReactElement {
         name: 'bidiagnoser',
     })
 
-    const [postData, { error, result, loading, reset }] = useProxyAction<SykmeldingAPIBody>('/sykmelding/opprett')
+    const [postData, { error, result, loading, reset }] = useAction<SykmeldingAPIBody>('/sykmelding/opprett')
     const [postDataRegelsjekk, { error: regelError, result: regelResult, loading: regelLoading, reset: regelReset }] =
-        useProxyAction<SykmeldingAPIBody>('/sykmelding/regelsjekk')
+        useAction<SykmeldingAPIBody>('/sykmelding/regelsjekk')
 
     return (
         <FormProvider {...form}>
@@ -268,7 +272,7 @@ function OpprettSykmeldingForm(): ReactElement {
                     label="Regelsettversjon"
                     defaultValue="3"
                 />
-                <ProxyFeedback error={regelError ?? error} result={regelResult ?? result}>
+                <ActionFeedback error={regelError ?? error} result={regelResult ?? result}>
                     <Button type="submit" loading={loading} disabled={regelLoading}>
                         Opprett
                     </Button>
@@ -278,7 +282,9 @@ function OpprettSykmeldingForm(): ReactElement {
                         loading={regelLoading}
                         disabled={loading}
                         onClick={async () => {
-                            const validationResult = await form.trigger(undefined, { shouldFocus: true })
+                            const validationResult = await form.trigger(undefined, {
+                                shouldFocus: true,
+                            })
                             if (!validationResult) {
                                 return
                             }
@@ -290,7 +296,7 @@ function OpprettSykmeldingForm(): ReactElement {
                     >
                         Valider mot regler
                     </Button>
-                </ProxyFeedback>
+                </ActionFeedback>
             </form>
         </FormProvider>
     )

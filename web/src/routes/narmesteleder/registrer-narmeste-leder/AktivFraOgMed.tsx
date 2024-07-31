@@ -4,11 +4,12 @@ import { DatePicker, useDatepicker } from '@navikt/ds-react'
 import { format } from 'date-fns'
 
 import { toDate } from '../../../utils/dateUtils.ts'
-import {NarmestelederFormValues} from "./OpprettNarmestelederForm.tsx";
-
+import { NarmestelederFormValues } from './OpprettNarmestelederForm.tsx'
 
 function AktivFraOgMed(): ReactElement {
-    const { field } = useController<NarmestelederFormValues, 'aktivFom'>({ name: 'aktivFom' })
+    const { field } = useController<NarmestelederFormValues, 'aktivFom'>({
+        name: 'aktivFom',
+    })
 
     const { datepickerProps, inputProps } = useDatepicker({
         today: new Date(),

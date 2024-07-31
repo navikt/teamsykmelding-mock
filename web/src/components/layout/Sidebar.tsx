@@ -1,11 +1,11 @@
 import { ReactElement } from 'react'
-import {BandageIcon, PersonGroupIcon, PrinterSmallIcon, StethoscopeIcon} from '@navikt/aksel-icons'
-import SidebarMenuItem from "./SidebarMenuItem.tsx";
-import { Link } from "react-router-dom";
+import { BandageIcon, PersonGroupIcon, PrinterSmallIcon, StethoscopeIcon } from '@navikt/aksel-icons'
+import SidebarMenuItem from './SidebarMenuItem.tsx'
+import { Link } from 'react-router-dom'
 
 type Props = {
-    className?: string;
-};
+    className?: string
+}
 
 function Sidebar({ className }: Props): ReactElement {
     return (
@@ -46,7 +46,7 @@ function Sidebar({ className }: Props): ReactElement {
                 </li>
             </SidebarMenuItem>
         </div>
-    );
+    )
 }
 
 export default Sidebar

@@ -1,10 +1,10 @@
 import { ReactElement } from 'react'
 import { Button, Checkbox, Label, TextField } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
-import DiagnosePicker, {Diagnose} from "../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx";
-import FnrTextField from "../../../components/formComponents/FnrTextField.tsx";
-import {useProxyAction} from "../../../api/proxy/api-hooks.ts";
-import ProxyFeedback from "../../../api/proxy/proxy-feedback.tsx";
+import DiagnosePicker, { Diagnose } from '../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx'
+import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
+import { useAction } from '../../../api/proxy/api-hooks.ts'
+import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
 
 interface FormValues {
     fnr: string
@@ -23,12 +23,15 @@ type OpprettLegeerklaeringApiBody = Omit<FormValues, 'hoveddiagnose'> & {
 function OpprettLegeerklaeringForm(): ReactElement {
     const form = useForm<FormValues>({
         defaultValues: {
-            hoveddiagnose: { system: 'icd10', code: 'H100', text: 'Mukopurulent konjunktivitt' },
+            hoveddiagnose: {
+                system: 'icd10',
+                code: 'H100',
+                text: 'Mukopurulent konjunktivitt',
+            },
         },
     })
 
-    const [postData, { loading, result, error }] =
-        useProxyAction<OpprettLegeerklaeringApiBody>('/legeerklaering/opprett')
+    const [postData, { loading, result, error }] = useAction<OpprettLegeerklaeringApiBody>('/legeerklaering/opprett')
 
     return (
         <FormProvider {...form}>
@@ -66,11 +69,11 @@ function OpprettLegeerklaeringForm(): ReactElement {
                     <Checkbox {...form.register('vedlegg')}>Vedlegg</Checkbox>
                     <Checkbox {...form.register('vedleggMedVirus')}>Vedlegg med virus</Checkbox>
                 </div>
-                <ProxyFeedback error={error} result={result}>
+                <ActionFeedback error={error} result={result}>
                     <Button type="submit" loading={loading}>
                         Opprett
                     </Button>
-                </ProxyFeedback>
+                </ActionFeedback>
             </form>
         </FormProvider>
     )

@@ -4,9 +4,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { format } from 'date-fns'
 
 import AktivFraOgMed from './AktivFraOgMed'
-import FnrTextField from "../../../components/formComponents/FnrTextField.tsx";
-import {useProxyAction} from "../../../api/proxy/api-hooks.ts";
-import ProxyFeedback from "../../../api/proxy/proxy-feedback.tsx";
+import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
+import { useAction } from '../../../api/proxy/api-hooks.ts'
+import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
 
 export interface NarmestelederFormValues {
     ansattFnr: string
@@ -26,7 +26,7 @@ function OpprettNarmesteleder(): ReactElement {
         },
     })
 
-    const [postData, { error, result, loading }] = useProxyAction<NarmestelederFormValues>('/narmesteleder/opprett')
+    const [postData, { error, result, loading }] = useAction<NarmestelederFormValues>('/narmesteleder/opprett')
 
     return (
         <FormProvider {...form}>
@@ -60,11 +60,11 @@ function OpprettNarmesteleder(): ReactElement {
                 </div>
                 <Checkbox {...form.register('forskutterer')}>Arbeidsgiver forskutterer</Checkbox>
                 <AktivFraOgMed />
-                <ProxyFeedback error={error} result={result}>
+                <ActionFeedback error={error} result={result}>
                     <Button type="submit" loading={loading}>
                         Registrer
                     </Button>
-                </ProxyFeedback>
+                </ActionFeedback>
             </form>
         </FormProvider>
     )

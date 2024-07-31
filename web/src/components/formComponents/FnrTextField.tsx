@@ -4,7 +4,7 @@ import { TextField, TextFieldProps } from '@navikt/ds-react'
 const FNR_KEY = 'form-fnr'
 
 const FnrTextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref): ReactElement => {
-    const storedFnr = typeof window !== 'undefined' ? localStorage.getItem(FNR_KEY) ?? '' : ''
+    const storedFnr = typeof window !== 'undefined' ? (localStorage.getItem(FNR_KEY) ?? '') : ''
 
     return (
         <TextField

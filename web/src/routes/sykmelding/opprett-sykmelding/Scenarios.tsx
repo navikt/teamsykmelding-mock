@@ -3,9 +3,8 @@ import { Heading } from '@navikt/ds-react'
 import { useFormContext } from 'react-hook-form'
 import { LinkPanel } from '@navikt/ds-react'
 import { formatISO } from 'date-fns'
-import {SykmeldingFormValues} from "./OpprettSykmeldingForm.tsx";
-import {subDays} from "../../../utils/dateUtils.ts";
-
+import { SykmeldingFormValues } from './OpprettSykmeldingForm.tsx'
+import { subDays } from '../../../utils/dateUtils.ts'
 
 function Scenarios(): ReactElement {
     const formContext = useFormContext<SykmeldingFormValues>()
@@ -41,7 +40,10 @@ function ButtonPanel({
     onClick,
     children,
     description,
-}: PropsWithChildren<{ onClick: () => void; description: string }>): ReactElement {
+}: PropsWithChildren<{
+    onClick: () => void
+    description: string
+}>): ReactElement {
     return (
         <LinkPanel as="button" onClick={onClick} className="text-left p-2">
             <div className="font-bold">{children}</div>
