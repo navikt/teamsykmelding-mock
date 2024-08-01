@@ -76,6 +76,7 @@ val objectMapper: ObjectMapper =
     }
 
 fun main() {
+
     val embeddedServer =
         embeddedServer(
             Netty,
