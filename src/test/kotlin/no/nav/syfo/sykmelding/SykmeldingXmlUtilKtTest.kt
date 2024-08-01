@@ -1,11 +1,11 @@
 package no.nav.syfo.sykmelding
 
 import java.time.LocalDate
+import no.nav.helse.diagnosekoder.Diagnosekoder
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
-import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.AnnenFraverGrunn
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest

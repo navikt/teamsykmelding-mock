@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import no.nav.helse.diagnosekoder.Diagnosekoder
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.msgHead.XMLCS
 import no.nav.helse.msgHead.XMLCV
@@ -33,7 +34,6 @@ import no.nav.helse.sm2013.NavnType
 import no.nav.helse.sm2013.TeleCom
 import no.nav.helse.sm2013.URL
 import no.nav.syfo.logger
-import no.nav.syfo.sm.Diagnosekoder
 
 fun mapOcrFilTilFellesformat(
     skanningmetadata: Skanningmetadata,

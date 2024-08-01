@@ -23,6 +23,7 @@ val ktfmtVersion = "0.44"
 val javaVersion = JvmTarget.JVM_21
 val junitJupiterVersion = "5.10.3"
 val commonsCompressVersion = "1.26.2"
+val diagnosekoderVersion = "1.2024.0"
 
 
 plugins {
@@ -77,7 +78,7 @@ dependencies {
 
     implementation("no.nav.helse:syfosm-common-kafka:$smCommonVersion")
     implementation("no.nav.helse:syfosm-common-mq:$smCommonVersion")
-    implementation("no.nav.helse:syfosm-common-diagnosis-codes:$smCommonVersion")
+    implementation("no.nav.helse:diagnosekoder:$diagnosekoderVersion")
     implementation("no.nav.helse:syfosm-common-models:$smCommonVersion")
 
     implementation("no.nav.helse.xml:xmlfellesformat:$sysfoXmlCodeGen")

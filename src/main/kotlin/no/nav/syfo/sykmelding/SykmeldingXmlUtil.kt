@@ -8,6 +8,7 @@ import java.util.UUID
 import javax.xml.datatype.DatatypeConfigurationException
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
+import no.nav.helse.diagnosekoder.Diagnosekoder
 import no.nav.helse.msgHead.XMLCV
 import no.nav.helse.msgHead.XMLIdent
 import no.nav.helse.sm2013.Address
@@ -24,7 +25,6 @@ import no.nav.helse.sm2013.URL
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.PdlPerson
-import no.nav.syfo.sm.Diagnosekoder
 import no.nav.syfo.sykmelding.model.Diagnoser
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
