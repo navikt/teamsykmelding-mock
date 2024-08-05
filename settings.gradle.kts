@@ -1,1 +1,1 @@
-rootProject.name = "teamsykmelding-mock-backend"
+rootProject.name = "teamsykmelding-mock"
