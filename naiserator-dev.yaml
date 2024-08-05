@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: teamsykmelding-mock-backend
+  name: teamsykmelding-mock
   namespace: teamsykmelding
   labels:
     team: teamsykmelding
