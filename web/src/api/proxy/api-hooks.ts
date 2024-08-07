@@ -44,7 +44,7 @@ export function useAction<BodyType>(
 
             try {
                 const extraHeaders = fnr ? { 'Sykmeldt-Fnr': fnr } : undefined
-                const response = await fetch(`/api/${path}${pathParam ?? ''}`, {
+                const response = await fetch(`/api${path}${pathParam ?? ''}`, {
                     method,
                     headers: { 'Content-Type': 'application/json', ...extraHeaders },
                     body: data ? JSON.stringify(data) : undefined,
