@@ -8,7 +8,7 @@ function Header(): ReactElement {
     return (
         <div className="p-4 border-b border-b-border-subtle flex justify-between">
             <Link to="/" className="flex items-center gap-3">
-                <img src={godstolen} height="64" alt="Mann i godstolen" />
+                <img src={godstolen} height="64" className="h-16" alt="Mann i godstolen" />
                 <Heading size="large" level="1" className="text-text-default">
                     Team Sykmelding Mock
                 </Heading>
