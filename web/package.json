@@ -19,12 +19,14 @@
     "@navikt/next-logger": "^1.25.0",
     "@reach/combobox": "^0.18.0",
     "@tanstack/react-query": "^5.36.2",
+    "@types/express": "^4.17.21",
     "fuse.js": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.1",
     "react-router-dom": "^6.23.1",
     "tailwind-merge": "^2.3.0",
+    "vite-plugin-logger": "^1.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
