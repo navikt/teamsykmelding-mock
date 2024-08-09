@@ -23,7 +23,7 @@ val commonsCodecVersion = "1.17.1"
 val ktfmtVersion = "0.49"
 val javaVersion = JvmTarget.JVM_21
 val junitJupiterVersion = "5.10.3"
-val commonsCompressVersion = "1.26.2"
+val commonsCompressVersion = "1.27.0"
 val koinVersion = "3.5.6"
 val diagnosekoderVersion = "1.2024.0"
 
