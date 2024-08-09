@@ -10,7 +10,6 @@ val ktorVersion = "2.3.12"
 val logbackVersion = "1.5.6"
 val logstashEncoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
-val smCommonVersion = "2.0.8"
 val mockkVersion = "1.13.12"
 val testContainerKafkaVersion = "1.20.1"
 val nimbusVersion = "9.40"
@@ -26,6 +25,8 @@ val junitJupiterVersion = "5.10.3"
 val commonsCompressVersion = "1.27.0"
 val koinVersion = "3.5.6"
 val diagnosekoderVersion = "1.2024.0"
+val ibmMqVersion = "9.3.4.1"
+val kafkaVersion = "3.8.0"
 
 
 plugins {
@@ -78,10 +79,11 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
 
-    implementation("no.nav.helse:syfosm-common-kafka:$smCommonVersion")
-    implementation("no.nav.helse:syfosm-common-mq:$smCommonVersion")
+    implementation("org.apache.kafka:kafka_2.12:$kafkaVersion")
+    implementation("org.apache.kafka:kafka-streams:$kafkaVersion")
+
+    implementation("com.ibm.mq:com.ibm.mq.allclient:$ibmMqVersion")
     implementation("no.nav.helse:diagnosekoder:$diagnosekoderVersion")
-    implementation("no.nav.helse:syfosm-common-models:$smCommonVersion")
 
     implementation("no.nav.helse.xml:xmlfellesformat:$sysfoXmlCodeGen")
     implementation("no.nav.helse.xml:kith-hodemelding:$sysfoXmlCodeGen")
