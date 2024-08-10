@@ -25,7 +25,7 @@ val junitJupiterVersion = "5.10.3"
 val commonsCompressVersion = "1.27.0"
 val koinVersion = "3.5.6"
 val diagnosekoderVersion = "1.2024.0"
-val ibmMqVersion = "9.3.4.1"
+val ibmMqVersion = "9.4.0.0"
 val kafkaVersion = "3.8.0"
 
 
