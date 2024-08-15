@@ -59,11 +59,6 @@ spec:
         - host: b27apvl221.preprod.local
           ports:
           - port: 1413
-    inbound:
-      rules:
-        - application: teamsykmelding-mock
-          namespace: teamsykmelding
-          cluster: dev-gcp
   envFrom:
     - secret: mockbackend-secrets
   env:
