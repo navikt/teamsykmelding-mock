@@ -11,8 +11,6 @@ data class SykmeldingRequest(
     val beskrivBistandNav: String?,
     val hprNummer: String?,
     val syketilfelleStartdato: LocalDate,
-    val diagnosekode: String,
-    val diagnosekodesystem: String,
     val annenFraverGrunn: AnnenFraverGrunn?,
     val perioder: List<SykmeldingPeriode>,
     val behandletDato: LocalDate,
@@ -22,7 +20,8 @@ data class SykmeldingRequest(
     val virksomhetsykmelding: Boolean,
     val utdypendeOpplysninger: UtdypendeOpplysninger?,
     val regelsettVersjon: String?,
-    val bidiagnoser: List<Diagnoser>?,
+    val hoveddiagnose: Diagnose,
+    val bidiagnoser: List<Diagnose>?,
     val arbeidsgiverNavn: String?,
     val vedleggMedVirus: Boolean,
     val yrkesskade: Boolean,
@@ -59,7 +58,7 @@ enum class AnnenFraverGrunn(val codeValue: String, val text: String) {
     ),
 }
 
-data class Diagnoser(
+data class Diagnose(
     val code: String,
     val system: String,
     val text: String,

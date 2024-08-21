@@ -40,10 +40,6 @@ export interface SykmeldingFormValues {
     yrkesskade: boolean
 }
 
-type SykmeldingAPIBody = Omit<SykmeldingFormValues, 'hoveddiagnose'> & {
-    diagnosekodesystem: 'icd10' | 'icpc2'
-    diagnosekode: string
-}
 
 function OpprettSykmeldingForm(): ReactElement {
     const date = new Date()
@@ -81,9 +77,9 @@ function OpprettSykmeldingForm(): ReactElement {
         name: 'bidiagnoser',
     })
 
-    const [postData, { error, result, loading, reset }] = useAction<SykmeldingAPIBody>('/sykmelding/opprett')
+    const [postData, { error, result, loading, reset }] = useAction<SykmeldingFormValues>('/sykmelding/opprett')
     const [postDataRegelsjekk, { error: regelError, result: regelResult, loading: regelLoading, reset: regelReset }] =
-        useAction<SykmeldingAPIBody>('/sykmelding/regelsjekk')
+        useAction<SykmeldingFormValues>('/sykmelding/regelsjekk')
 
     return (
         <FormProvider {...form}>
@@ -94,7 +90,7 @@ function OpprettSykmeldingForm(): ReactElement {
             <form
                 onSubmit={form.handleSubmit((values) => {
                     regelReset()
-                    postData(mapFormValuesToAPIBody(values))
+                    postData(mapFormValues(values))
                 })}
             >
                 <FnrTextField
@@ -289,7 +285,7 @@ function OpprettSykmeldingForm(): ReactElement {
                                 return
                             }
                             reset()
-                            return postDataRegelsjekk(mapFormValuesToAPIBody(form.getValues()), {
+                            return postDataRegelsjekk(mapFormValues(form.getValues()), {
                                 responseMapper: (response) => JSON.stringify(response, null, 2),
                             })
                         }}
@@ -302,7 +298,7 @@ function OpprettSykmeldingForm(): ReactElement {
     )
 }
 
-function mapFormValuesToAPIBody(values: SykmeldingFormValues): SykmeldingAPIBody {
+function mapFormValues(values: SykmeldingFormValues): SykmeldingFormValues {
     return {
         ...values,
         kontaktDato: values.kontaktDato ? values.kontaktDato : null,
@@ -312,8 +308,6 @@ function mapFormValuesToAPIBody(values: SykmeldingFormValues): SykmeldingAPIBody
         beskrivBistandNav: values.beskrivBistandNav ? values.beskrivBistandNav : null,
         begrunnIkkeKontakt: values.begrunnIkkeKontakt ? values.begrunnIkkeKontakt : null,
         utdypendeOpplysninger: values.utdypendeOpplysninger ? values.utdypendeOpplysninger : null,
-        diagnosekodesystem: values.hoveddiagnose.system,
-        diagnosekode: values.hoveddiagnose.code,
         yrkesskade: values.yrkesskade,
     }
 }

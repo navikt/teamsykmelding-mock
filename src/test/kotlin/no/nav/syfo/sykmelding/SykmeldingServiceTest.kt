@@ -14,7 +14,7 @@ import no.nav.syfo.pdl.model.Navn
 import no.nav.syfo.pdl.model.PdlPerson
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.sykmelding.client.SyfosmreglerClient
-import no.nav.syfo.sykmelding.model.Diagnoser
+import no.nav.syfo.sykmelding.model.Diagnose
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
 import no.nav.syfo.utils.get
@@ -52,8 +52,6 @@ internal class SykmeldingServiceTest {
                 herId = null,
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
-                diagnosekode = "M674",
-                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 beskrivBistandNav = null,
                 perioder =
@@ -76,6 +74,7 @@ internal class SykmeldingServiceTest {
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 yrkesskade = false,
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
             )
         val mottakId = "mottakId"
         runBlocking {
@@ -106,8 +105,6 @@ internal class SykmeldingServiceTest {
                 herId = "herId",
                 hprNummer = null,
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
-                diagnosekode = "M674",
-                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 perioder =
                     listOf(
@@ -130,6 +127,7 @@ internal class SykmeldingServiceTest {
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
             )
         val mottakId = "mottakId"
         runBlocking {
@@ -160,8 +158,6 @@ internal class SykmeldingServiceTest {
                 herId = null,
                 hprNummer = "hpr",
                 syketilfelleStartdato = LocalDate.now().minusDays(1),
-                diagnosekode = "M674",
-                diagnosekodesystem = "icd10",
                 annenFraverGrunn = null,
                 perioder =
                     listOf(
@@ -181,7 +177,7 @@ internal class SykmeldingServiceTest {
                 meldingTilArbeidsgiver = null,
                 bidiagnoser =
                     listOf(
-                        Diagnoser(
+                        Diagnose(
                             code = "M674",
                             system = "icd10",
                             text = "Ein viktig diagnose",
@@ -191,6 +187,7 @@ internal class SykmeldingServiceTest {
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
             )
         val mottakId = "mottakId"
         runBlocking {
