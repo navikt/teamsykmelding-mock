@@ -25,7 +25,7 @@ import no.nav.helse.sm2013.URL
 import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.pdl.model.PdlPerson
-import no.nav.syfo.sykmelding.model.Diagnoser
+import no.nav.syfo.sykmelding.model.Diagnose
 import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.sykmelding.model.UtdypendeOpplysninger
 
@@ -216,11 +216,7 @@ private fun medisinskVurdering(
         HelseOpplysningerArbeidsuforhet.MedisinskVurdering().apply {
             hovedDiagnose =
                 HelseOpplysningerArbeidsuforhet.MedisinskVurdering.HovedDiagnose().apply {
-                    diagnosekode =
-                        tilDiagnosekode(
-                            sykmeldingRequest.diagnosekode,
-                            sykmeldingRequest.diagnosekodesystem
-                        )
+                    diagnosekode = tilDiagnosekode(sykmeldingRequest.hoveddiagnose)
                 }
             if (!sykmeldingRequest.bidiagnoser.isNullOrEmpty()) {
                 biDiagnoser =
@@ -249,40 +245,21 @@ private fun medisinskVurdering(
     return medisinskVurdering
 }
 
-private fun tilDiagnosekode(bidiagnoser: Diagnoser): CV {
+fun tilDiagnosekode(diagnose: Diagnose): CV {
     val diagnosekodesystem =
-        if (bidiagnoser.code == "icpc2") {
-            Diagnosekoder.ICPC2_CODE
-        } else {
-            Diagnosekoder.ICD10_CODE
-        }
-    return CV().apply {
-        s = bidiagnoser.system
-        v = bidiagnoser.code
-        dn =
-            if (diagnosekodesystem == Diagnosekoder.ICPC2_CODE) {
-                Diagnosekoder.icpc2[bidiagnoser.code]?.text
-            } else {
-                Diagnosekoder.icd10[bidiagnoser.code]?.text
-            } ?: ""
-    }
-}
-
-private fun tilDiagnosekode(kode: String, system: String): CV {
-    val diagnosekodesystem =
-        if (system == "ICPC2") {
+        if (diagnose.system.lowercase() == "icpc2") {
             Diagnosekoder.ICPC2_CODE
         } else {
             Diagnosekoder.ICD10_CODE
         }
     return CV().apply {
         s = diagnosekodesystem
-        v = kode
+        v = diagnose.code
         dn =
             if (diagnosekodesystem == Diagnosekoder.ICPC2_CODE) {
-                Diagnosekoder.icpc2[kode]?.text
+                Diagnosekoder.icpc2[diagnose.code]?.text
             } else {
-                Diagnosekoder.icd10[kode]?.text
+                Diagnosekoder.icd10[diagnose.code]?.text
             } ?: ""
     }
 }
