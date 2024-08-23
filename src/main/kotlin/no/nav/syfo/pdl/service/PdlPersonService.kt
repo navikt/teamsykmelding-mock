@@ -67,7 +67,8 @@ class PdlPersonServiceProduction(
 class PdlPersonServiceDevelopment() : PdlPersonService {
     override suspend fun getPersoner(fnrs: List<String>): Map<String, PdlPerson> {
         return mapOf(
-            "person" to PdlPerson(Navn("Fornavn", null, "Etternavn")),
+            fnrs.first() to PdlPerson(Navn("Fornavn", null, "Etternavn")),
+            fnrs.last() to PdlPerson(Navn("Fornavn", null, "Etternavn")),
         )
     }
 }
