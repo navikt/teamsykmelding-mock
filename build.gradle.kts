@@ -13,7 +13,7 @@ val prometheusVersion = "0.16.0"
 val mockkVersion = "1.13.12"
 val testContainerKafkaVersion = "1.20.1"
 val nimbusVersion = "9.40"
-val kotlinVersion = "2.0.10"
+val kotlinVersion = "2.0.20"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
@@ -32,7 +32,7 @@ val kafkaVersion = "3.8.0"
 plugins {
     id("application")
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("jvm") version "2.0.10"
+    kotlin("jvm") version "2.0.20"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
