@@ -64,6 +64,7 @@ jobs:
   trivy-docker:
     permissions:
       contents: "write"
+      id-token: "write"
       security-events: "write"
     name: Trivy docker
     runs-on: ubuntu-latest
