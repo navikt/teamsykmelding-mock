@@ -52,7 +52,7 @@ jobs:
         run: |
           ./gradlew shadowJar -x test
       - name: docker-build-push
-            if: ${{ github.actor != 'dependabot[bot]' }}
+        if: ${{ github.actor != 'dependabot[bot]' }}
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
@@ -64,7 +64,7 @@ jobs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
   trivy-docker:
-        if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Trivy docker
     permissions:
       contents: "write"
@@ -97,7 +97,7 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
   deploy-dev:
-        if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Deploy to dev
     runs-on: ubuntu-latest
     needs: [ build ]
