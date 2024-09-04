@@ -6,6 +6,7 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
 import no.nav.syfo.model.HttpMessage
@@ -17,8 +18,12 @@ import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
 import no.nav.syfo.papirsykmelding.model.UtenlandskPapirsykmeldingRequest
 import no.nav.syfo.utils.logger
 import org.koin.ktor.ext.inject
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
+
+data class PapirsykmeldingResponse(
+    val status: String,
+    val message: String,
+    val journalpostID: String,
+)
 
 fun Route.registrerPapirsykmeldingApi() {
     val papirsykmeldingService by inject<PapirsykmeldingService>()
@@ -71,32 +76,14 @@ fun Route.registrerPapirsykmeldingApi() {
         val request = call.receive<UtenlandskPapirsykmeldingRequest>()
         logger.info("utenlandsk papirsykmelding med fnr fra requestclas: ${request.fnr}")
         val journalpostId = papirsykmeldingService.opprettUtenlandskPapirsykmelding(request.fnr)
-        val oppgaver = tryGetOppgaveId(journalpostId, oppgaveService)
         logger.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
         call.respond(
             HttpStatusCode.OK,
-            HttpMessage("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId, oppgaveId ${oppgaver.oppgaver.map { it.id }.joinToString()}")
+            PapirsykmeldingResponse(
+                "OK",
+                "Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId",
+                journalpostId
+            )
         )
-    }
-}
-
-
-suspend fun tryGetOppgaveId(journalpostID: String, oppgaveClient: OppgaveClient): OppgaveResponse {
-    var oppgaveResponse = OppgaveResponse(0, emptyList())
-    var oppgaveCreated = false
-    try {
-        withTimeout(15.seconds) {
-            while (!oppgaveCreated) {
-                oppgaveResponse = oppgaveClient.getOppgaveId(journalpostID)
-                if (oppgaveResponse.antallTreffTotalt > 0) {
-                    oppgaveCreated = true
-                }
-                delay(1000)
-            }
-        }
-        return oppgaveResponse;
-    } catch (e: Exception) {
-        logger.error("Klarte ikke å hente oppgaveId", e)
-        return oppgaveResponse
     }
 }

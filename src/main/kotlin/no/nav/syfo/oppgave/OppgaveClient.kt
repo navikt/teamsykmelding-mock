@@ -13,12 +13,13 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.time.LocalDate
+import java.util.UUID
 import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.utils.logger
-import java.util.UUID
 
 interface OppgaveClient {
     suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse
+
     suspend fun getOppgaveId(journalpostId: String): OppgaveResponse
 }
 
@@ -112,8 +113,6 @@ data class OpprettOppgaveResponse(
     val tildeltEnhetsnr: String? = null,
     val mappeId: Int? = null,
 )
-
-
 
 data class OppgaveResponse(
     val antallTreffTotalt: Int,
