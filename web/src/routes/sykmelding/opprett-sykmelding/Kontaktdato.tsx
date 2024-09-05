@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form'
 import { DatePicker, useDatepicker } from '@navikt/ds-react'
 import { format } from 'date-fns'
 import { SykmeldingFormValues } from './OpprettSykmeldingForm.tsx'
-import { toDate } from '../../../utils/dateUtils.ts'
+import { toDate } from '../../../utils/date.ts'
 
 function Kontaktdato(): ReactElement {
     const { field } = useController<SykmeldingFormValues, 'kontaktDato'>({

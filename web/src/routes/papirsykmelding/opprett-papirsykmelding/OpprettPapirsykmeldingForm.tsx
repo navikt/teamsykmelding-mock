@@ -7,11 +7,11 @@ import styles from './OpprettPapirsykmelding.module.css'
 import Behandletdato from './Behandletdato'
 import SyketilfelleStartdato from './SyketilfelleStartdato'
 import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
-import DiagnosePicker, { Diagnose } from '../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx'
-import PeriodePicker from '../../../components/formComponents/PeriodePicker/PeriodePicker.tsx'
-import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
-import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
-import { useAction } from '../../../api/proxy/api-hooks.ts'
+import DiagnosePicker, { Diagnose } from '../../../components/form/DiagnosePicker/DiagnosePicker.tsx'
+import PeriodePicker from '../../../components/form/PeriodePicker/PeriodePicker.tsx'
+import FnrTextField from '../../../components/form/FnrTextField.tsx'
+import ActionFeedback from '../../../proxy/action-feedback.tsx'
+import { useAction } from '../../../proxy/api-hooks.ts'
 
 export interface PapirsykmeldingFormValues {
     fnr: string | null

@@ -1,10 +1,10 @@
 import { ReactElement } from 'react'
 import { Button, Checkbox, Label, TextField } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
-import DiagnosePicker, { Diagnose } from '../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx'
-import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
-import { useAction } from '../../../api/proxy/api-hooks.ts'
-import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
+import DiagnosePicker, { Diagnose } from '../../../components/form/DiagnosePicker/DiagnosePicker.tsx'
+import FnrTextField from '../../../components/form/FnrTextField.tsx'
+import { useAction } from '../../../proxy/api-hooks.ts'
+import ActionFeedback from '../../../proxy/action-feedback.tsx'
 
 interface FormValues {
     fnr: string

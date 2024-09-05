@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form'
 import { DatePicker, useDatepicker } from '@navikt/ds-react'
 import { format } from 'date-fns'
 
-import { toDate } from '../../../utils/dateUtils.ts'
+import { toDate } from '../../../utils/date.ts'
 import { NarmestelederFormValues } from './OpprettNarmestelederForm.tsx'
 
 function AktivFraOgMed(): ReactElement {

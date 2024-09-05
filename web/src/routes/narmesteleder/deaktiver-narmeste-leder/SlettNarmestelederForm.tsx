@@ -1,9 +1,9 @@
 import { ReactElement } from 'react'
 import { Button, TextField } from '@navikt/ds-react'
 import { useForm } from 'react-hook-form'
-import { useDelete } from '../../../api/proxy/api-hooks.ts'
-import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
-import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
+import { useDelete } from '../../../proxy/api-hooks.ts'
+import FnrTextField from '../../../components/form/FnrTextField.tsx'
+import ActionFeedback from '../../../proxy/action-feedback.tsx'
 
 interface FormValues {
     fnr: string

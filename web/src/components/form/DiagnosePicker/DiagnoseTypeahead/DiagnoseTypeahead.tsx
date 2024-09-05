@@ -10,8 +10,8 @@ import {
     DsComboboxPopover,
 } from '../CustomFormComponents/Combobox'
 import { DiagnoseSystem } from '../DiagnosePicker'
-import type { DiagnoseSearchResult, DiagnoseSuggestion } from '../../../../server-actions/diagnose/diagnose-actions'
-import { diagnoseSearch } from '../../../../server-actions/diagnose/diagnose-actions'
+import type { DiagnoseSearchResult, DiagnoseSuggestion } from './diagnose-search.ts'
+import { diagnoseSearch } from './diagnose-search.ts'
 
 interface Props {
     id?: string

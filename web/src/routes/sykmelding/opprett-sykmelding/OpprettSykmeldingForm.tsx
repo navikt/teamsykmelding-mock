@@ -9,12 +9,12 @@ import SyketilfelleStartdato from './SyketilfelleStartdato'
 import Behandletdato from './Behandletdato'
 import Kontaktdato from './Kontaktdato'
 import Scenarios from './Scenarios'
-import FnrTextField from '../../../components/formComponents/FnrTextField.tsx'
-import PeriodePicker from '../../../components/formComponents/PeriodePicker/PeriodePicker.tsx'
+import FnrTextField from '../../../components/form/FnrTextField.tsx'
+import PeriodePicker from '../../../components/form/PeriodePicker/PeriodePicker.tsx'
 import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
-import DiagnosePicker, { Diagnose } from '../../../components/formComponents/DiagnosePicker/DiagnosePicker.tsx'
-import { useAction } from '../../../api/proxy/api-hooks.ts'
-import ActionFeedback from '../../../api/proxy/action-feedback.tsx'
+import DiagnosePicker, { Diagnose } from '../../../components/form/DiagnosePicker/DiagnosePicker.tsx'
+import { useAction } from '../../../proxy/api-hooks.ts'
+import ActionFeedback from '../../../proxy/action-feedback.tsx'
 
 export interface SykmeldingFormValues {
     fnr: string

@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 import { LinkPanel } from '@navikt/ds-react'
 import { formatISO } from 'date-fns'
 import { SykmeldingFormValues } from './OpprettSykmeldingForm.tsx'
-import { subDays } from '../../../utils/dateUtils.ts'
+import { subDays } from '../../../utils/date.ts'
 
 function Scenarios(): ReactElement {
     const formContext = useFormContext<SykmeldingFormValues>()

@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form'
 import { DatePicker, useRangeDatepicker } from '@navikt/ds-react'
 import { format } from 'date-fns'
 
-import { toDate } from '../../../utils/dateUtils'
+import { toDate } from '../../../utils/date.ts'
 
 import styles from './PeriodePicker.module.css'
 
