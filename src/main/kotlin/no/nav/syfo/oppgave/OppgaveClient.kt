@@ -14,6 +14,11 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.time.LocalDate
 import java.util.UUID
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.utils.logger
 
@@ -70,19 +75,31 @@ class OppgaveClientProduction(
 }
 
 class DevelopmentOppgaveClient : OppgaveClient {
+    var oppgaveId = 1
+
+    val oppgaver = mutableMapOf<String, Deferred<OppgaveResponse>>()
+
     override suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
         logger.info("later som vi oppretter oppgave for ${opprettOppgave.journalpostId}")
         return OpprettOppgaveResponse(1, 1)
     }
 
     override suspend fun getOppgaveId(journalpostId: String): OppgaveResponse {
-        return OppgaveResponse(
-            antallTreffTotalt = 2,
-            listOf(
-                Oppgave(1),
-                Oppgave(2),
-            )
-        )
+        if (oppgaver.contains(journalpostId)) {
+            val oppgave = oppgaver[journalpostId]
+            if (oppgave?.isCompleted == true) {
+                return oppgave.await()
+            } else return OppgaveResponse(antallTreffTotalt = 0, listOf())
+        } else {
+
+            val job =
+                GlobalScope.async(Dispatchers.IO) {
+                    delay((0..15).random() * 1000L)
+                    OppgaveResponse(antallTreffTotalt = 1, listOf(Oppgave(id = oppgaveId++)))
+                }
+            oppgaver[journalpostId] = job
+            return OppgaveResponse(antallTreffTotalt = 0, listOf())
+        }
     }
 }
 

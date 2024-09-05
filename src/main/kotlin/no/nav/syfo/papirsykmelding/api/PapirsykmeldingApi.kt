@@ -6,12 +6,7 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withTimeout
 import no.nav.syfo.model.HttpMessage
-import no.nav.syfo.oppgave.OppgaveClient
-import no.nav.syfo.oppgave.OppgaveResponse
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
@@ -27,7 +22,7 @@ data class PapirsykmeldingResponse(
 
 fun Route.registrerPapirsykmeldingApi() {
     val papirsykmeldingService by inject<PapirsykmeldingService>()
-    val oppgaveService: OppgaveClient by inject()
+
     post("/papirsykmelding/opprett") {
         val request = call.receive<PapirsykmeldingRequest>()
 
