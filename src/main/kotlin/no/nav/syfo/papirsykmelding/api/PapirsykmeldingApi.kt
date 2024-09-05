@@ -7,6 +7,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import no.nav.syfo.model.HttpMessage
+import no.nav.syfo.model.JournalpostOpprettetResponse
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
@@ -14,24 +15,25 @@ import no.nav.syfo.papirsykmelding.model.UtenlandskPapirsykmeldingRequest
 import no.nav.syfo.utils.logger
 import org.koin.ktor.ext.inject
 
-data class PapirsykmeldingResponse(
-    val status: String,
-    val message: String,
-    val journalpostID: String,
-)
-
 fun Route.registrerPapirsykmeldingApi() {
     val papirsykmeldingService by inject<PapirsykmeldingService>()
 
     post("/papirsykmelding/opprett") {
         val request = call.receive<PapirsykmeldingRequest>()
 
-        val journalpostId = papirsykmeldingService.opprettPapirsykmelding(request)
+        val papirsykmeldingCreatedResponse = papirsykmeldingService.opprettPapirsykmelding(request)
 
-        logger.info("Opprettet papirsykmelding med journalpostId $journalpostId")
+        logger.info(
+            "Opprettet papirsykmelding med journalpostId ${papirsykmeldingCreatedResponse.journalpostId}"
+        )
         call.respond(
             HttpStatusCode.OK,
-            HttpMessage("Opprettet papirsykmelding med journalpostId $journalpostId")
+            JournalpostOpprettetResponse(
+                "OK",
+                "Opprettet papirsykmelding med journalpostId ${papirsykmeldingCreatedResponse.journalpostId}",
+                papirsykmeldingCreatedResponse.journalpostId,
+                papirsykmeldingCreatedResponse.automatic
+            )
         )
     }
 
@@ -74,10 +76,10 @@ fun Route.registrerPapirsykmeldingApi() {
         logger.info("Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId")
         call.respond(
             HttpStatusCode.OK,
-            PapirsykmeldingResponse(
+            JournalpostOpprettetResponse(
                 "OK",
                 "Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId",
-                journalpostId
+                journalpostId,
             )
         )
     }
