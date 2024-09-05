@@ -9,8 +9,9 @@ import org.koin.ktor.ext.inject
 fun Route.registerOppgaveCheckApi() {
     val oppgaveService: OppgaveClient by inject()
     get("/oppgave/{journalpostId}") {
-        val journalpostId = call.parameters["journalpostId"]
-            ?: throw IllegalArgumentException("Missing journalpostId")
+        val journalpostId =
+            call.parameters["journalpostId"]
+                ?: throw IllegalArgumentException("Missing journalpostId")
         val oppgaveResponse = oppgaveService.getOppgaveId(journalpostId)
         call.respond(oppgaveResponse)
     }
