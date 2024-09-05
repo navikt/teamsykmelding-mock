@@ -13,8 +13,9 @@ import FnrTextField from '../../../components/form/FnrTextField.tsx'
 import PeriodePicker from '../../../components/form/PeriodePicker/PeriodePicker.tsx'
 import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
 import DiagnosePicker, { Diagnose } from '../../../components/form/DiagnosePicker/DiagnosePicker.tsx'
-import { useAction } from '../../../proxy/api-hooks.ts'
 import ActionFeedback from '../../../proxy/action-feedback.tsx'
+import { useMutation } from '@tanstack/react-query'
+import { post, SimpleMessage } from '../../../api/fetcher.ts'
 
 export interface SykmeldingFormValues {
     fnr: string
@@ -40,7 +41,6 @@ export interface SykmeldingFormValues {
     yrkesskade: boolean
 }
 
-
 function OpprettSykmeldingForm(): ReactElement {
     const date = new Date()
     const iGar = format(sub(date, { days: 1 }), 'yyyy-MM-dd')
@@ -58,13 +58,12 @@ function OpprettSykmeldingForm(): ReactElement {
             arbeidsgiverNavn: 'Eksempel Arbeidsgiversen AS',
         },
     })
-    const control = form.control
     const {
         fields: periodeFields,
         append: perioderAppend,
         remove: perioderRemove,
     } = useFieldArray({
-        control,
+        control: form.control,
         name: 'perioder',
     })
 
@@ -73,13 +72,16 @@ function OpprettSykmeldingForm(): ReactElement {
         remove: bidiagnoserRemove,
         fields: bidiagnoserFields,
     } = useFieldArray({
-        control,
+        control: form.control,
         name: 'bidiagnoser',
     })
 
-    const [postData, { error, result, loading, reset }] = useAction<SykmeldingFormValues>('/sykmelding/opprett')
-    const [postDataRegelsjekk, { error: regelError, result: regelResult, loading: regelLoading, reset: regelReset }] =
-        useAction<SykmeldingFormValues>('/sykmelding/regelsjekk')
+    const opprettSykmeldingMutation = useMutation({
+        mutationFn: post<SykmeldingFormValues, SimpleMessage>('/sykmelding/opprett'),
+    })
+    const sjekkRegelMutation = useMutation({
+        mutationFn: post<SykmeldingFormValues, unknown>('/sykmelding/regelsjekk'),
+    })
 
     return (
         <FormProvider {...form}>
@@ -89,8 +91,8 @@ function OpprettSykmeldingForm(): ReactElement {
             </Heading>
             <form
                 onSubmit={form.handleSubmit((values) => {
-                    regelReset()
-                    postData(mapFormValues(values))
+                    sjekkRegelMutation.reset()
+                    opprettSykmeldingMutation.mutate(mapFormValues(values))
                 })}
             >
                 <FnrTextField
@@ -268,15 +270,26 @@ function OpprettSykmeldingForm(): ReactElement {
                     label="Regelsettversjon"
                     defaultValue="3"
                 />
-                <ActionFeedback error={regelError ?? error} result={regelResult ?? result}>
-                    <Button type="submit" loading={loading} disabled={regelLoading}>
+                <ActionFeedback
+                    error={opprettSykmeldingMutation.error ?? sjekkRegelMutation.error}
+                    result={
+                        opprettSykmeldingMutation.data?.message ??
+                        (sjekkRegelMutation.data ? JSON.stringify(sjekkRegelMutation.data) : null) ??
+                        null
+                    }
+                >
+                    <Button
+                        type="submit"
+                        loading={opprettSykmeldingMutation.isPending}
+                        disabled={sjekkRegelMutation.isPending}
+                    >
                         Opprett
                     </Button>
                     <Button
                         variant="secondary"
                         type="button"
-                        loading={regelLoading}
-                        disabled={loading}
+                        loading={sjekkRegelMutation.isPending}
+                        disabled={opprettSykmeldingMutation.isPending}
                         onClick={async () => {
                             const validationResult = await form.trigger(undefined, {
                                 shouldFocus: true,
@@ -284,10 +297,8 @@ function OpprettSykmeldingForm(): ReactElement {
                             if (!validationResult) {
                                 return
                             }
-                            reset()
-                            return postDataRegelsjekk(mapFormValues(form.getValues()), {
-                                responseMapper: (response) => JSON.stringify(response, null, 2),
-                            })
+                            opprettSykmeldingMutation.reset()
+                            return sjekkRegelMutation.mutate(mapFormValues(form.getValues()))
                         }}
                     >
                         Valider mot regler

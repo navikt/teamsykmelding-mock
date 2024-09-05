@@ -2,13 +2,13 @@ import { PropsWithChildren, ReactElement } from 'react'
 import { Alert } from '@navikt/ds-react'
 
 type ActionFeedbackProps = {
-    error: string | null
+    error: Error | string | null
     result: string | null
 }
 
 function ActionFeedback({ result, error, children }: PropsWithChildren<ActionFeedbackProps>): ReactElement | null {
     const feedback = error ? (
-        <Alert variant="error">{error}</Alert>
+        <Alert variant="error">{error instanceof Error ? error.message : error}</Alert>
     ) : result ? (
         <Alert variant="success">{result}</Alert>
     ) : null
