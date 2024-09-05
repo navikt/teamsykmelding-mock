@@ -81,14 +81,17 @@ class DevelopmentOppgaveClient : OppgaveClient {
 
     override suspend fun opprettOppgave(opprettOppgave: OpprettOppgave): OpprettOppgaveResponse {
         logger.info("later som vi oppretter oppgave for ${opprettOppgave.journalpostId}")
-        return OpprettOppgaveResponse(1, 1)
+        return OpprettOppgaveResponse(oppgaveId++, 1)
     }
 
     override suspend fun getOppgaveId(journalpostId: String): OppgaveResponse {
         if (oppgaver.contains(journalpostId)) {
             val oppgave = oppgaver[journalpostId]
+
             if (oppgave?.isCompleted == true) {
-                return oppgave.await()
+                val result = oppgave.await()
+                print("result: $result")
+                return result
             } else return OppgaveResponse(antallTreffTotalt = 0, listOf())
         } else {
 

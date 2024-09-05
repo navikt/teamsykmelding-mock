@@ -7,6 +7,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import no.nav.syfo.model.HttpMessage
+import no.nav.syfo.model.OppgaveOpprettetResponse
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingNavNoRequest
 import no.nav.syfo.utenlandsk.model.UtenlandskSykmeldingPdfRequest
 import no.nav.syfo.utenlandsk.service.UtenlandskSykmeldingService
@@ -22,11 +23,13 @@ fun Route.registrerUtenlandskPapirsykmeldingApi() {
             if (request.antallPdfs > 10) {
                 call.respond(HttpStatusCode.BadRequest, "antallPdfs cannot be > 10")
             } else {
-                val journalpostId = utenlandskSykeldingService.opprettUtenlanskPdf(request)
+                val oppgaveId = utenlandskSykeldingService.opprettUtenlanskPdf(request)
                 call.respond(
                     HttpStatusCode.OK,
-                    HttpMessage(
-                        "Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId"
+                    OppgaveOpprettetResponse(
+                        "OK",
+                        "Opprettet utenlandsk papirsykmelding med oppgaveId $oppgaveId",
+                        oppgaveId
                     )
                 )
             }
@@ -41,11 +44,13 @@ fun Route.registrerUtenlandskPapirsykmeldingApi() {
     post("/utenlands/nav/opprett") {
         val request = call.receive<UtenlandskSykmeldingNavNoRequest>()
         try {
-            val journalpostId = utenlandskSykeldingService.opprettUtenlanskNavNo(request)
+            val oppgaveId = utenlandskSykeldingService.opprettUtenlanskNavNo(request)
             call.respond(
                 HttpStatusCode.OK,
-                HttpMessage(
-                    "Opprettet utenlandsk papirsykmelding fra nav.no med journalpostId $journalpostId"
+                OppgaveOpprettetResponse(
+                    "OK",
+                    "Opprettet utenlandsk papirsykmelding med oppgaveId $oppgaveId",
+                    oppgaveId
                 )
             )
         } catch (exception: Exception) {

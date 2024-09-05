@@ -1,6 +1,6 @@
 import { Button, Checkbox, Select, TextField } from '@navikt/ds-react'
 import { ReactElement } from 'react'
-import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { format, sub } from 'date-fns'
 
 import styles from './OpprettPapirsykmelding.module.css'
@@ -12,6 +12,7 @@ import PeriodePicker from '../../../components/form/PeriodePicker/PeriodePicker.
 import FnrTextField from '../../../components/form/FnrTextField.tsx'
 import ActionFeedback from '../../../proxy/action-feedback.tsx'
 import { useAction } from '../../../proxy/api-hooks.ts'
+import { CreatedOppgaver, IdType } from '../../../components/CreatedOppgaver.tsx'
 
 export interface PapirsykmeldingFormValues {
     fnr: string | null
@@ -58,22 +59,29 @@ function OpprettPapirsykmeldingForm(): ReactElement {
         useAction<OpprettPapirsykmeldingApiBody>('/papirsykmelding/opprett')
     const [postDataRegelsjekk, { error: regelError, result: regelResult, loading: regelLoading, reset: regelReset }] =
         useAction<OpprettPapirsykmeldingApiBody>('/papirsykmelding/regelsjekk')
+    const opprettActionResponse =
+        (result as unknown as { message: string; journalpostID: string; automatic: boolean } | null) ?? null
 
     return (
         <FormProvider {...form}>
             <form
                 onSubmit={form.handleSubmit((values) => {
                     regelReset()
-                    postData({
-                        fnr: values.fnr,
-                        hprNummer: values.hprNummer,
-                        syketilfelleStartdato: values.syketilfelleStartdato,
-                        behandletDato: values.behandletDato,
-                        perioder: values.perioder,
-                        utenOcr: values.utenOcr,
-                        diagnosekodesystem: values.hoveddiagnose.system,
-                        diagnosekode: values.hoveddiagnose.code,
-                    })
+                    postData(
+                        {
+                            fnr: values.fnr,
+                            hprNummer: values.hprNummer,
+                            syketilfelleStartdato: values.syketilfelleStartdato,
+                            behandletDato: values.behandletDato,
+                            perioder: values.perioder,
+                            utenOcr: values.utenOcr,
+                            diagnosekodesystem: values.hoveddiagnose.system,
+                            diagnosekode: values.hoveddiagnose.code,
+                        },
+                        {
+                            responseMapper: (it) => it,
+                        },
+                    )
                 })}
             >
                 <FnrTextField className={styles.commonFormElement} {...form.register('fnr')} label="Fødselsnummer" />
@@ -133,7 +141,10 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                 <DiagnosePicker name="hoveddiagnose" diagnoseType="hoveddiagnose" />
 
                 <Checkbox {...form.register('utenOcr')}>Opprett papirsykmelding uten OCR</Checkbox>
-                <ActionFeedback error={regelError ?? error} result={regelResult ?? result}>
+                <ActionFeedback
+                    error={regelError ?? error}
+                    result={regelResult ?? opprettActionResponse?.message ?? result}
+                >
                     <Button type="submit" loading={loading} disabled={regelLoading}>
                         Opprett
                     </Button>
@@ -171,6 +182,13 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                         Valider mot regler
                     </Button>
                 </ActionFeedback>
+                {opprettActionResponse?.automatic === false && (
+                    <CreatedOppgaver
+                        id={opprettActionResponse.journalpostID}
+                        type={IdType.JOURNALPOST}
+                        norwegian={true}
+                    />
+                )}
             </form>
         </FormProvider>
     )
