@@ -33,7 +33,6 @@ spec:
     requests:
       cpu: 400m
       memory: 768Mi
-    enabled: false
   ingresses:
     - "https://teamsykmelding-mock.ansatt.dev.nav.no"
     - "https://teamsykmelding-mock.intern.dev.nav.no"
