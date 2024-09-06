@@ -1,6 +1,6 @@
 import { PropsWithChildren, ReactElement, Children, isValidElement } from 'react'
 import { UseMutationResult } from '@tanstack/react-query'
-import { Alert, Heading, Loader } from '@navikt/ds-react'
+import { Alert, BodyShort, Heading, Loader } from '@navikt/ds-react'
 
 type Props = {
     title: string
@@ -43,6 +43,7 @@ type Props = {
  */
 function FormPage({ title, mutations, children }: PropsWithChildren<Props>): ReactElement {
     const anyMutationLoading = mutations?.some((mutation) => mutation.isPending)
+    const mutationsWithError = mutations?.filter((mutation) => mutation.isError)
 
     const actionSection = Children.toArray(children).find((child) => {
         return isValidElement(child) && child.type === FormPage.FormActions
@@ -72,6 +73,14 @@ function FormPage({ title, mutations, children }: PropsWithChildren<Props>): Rea
             </div>
             <div className="sticky bottom-0 bg-white z-10 border-t border-t-border-subtle">
                 {resultSection && <div>{resultSection}</div>}
+                {mutationsWithError?.map((erroredMutation) => (
+                    <Alert variant="error" key={erroredMutation.error.message} className="border-0 border-t border-b rounded-none">
+                        <BodyShort className="font-bold" spacing>
+                            Noe gikk galt
+                        </BodyShort>
+                        <BodyShort>{erroredMutation.error.message}</BodyShort>
+                    </Alert>
+                ))}
                 <div className="p-4 flex gap-4">{actionSection}</div>
             </div>
         </div>
