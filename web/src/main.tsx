@@ -13,7 +13,7 @@ import OpprettLegeerklaering from './routes/legeerklaering/opprett-legeerklaerin
 import OpprettSykmeldingForm from './routes/sykmelding/opprett-sykmelding/OpprettSykmeldingForm.tsx'
 import SlettSykmelding from './routes/sykmelding/slett-alle-sykmeldinger/slett.tsx'
 import OpprettPapirsykmelding from './routes/papirsykmelding/opprett-papirsykmelding/opprett.tsx'
-import OpprettUtenlandskPapirSM from './routes/papirsykmelding/opprett-utenlandsk-papirsykmelding/opprett.tsx'
+import OpprettUtenlandskPapirSM from './routes/papirsykmelding/opprett-utenlandsk-papirsykmelding/OpprettUtenlandskPapirsykmeldingForm.tsx'
 import OpprettUtenlandskPapirSMRina from './routes/papirsykmelding/opprett-utenlansk-sykmelding-rina/opprett.tsx'
 import ErrorPage from './routes/error-page.tsx'
 import OpprettUtenlandskPapirSMNavNo from './routes/papirsykmelding/opprett-utenlansk-sykmelding-navno/opprett.tsx'
