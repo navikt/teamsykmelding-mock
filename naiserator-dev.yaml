@@ -38,7 +38,6 @@ spec:
   ingresses:
     - "https://teamsykmelding-mock.ansatt.dev.nav.no"
     - "https://teamsykmelding-mock.intern.dev.nav.no"
-  webproxy: true
   kafka:
     pool: nav-dev
   azure:
