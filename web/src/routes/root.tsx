@@ -13,7 +13,7 @@ function Root(): ReactElement {
             <Header />
             <div className={styles.content}>
                 <Sidebar className={styles.sidebar} />
-                <Page.Block gutters width="2xl" as="main" className={styles.pageBlock}>
+                <Page.Block width="2xl" as="main">
                     <Outlet />
                 </Page.Block>
             </div>

@@ -1,17 +1,18 @@
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import { PropsWithChildren, ReactElement } from 'react'
+import cn from 'clsx'
 
 type Props = {
     title: string
+    className?: string
 }
 
-function BasicPage({ children, title }: PropsWithChildren<Props>): ReactElement {
+function BasicPage({ children, className, title }: PropsWithChildren<Props>): ReactElement {
     return (
-        <div>
+        <div className={cn('p-6', className)}>
             <Heading size="medium" level="2" className="flex gap-2 items-center">
                 {title}
             </Heading>
-            <BodyShort size="small">{title}</BodyShort>
             <div className="mt-8">{children}</div>
         </div>
     )

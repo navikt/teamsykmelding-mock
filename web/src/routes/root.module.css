@@ -9,7 +9,3 @@
 .sidebar {
     @apply p-4 overflow-auto h-full border-r border-r-border-subtle;
 }
-
-.pageBlock {
-    @apply p-4 overflow-auto;
-}

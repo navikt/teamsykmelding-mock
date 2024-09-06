@@ -10,7 +10,7 @@ import Providers from './providers.tsx'
 import OpprettNarmesteleder from './routes/narmesteleder/registrer-narmeste-leder/opprett.tsx'
 import SlettNarmesteleder from './routes/narmesteleder/deaktiver-narmeste-leder/slett.tsx'
 import OpprettLegeerklaering from './routes/legeerklaering/opprett-legeerklaering/opprett.tsx'
-import OpprettSykmelding from './routes/sykmelding/opprett-sykmelding/opprett.tsx'
+import OpprettSykmeldingForm from './routes/sykmelding/opprett-sykmelding/OpprettSykmeldingForm.tsx'
 import SlettSykmelding from './routes/sykmelding/slett-alle-sykmeldinger/slett.tsx'
 import OpprettPapirsykmelding from './routes/papirsykmelding/opprett-papirsykmelding/opprett.tsx'
 import OpprettUtenlandskPapirSM from './routes/papirsykmelding/opprett-utenlandsk-papirsykmelding/opprett.tsx'
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
             { path: '/narmesteleder/opprett', element: <OpprettNarmesteleder /> },
             { path: '/narmesteleder/slett', element: <SlettNarmesteleder /> },
             { path: '/legeerklaering/opprett', element: <OpprettLegeerklaering /> },
-            { path: '/sykmelding/opprett', element: <OpprettSykmelding /> },
+            { path: '/sykmelding/opprett', element: <OpprettSykmeldingForm /> },
             { path: '/sykmelding/slett', element: <SlettSykmelding /> },
             { path: '/papirsykmelding/opprett', element: <OpprettPapirsykmelding /> },
             {

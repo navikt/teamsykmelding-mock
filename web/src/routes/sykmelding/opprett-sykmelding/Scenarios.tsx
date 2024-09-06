@@ -45,7 +45,7 @@ function ButtonPanel({
     description: string
 }>): ReactElement {
     return (
-        <LinkPanel as="button" onClick={onClick} className="text-left p-2">
+        <LinkPanel as="button" onClick={onClick} className="text-left p-2" type="button">
             <div className="font-bold">{children}</div>
             <div className="text-xs max-w-[169px]">{description}</div>
         </LinkPanel>
