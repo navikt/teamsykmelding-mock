@@ -13,7 +13,7 @@ export function OppgaveLink({ id, norwegian }: { id: string; norwegian: boolean 
             <Heading size="xsmall" level="3">
                 OppgaveId: {id}
             </Heading>
-            <Link href={oppgaveUrl}>Apne oppgave</Link>
+            <Link href={oppgaveUrl}>åpne oppgave i syk-dig</Link>
         </div>
     )
 }
