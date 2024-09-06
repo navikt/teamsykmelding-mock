@@ -33,7 +33,6 @@ spec:
     requests:
       cpu: 400m
       memory: 768Mi
-  vault:
     enabled: false
   ingresses:
     - "https://teamsykmelding-mock.ansatt.dev.nav.no"
