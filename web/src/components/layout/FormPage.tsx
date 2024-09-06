@@ -49,7 +49,7 @@ function FormPage({ title, mutations, children }: PropsWithChildren<Props>): Rea
         return isValidElement(child) && child.type === FormPage.FormActions
     })
 
-    const resultSection = Children.toArray(children).find((child) => {
+    const formResults = Children.toArray(children).filter((child) => {
         return isValidElement(child) && child.type === FormPage.FormResult
     })
 
@@ -72,9 +72,13 @@ function FormPage({ title, mutations, children }: PropsWithChildren<Props>): Rea
                 )}
             </div>
             <div className="sticky bottom-0 bg-white z-10 border-t border-t-border-subtle">
-                {resultSection && <div>{resultSection}</div>}
+                {formResults}
                 {mutationsWithError?.map((erroredMutation) => (
-                    <Alert variant="error" key={erroredMutation.error.message} className="border-0 border-t border-b rounded-none">
+                    <Alert
+                        variant="error"
+                        key={erroredMutation.error.message}
+                        className="border-0 border-t border-b rounded-none"
+                    >
                         <BodyShort className="font-bold" spacing>
                             Noe gikk galt
                         </BodyShort>
@@ -91,7 +95,14 @@ function FormPageActions({ children }: PropsWithChildren) {
     return <>{children}</>
 }
 
-function FormPageResult({ children, variant }: PropsWithChildren<{ variant: 'success' | 'info' | 'error' }>) {
+function FormPageResult({
+    children,
+    variant,
+}: PropsWithChildren<{ variant: 'success' | 'info' | 'error' | 'section' }>) {
+    if (variant === 'section') {
+        return <div>{children}</div>
+    }
+
     return (
         <Alert variant={variant} className="border-0 border-t border-b rounded-none">
             {children}
