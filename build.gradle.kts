@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val coroutinesVersion = "1.8.1"
+val coroutinesVersion = "1.9.0"
 val jacksonVersion = "2.17.2"
 val kluentVersion = "1.73"
 val ktorVersion = "2.3.12"
