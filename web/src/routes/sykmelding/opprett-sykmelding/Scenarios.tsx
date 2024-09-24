@@ -25,9 +25,17 @@ function Scenarios(): ReactElement {
                 </ButtonPanel>
                 <ButtonPanel
                     onClick={() => {
-                        formContext.reset(ugyldigKodeverkScenario())
+                        formContext.reset(ugyldigHoveddiagnoseKodeverkScenario())
                     }}
                     description="Ugyldig kodeverk for hoveddiagnose"
+                >
+                    Ugyldig sykmelding
+                </ButtonPanel>
+                <ButtonPanel
+                    onClick={() => {
+                        formContext.reset(ugyldigBiDiagnoseKodeverkScenario())
+                    }}
+                    description="Ugyldig kodeverk for bidiagnose"
                 >
                     Ugyldig sykmelding
                 </ButtonPanel>
@@ -63,18 +71,27 @@ const manuellBehandlingScenario: () => Partial<SykmeldingFormValues> = () => {
                 type: 'HUNDREPROSENT',
             },
         ],
-        behandletDato: formatISO(now, { representation: 'date' }),
+        behandletDato: formatISO(now, {representation: 'date'}),
         begrunnIkkeKontakt: 'Eksempel på begrunnelse for tilbakedaterirng',
     }
 }
 
-const ugyldigKodeverkScenario: () => Partial<SykmeldingFormValues> = () => {
+const ugyldigHoveddiagnoseKodeverkScenario: () => Partial<SykmeldingFormValues> = () => {
     return {
         hoveddiagnose: {
             system: 'icd10',
             code: 'tullekode',
             text: 'Tullekode',
         },
+    }
+}
+const ugyldigBiDiagnoseKodeverkScenario: () => Partial<SykmeldingFormValues> = () => {
+    return {
+        bidiagnoser: [{
+            system: 'icd10',
+            code: 'tullekode',
+            text: 'Tullekode',
+        }],
     }
 }
 

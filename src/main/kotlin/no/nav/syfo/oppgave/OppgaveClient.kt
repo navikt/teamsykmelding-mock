@@ -15,6 +15,7 @@ import io.ktor.http.contentType
 import java.time.LocalDate
 import java.util.UUID
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -84,6 +85,7 @@ class DevelopmentOppgaveClient : OppgaveClient {
         return OpprettOppgaveResponse(oppgaveId++, 1)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun getOppgaveId(journalpostId: String): OppgaveResponse {
         if (oppgaver.contains(journalpostId)) {
             val oppgave = oppgaver[journalpostId]

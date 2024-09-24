@@ -9,6 +9,8 @@ export const SykmeldingType = z.enum([
     'GRADERT_50',
     'GRADERT_60',
     'GRADERT_80',
+    'GRADERT_95',
+    'GRADERT_100',
     'GRADERT_REISETILSKUDD',
     'HUNDREPROSENT',
     'BEHANDLINGSDAGER',

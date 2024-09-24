@@ -119,6 +119,8 @@ function OpprettSykmeldingForm(): ReactElement {
                                     <option value="GRADERT_50">GRADERT_50</option>
                                     <option value="GRADERT_60">GRADERT_60</option>
                                     <option value="GRADERT_80">GRADERT_80</option>
+                                    <option value="GRADERT_95">GRADERT_95</option>
+                                    <option value="GRADERT_100">GRADERT_100</option>
                                     <option value="GRADERT_REISETILSKUDD">GRADERT_REISETILSKUDD</option>
                                     <option value="BEHANDLINGSDAGER">BEHANDLINGSDAGER</option>
                                     <option value="BEHANDLINGSDAG">BEHANDLINGSDAG</option>

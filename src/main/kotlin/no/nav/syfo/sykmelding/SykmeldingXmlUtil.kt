@@ -299,6 +299,12 @@ private fun tilPeriode(
                     SykmeldingType.GRADERT_80 -> {
                         gradert(80, false)
                     }
+                    SykmeldingType.GRADERT_95 -> {
+                        gradert(95, false)
+                    }
+                    SykmeldingType.GRADERT_100 -> {
+                        gradert(100, false)
+                    }
                     SykmeldingType.GRADERT_REISETILSKUDD -> {
                         gradert(60, true)
                     }
