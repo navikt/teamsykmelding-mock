@@ -41,7 +41,7 @@ class LegeerklaeringService(
     private val legeerklaeringQueue: String,
 ) {
     suspend fun opprettLegeerklaering(legeerklaeringRequest: LegeerklaeringRequest): String {
-        val connection = mqClient.getConnection()
+        val connection = mqClient.connection
         val mottakId = UUID.randomUUID().toString()
         if (connection != null) {
             val legeerklaering = tilLegeerklaeringXml(legeerklaeringRequest, mottakId)

@@ -3,31 +3,19 @@ package no.nav.syfo.mq
 import jakarta.jms.Connection
 import no.nav.syfo.utils.EnvironmentVariables
 import no.nav.syfo.utils.ServiceUser
-import no.nav.syfo.utils.logger
 
 interface MqClient {
-    fun getConnection(): Connection?
+    val connection: Connection?
 }
 
 class MqClientProduction(
-    private val env: EnvironmentVariables,
-    private val serviceUser: ServiceUser,
+    env: EnvironmentVariables,
+    serviceUser: ServiceUser,
 ) : MqClient {
-
-    override fun getConnection(): Connection? {
-
-        logger.info("vi skal ikke hit når vi er i dev")
-        val connection =
-            connectionFactory(env).createConnection(serviceUser.username, serviceUser.password)
-
-        connection.start()
-        return connection
-    }
+    override val connection: Connection? =
+        connectionFactory(env).createConnection(serviceUser.username, serviceUser.password)
 }
 
 class MqClientDevelopment() : MqClient {
-    override fun getConnection(): Connection? {
-        logger.info("henter MqClient development connection")
-        return null
-    }
+    override val connection: Connection? = null
 }

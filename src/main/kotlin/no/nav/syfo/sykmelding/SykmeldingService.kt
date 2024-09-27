@@ -31,7 +31,7 @@ class SykmeldingService(
 ) {
 
     suspend fun opprettSykmelding(sykmeldingRequest: SykmeldingRequest): String {
-        val connection = mqClient.getConnection()
+        val connection = mqClient.connection
         val mottakId = UUID.randomUUID().toString()
         if (connection != null) {
             val sykmelding = tilSykmeldingXml(sykmeldingRequest, mottakId)
