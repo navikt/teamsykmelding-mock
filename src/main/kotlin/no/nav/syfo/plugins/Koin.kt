@@ -22,6 +22,7 @@ import no.nav.syfo.pdl.client.ProductionPdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
 import no.nav.syfo.pdl.service.PdlPersonServiceProduction
 import no.nav.syfo.plugins.ApplicationState
+import no.nav.syfo.plugins.initDevelopmentModules
 import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
 import no.nav.syfo.sykmelding.client.SyfosmregisterClient

@@ -82,7 +82,8 @@ dependencies {
     implementation("org.apache.kafka:kafka_2.12:$kafkaVersion")
     implementation("org.apache.kafka:kafka-streams:$kafkaVersion")
 
-    implementation("com.ibm.mq:com.ibm.mq.allclient:$ibmMqVersion")
+    implementation("com.ibm.mq:com.ibm.mq.jakarta.client:$ibmMqVersion")
+
     implementation("no.nav.helse:diagnosekoder:$diagnosekoderVersion")
 
     implementation("no.nav.helse.xml:xmlfellesformat:$sysfoXmlCodeGen")

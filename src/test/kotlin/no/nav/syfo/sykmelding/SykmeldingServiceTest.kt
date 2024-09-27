@@ -2,8 +2,8 @@ package no.nav.syfo.sykmelding
 
 import io.mockk.coEvery
 import io.mockk.mockk
+import jakarta.jms.Connection
 import java.time.LocalDate
-import javax.jms.Connection
 import kotlinx.coroutines.runBlocking
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead
