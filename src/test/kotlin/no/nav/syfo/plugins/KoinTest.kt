@@ -55,7 +55,7 @@ class CheckModulesTest : KoinTest {
             norskHelsenettScope = "",
             oppgaveUrl = "",
             jwkKeysUrl = "",
-            jwtIssuer = ""
+            jwtIssuer = "",
         )
 
     @Test
@@ -79,6 +79,8 @@ class CheckModulesTest : KoinTest {
                     single<NlResponseProducer>() { mockk<NlResponseProducerDevelopment>() }
                 },
             )
+
+            // TODO: Replace deprecated API
             checkModules()
         }
     }

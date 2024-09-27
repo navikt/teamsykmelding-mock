@@ -40,7 +40,7 @@ internal class SykmeldingServiceTest {
                 legeFnr to PdlPerson(Navn("Doktor", null, "Dyregod")),
             )
 
-        coEvery { connection.getConnection() } returns mockk<Connection>()
+        coEvery { connection.connection } returns mockk<Connection>()
     }
 
     @Test
