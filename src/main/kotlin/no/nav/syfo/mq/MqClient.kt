@@ -1,6 +1,6 @@
 package no.nav.syfo.mq
 
-import javax.jms.Connection
+import jakarta.jms.Connection
 import no.nav.syfo.utils.EnvironmentVariables
 import no.nav.syfo.utils.ServiceUser
 import no.nav.syfo.utils.logger
@@ -15,14 +15,11 @@ class MqClientProduction(
 ) : MqClient {
 
     override fun getConnection(): Connection? {
+
         logger.info("vi skal ikke hit når vi er i dev")
         val connection =
-            connectionFactory(env)
-                .apply {
-                    sslSocketFactory = null
-                    sslCipherSuite = null
-                }
-                .createConnection(serviceUser.username, serviceUser.password)
+            connectionFactory(env).createConnection(serviceUser.username, serviceUser.password)
+
         connection.start()
         return connection
     }

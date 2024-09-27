@@ -1,10 +1,10 @@
 package no.nav.syfo.legeerklaering
 
+import jakarta.jms.Session
 import java.io.StringReader
 import java.math.BigInteger
 import java.time.LocalDate
 import java.util.UUID
-import javax.jms.Session
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.legeerklaering.Arbeidsforhold
@@ -84,7 +84,7 @@ class LegeerklaeringService(
 
         val personer =
             pdlPersonService.getPersoner(
-                listOf(legeerklaeringRequest.fnr, legeerklaeringRequest.fnrLege)
+                listOf(legeerklaeringRequest.fnr, legeerklaeringRequest.fnrLege),
             )
         val pasient = personer[legeerklaeringRequest.fnr]
         val lege = personer[legeerklaeringRequest.fnrLege]
@@ -101,7 +101,7 @@ class LegeerklaeringService(
         legeerklaering.diagnoseArbeidsuforhet =
             diagnoseArbeidsuforhet(
                 legeerklaeringRequest.diagnosekode,
-                legeerklaeringRequest.statusPresens
+                legeerklaeringRequest.statusPresens,
             )
         legeerklaering.pasientopplysninger = pasientopplysninger(legeerklaeringRequest.fnr, pasient)
 

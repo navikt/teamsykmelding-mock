@@ -1,3 +1,5 @@
+package no.nav.syfo.plugins
+
 import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.mq.MqClient
 import no.nav.syfo.mq.MqClientDevelopment

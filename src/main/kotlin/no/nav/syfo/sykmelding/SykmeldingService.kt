@@ -1,11 +1,11 @@
 package no.nav.syfo.sykmelding
 
+import jakarta.jms.Session
 import java.io.StringReader
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
 import java.util.UUID
-import javax.jms.Session
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
 import no.nav.helse.msgHead.XMLMsgHead

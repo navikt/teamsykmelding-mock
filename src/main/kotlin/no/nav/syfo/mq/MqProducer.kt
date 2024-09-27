@@ -1,7 +1,7 @@
 package no.nav.syfo.mq
 
-import javax.jms.MessageProducer
-import javax.jms.Session
+import jakarta.jms.MessageProducer
+import jakarta.jms.Session
 
 class MqProducer(
     private val session: Session,
