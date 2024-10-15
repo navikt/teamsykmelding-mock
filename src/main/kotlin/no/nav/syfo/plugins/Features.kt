@@ -22,5 +22,5 @@ fun Application.configureFeatures() {
         }
     }
 
-    intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests(this.developmentMode))
+    intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests(developmentMode))
 }
