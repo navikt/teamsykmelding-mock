@@ -4,16 +4,16 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 val coroutinesVersion = "1.9.0"
-val jacksonVersion = "2.18.0"
+val jacksonVersion = "2.18.1"
 val kluentVersion = "1.73"
-val ktorVersion = "2.3.12"
-val logbackVersion = "1.5.8"
+val ktorVersion = "3.0.1"
+val logbackVersion = "1.5.12"
 val logstashEncoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
-val mockkVersion = "1.13.12"
-val testContainerKafkaVersion = "1.20.2"
+val mockkVersion = "1.13.13"
+val testContainerKafkaVersion = "1.20.3"
 val nimbusVersion = "9.40"
-val kotlinVersion = "2.0.20"
+val kotlinVersion = "2.0.21"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
@@ -21,19 +21,19 @@ val javaTimeAdapterVersion = "1.1.3"
 val commonsCodecVersion = "1.17.1"
 val ktfmtVersion = "0.49"
 val javaVersion = JvmTarget.JVM_21
-val junitJupiterVersion = "5.11.2"
+val junitJupiterVersion = "5.11.3"
 val commonsCompressVersion = "1.27.1"
 val koinVersion = "4.0.0"
-val diagnosekoderVersion = "1.2024.0"
-val ibmMqVersion = "9.4.0.5"
-val kafkaVersion = "3.8.0"
+val diagnosekoderVersion = "1.2024.1"
+val ibmMqVersion = "9.4.1.0"
+val kafkaVersion = "3.8.1"
 
 
 plugins {
     id("application")
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("jvm") version "2.0.20"
-    id("com.gradleup.shadow") version "8.3.3"
+    kotlin("jvm") version "2.0.21"
+    id("com.gradleup.shadow") version "8.3.4"
 }
 
 application {
