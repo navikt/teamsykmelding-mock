@@ -3,8 +3,9 @@ package no.nav.syfo.sykmelding
 import jakarta.jms.Session
 import java.io.StringReader
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.OffsetTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
 import java.util.UUID
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
@@ -57,7 +58,7 @@ class SykmeldingService(
                 pasientAktoerId = "",
                 legeAktoerId = "",
                 msgId = UUID.randomUUID().toString(),
-                signaturDato = LocalDateTime.now(),
+                signaturDato = sykmeldingRequest.behandletDato.atStartOfDay(),
                 behandlerFnr = sykmeldingRequest.fnrLege,
                 behandlerHprNr = null,
             )
@@ -151,7 +152,9 @@ class SykmeldingService(
         val pasient = fellesformat.get<XMLMsgHead>().msgInfo.patient
 
         fellesformat.get<XMLMsgHead>().msgInfo.genDate =
-            LocalDateTime.now().format(ISO_LOCAL_DATE_TIME)
+            sykmeldingRequest.behandletDato
+                .atTime(OffsetTime.of(LocalTime.MIN, ZoneOffset.UTC))
+                .toString()
         pasient.ident.forEach { ident -> ident.id = sykmeldingRequest.fnr }
         fellesformat.get<XMLMsgHead>().document[0].refDoc.content.any[0] = sykmelding
         fellesformat.get<XMLMsgHead>().msgInfo.msgId = UUID.randomUUID().toString()
