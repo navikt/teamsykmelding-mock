@@ -45,7 +45,7 @@ fun Application.configureKoin() {
     install(Koin) {
         slf4jLogger()
         initProductionModules()
-        if (environment.developmentMode) {
+        if (developmentMode) {
             initDevelopmentModules()
         }
     }
