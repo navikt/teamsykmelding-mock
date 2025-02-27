@@ -23,7 +23,7 @@ val ktfmtVersion = "0.49"
 val javaVersion = JvmTarget.JVM_21
 val junitJupiterVersion = "5.12.0"
 val commonsCompressVersion = "1.27.1"
-val koinVersion = "4.0.2"
+val koinVersion = "4.1.0-Beta5"
 val diagnosekoderVersion = "1.2025.0"
 val ibmMqVersion = "9.4.1.1"
 val kafkaVersion = "3.9.0"
@@ -104,7 +104,7 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.testcontainers:kafka:$testContainerKafkaVersion")
 
-    implementation("io.insert-koin:koin-ktor:$koinVersion")
+    implementation("io.insert-koin:koin-ktor3:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
     constraints {
         implementation("org.apache.commons:commons-compress:$commonsCompressVersion") {
