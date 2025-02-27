@@ -8,11 +8,11 @@ fun Application.configureLifecycleHooks() {
     val state by inject<ApplicationState>()
     val mqClient by inject<MqClient>()
 
-    environment.monitor.subscribe(ApplicationStarted) {
+    monitor.subscribe(ApplicationStarted) {
         state.ready = true
         mqClient.connection?.start()
     }
-    environment.monitor.subscribe(ApplicationStopped) {
+    monitor.subscribe(ApplicationStopped) {
         state.ready = false
         mqClient.connection?.close()
     }
