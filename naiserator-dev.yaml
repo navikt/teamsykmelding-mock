@@ -30,8 +30,8 @@ spec:
     limits:
       memory: 2048Mi
     requests:
-      cpu: 100m
-      memory: 512Mi
+      cpu: 30m
+      memory: 410Mi
   ingresses:
     - "https://teamsykmelding-mock.ansatt.dev.nav.no"
     - "https://teamsykmelding-mock.intern.dev.nav.no"
