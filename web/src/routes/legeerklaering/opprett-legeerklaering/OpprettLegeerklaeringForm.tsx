@@ -57,7 +57,7 @@ function OpprettLegeerklaeringForm(): ReactElement {
                 <TextField
                     {...form.register('fnrLege', { required: true })}
                     label="Fødselsnummer til lege"
-                    defaultValue="04056600324"
+                    defaultValue="20086600138"
                     error={form.formState.errors.fnrLege && 'Fødselsnummer til lege mangler'}
                 />
                 <div>

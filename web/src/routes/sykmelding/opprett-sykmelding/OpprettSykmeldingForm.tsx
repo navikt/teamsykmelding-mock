@@ -150,7 +150,7 @@ function OpprettSykmeldingForm(): ReactElement {
                         className={styles.commonFormElement}
                         {...form.register('fnrLege', { required: true })}
                         label="Fødselsnummer til lege"
-                        defaultValue="04056600324"
+                        defaultValue="20086600138"
                         error={form.formState.errors.fnrLege && 'Fødselsnummer til lege mangler'}
                     />
                     <TextField className={styles.commonFormElement} {...form.register('herId')} label="HER-id" />
