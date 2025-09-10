@@ -56,6 +56,7 @@ class CheckModulesTest : KoinTest {
             oppgaveUrl = "",
             jwkKeysUrl = "",
             jwtIssuer = "",
+            inputDolly = "",
         )
 
     @Test

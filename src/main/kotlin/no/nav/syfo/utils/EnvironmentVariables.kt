@@ -35,6 +35,7 @@ data class EnvironmentVariables(
     val oppgaveUrl: String = getEnvVar("OPPGAVEBEHANDLING_URL"),
     val oppgaveScope: String = getEnvVar("OPPGAVE_SCOPE"),
     val clusterName: String = getEnvVar("NAIS_CLUSTER_NAME"),
+    val inputDolly: String = getEnvVar("INPUT_DOLLY"),
 ) : MqConfig
 
 data class ServiceUser(
