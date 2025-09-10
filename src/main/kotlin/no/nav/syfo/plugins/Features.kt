@@ -2,6 +2,7 @@ package no.nav.syfo.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
+import no.nav.syfo.dolly.api.registrerDollySykmeldingApi
 import no.nav.syfo.legeerklaering.api.registrerLegeerklaeringApi
 import no.nav.syfo.metrics.monitorHttpRequests
 import no.nav.syfo.narmesteleder.api.registrerNarmestelederApi
@@ -19,6 +20,7 @@ fun Application.configureFeatures() {
             registerOppgaveCheckApi()
             registrerNarmestelederApi()
             registrerLegeerklaeringApi()
+            registrerDollySykmeldingApi()
         }
     }
 

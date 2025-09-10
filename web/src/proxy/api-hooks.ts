@@ -55,9 +55,18 @@ export function useAction<BodyType>(
                     setResult(mapper(await response.json()))
                 } else {
                     if (response.headers.get('Content-Type')?.includes('application/json')) {
-                        setError((await response.json()).message)
+                        try {
+                            const errorJson = await response.json()
+                            if (errorJson && errorJson.message) {
+                                setError(errorJson.message)
+                                return
+                            }
+                        } catch {
+                            setError(`Error: ${response.status} ${response.statusText}`)
+                            return
+                        }
                     } else {
-                        setError(await response.text())
+                        setError(`Error: ${response.status} ${response.statusText} ${await response.text()}`)
                     }
                 }
             } finally {

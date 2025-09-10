@@ -48,6 +48,9 @@ spec:
         - application: syfosmregler
         - application: syfosmpapirregler
         - application: syfohelsenettproxy
+        - application: tsm-input-dolly
+          namespace: tsm
+          cluster: dev-gcp
       external:
         - host: pdl-api.dev-fss-pub.nais.io
         - host: dokarkiv.dev-fss-pub.nais.io
@@ -86,3 +89,5 @@ spec:
       value: api://dev-fss.oppgavehandtering.oppgave-q1/.default
     - name: OPPGAVEBEHANDLING_URL
       value: https://oppgave-q1.dev-fss-pub.nais.io/api/v1/oppgaver
+    - name: INPUT_DOLLY
+      value: http://tsm-input-dolly.tsm

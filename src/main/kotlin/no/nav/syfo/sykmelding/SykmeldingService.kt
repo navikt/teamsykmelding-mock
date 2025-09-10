@@ -2,7 +2,6 @@ package no.nav.syfo.sykmelding
 
 import jakarta.jms.Session
 import java.io.StringReader
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.OffsetTime
 import java.time.ZoneOffset
