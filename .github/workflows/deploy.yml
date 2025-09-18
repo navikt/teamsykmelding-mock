@@ -49,7 +49,7 @@ jobs:
         working-directory: web
       - name: Build jar
         run: |
-          ./gradlew shadowJar -x test
+          ./gradlew installDist -x test
       - name: docker-build-push
         if: github.event.pull_request.user.login != 'dependabot[bot]'
         uses: nais/docker-build-push@v0

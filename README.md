@@ -96,11 +96,11 @@ Note: Vite automatically hot-reloads.
 To build locally and run the integration tests you can simply run
 
 ``` bash
-./gradlew shadowJar
+./gradlew installDist
 ```
 
 or on windows
-`gradlew.bat shadowJar`
+`gradlew.bat installDist`
 
 Creating a docker image should be as simple as
 
