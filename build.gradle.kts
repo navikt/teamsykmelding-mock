@@ -33,7 +33,6 @@ plugins {
     id("application")
     id("com.diffplug.spotless") version "7.1.0"
     kotlin("jvm") version "2.2.0"
-    id("com.gradleup.shadow") version "8.3.8"
 }
 
 application {
@@ -129,20 +128,7 @@ kotlin {
 }
 
 tasks {
-    shadowJar {
-        archiveBaseName.set("app")
-        archiveClassifier.set("")
-        isZip64 = true
-        manifest {
-            attributes(
-                mapOf(
-                    "Main-Class" to "no.nav.syfo.ApplicationKt",
-                ),
-            )
-        }
-    }
-
-
+    
     test {
         useJUnitPlatform {}
         testLogging {
