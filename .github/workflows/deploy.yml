@@ -20,8 +20,6 @@ jobs:
           java-version: '21'
       - name: Checkout code
         uses: actions/checkout@v5
-      - name: Gradle wrapper validation
-        uses: gradle/wrapper-validation-action@v3.5.0
       - name: Setup gradle dependency cache
         uses: actions/cache@v4
         with:
