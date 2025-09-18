@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Gradle wrapper validation
         uses: gradle/wrapper-validation-action@v3.5.0
       - name: Setup gradle dependency cache
@@ -35,7 +35,7 @@ jobs:
         run: |
           ./gradlew test
       - name: setup frontend
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
       - run: corepack enable
@@ -80,7 +80,7 @@ jobs:
           team: teamsykmelding
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@dc5a429b52fcf669ce959baa2c2dd26090d2a6c4
+        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8
         with:
           image-ref: ${{ needs.build.outputs.image }}
           ignore-unfixed: true
@@ -103,7 +103,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Deploy to dev
         uses: nais/deploy/actions/deploy@master
         env:
