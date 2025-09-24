@@ -8,6 +8,8 @@ class MqProducer(
     private val messageProducer: MessageProducer,
 ) {
     fun send(melding: String) {
-        messageProducer.send(session.createTextMessage(melding))
+        val message = session.createTextMessage(melding)
+        message.setIntProperty("X_Retry_Count", 1)
+        messageProducer.send(message)
     }
 }
