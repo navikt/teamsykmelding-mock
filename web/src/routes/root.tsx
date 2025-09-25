@@ -6,8 +6,9 @@ import Header from '../components/layout/Header.tsx'
 import Sidebar from '../components/layout/Sidebar.tsx'
 
 import styles from './root.module.css'
+import SidebarDolly from "../components/layout/SidebarDolly.tsx";
 
-function Root(): ReactElement {
+export default function Root(): ReactElement {
     return (
         <Page contentBlockPadding="none">
             <Header />
@@ -21,4 +22,16 @@ function Root(): ReactElement {
     )
 }
 
-export default Root
+export function RootDolly(): ReactElement {
+    return (
+        <Page contentBlockPadding="none">
+            <Header />
+            <div className={styles.content}>
+                <SidebarDolly className={styles.sidebar} />
+                <Page.Block width="2xl" as="main">
+                    <Outlet />
+                </Page.Block>
+            </div>
+        </Page>
+    )
+}
