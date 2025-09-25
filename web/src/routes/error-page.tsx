@@ -1,11 +1,13 @@
 import { useRouteError } from 'react-router-dom'
 import { BodyShort, Heading } from '@navikt/ds-react'
+import { ReactElement } from 'react'
 
 import image from '../images/gostolen-error.webp'
 
-export default function ErrorPage() {
+export default function ErrorPage(): ReactElement {
     const error = useRouteError()
 
+    // eslint-disable-next-line no-console
     console.error(error)
 
     return (

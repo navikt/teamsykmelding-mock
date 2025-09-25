@@ -3,19 +3,20 @@ import { ReactElement } from 'react'
 import { FormProvider, useForm, useFieldArray } from 'react-hook-form'
 import { format, sub } from 'date-fns'
 import { Heading } from '@navikt/ds-react'
+import { useMutation } from '@tanstack/react-query'
+
+import FnrTextField from '../../../components/form/FnrTextField.tsx'
+import PeriodePicker from '../../../components/form/PeriodePicker/PeriodePicker.tsx'
+import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
+import DiagnosePicker, { Diagnose } from '../../../components/form/DiagnosePicker/DiagnosePicker.tsx'
+import { post, SimpleMessage } from '../../../api/fetcher.ts'
+import FormPage from '../../../components/layout/FormPage.tsx'
 
 import styles from './OpprettSykmelding.module.css'
 import SyketilfelleStartdato from './SyketilfelleStartdato'
 import Behandletdato from './Behandletdato'
 import Kontaktdato from './Kontaktdato'
 import Scenarios from './Scenarios'
-import FnrTextField from '../../../components/form/FnrTextField.tsx'
-import PeriodePicker from '../../../components/form/PeriodePicker/PeriodePicker.tsx'
-import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
-import DiagnosePicker, { Diagnose } from '../../../components/form/DiagnosePicker/DiagnosePicker.tsx'
-import { useMutation } from '@tanstack/react-query'
-import { post, SimpleMessage } from '../../../api/fetcher.ts'
-import FormPage from '../../../components/layout/FormPage.tsx'
 
 export interface SykmeldingFormValues {
     fnr: string

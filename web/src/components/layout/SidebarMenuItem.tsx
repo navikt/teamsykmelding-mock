@@ -1,5 +1,4 @@
 import { PropsWithChildren, ReactElement } from 'react'
-
 import { Heading } from '@navikt/ds-react'
 import { PersonGroupIcon } from '@navikt/aksel-icons'
 

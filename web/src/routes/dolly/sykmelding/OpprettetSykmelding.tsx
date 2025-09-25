@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 import { BodyShort, Heading, List } from '@navikt/ds-react'
+
 import { SykmeldingDollyResponse } from '../opprett-sykmelding/Sykmelding.ts'
 
 interface Props {
@@ -9,7 +10,9 @@ interface Props {
 function OpprettetSykmelding({ data }: Props): ReactElement {
     return (
         <div>
-            <Heading size="medium" level="2" className="mb-4">Opprettet sykmelding</Heading>
+            <Heading size="medium" level="2" className="mb-4">
+                Opprettet sykmelding
+            </Heading>
             <BodyShort>{`sykmeldingId: ${data.sykmeldingId}`}</BodyShort>
             {data.aktivitet.map((aktivitet, index) => (
                 <List key={index}>

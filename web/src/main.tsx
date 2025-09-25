@@ -3,6 +3,7 @@ import './global.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+
 import Page, { PageDolly } from './routes/page.tsx'
 import NotFound from './routes/not-found.tsx'
 import Root, { RootDolly } from './routes/root.tsx'
