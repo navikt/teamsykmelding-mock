@@ -1,9 +1,11 @@
 import { ReactElement, useState } from 'react'
 import { Alert, Button, Heading, TextField } from '@navikt/ds-react'
 import { useQuery } from '@tanstack/react-query'
+
 import { fetcher } from '../../../api/fetcher.ts'
-import OpprettetSykmelding from './OpprettetSykmelding.tsx'
 import { SykmeldingDollyResponse } from '../opprett-sykmelding/Sykmelding.ts'
+
+import OpprettetSykmelding from './OpprettetSykmelding.tsx'
 
 function HentSykmeldingDolly(): ReactElement {
     const [sykmeldingId, setSykmeldingId] = useState<string | null>(null)
@@ -15,7 +17,7 @@ function HentSykmeldingDolly(): ReactElement {
             }
             return await fetcher<SykmeldingDollyResponse>(`/sykmelding/${sykmeldingId}`)
         },
-        enabled: false
+        enabled: false,
     })
 
     return (

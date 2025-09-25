@@ -1,5 +1,7 @@
 import { ReactElement } from 'react'
+
 import BasicPage from '../../../components/layout/BasicPage.tsx'
+
 import OpprettUtenlandskPapirsykmeldingRinaForm from './OpprettUtenlandskPapirsykmeldingRinaForm.tsx'
 
 export default function OpprettUtenlandskPapirSMRina(): ReactElement {

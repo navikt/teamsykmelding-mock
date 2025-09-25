@@ -1,7 +1,8 @@
 import { ReactElement } from 'react'
 import { BandageIcon } from '@navikt/aksel-icons'
-import SidebarMenuItem from './SidebarMenuItem.tsx'
 import { Link } from 'react-router-dom'
+
+import SidebarMenuItem from './SidebarMenuItem.tsx'
 
 type Props = {
     className: string

@@ -3,10 +3,11 @@ import { Button, Checkbox, TextField } from '@navikt/ds-react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { format } from 'date-fns'
 
-import AktivFraOgMed from './AktivFraOgMed'
 import FnrTextField from '../../../components/form/FnrTextField.tsx'
 import { useAction } from '../../../proxy/api-hooks.ts'
 import ActionFeedback from '../../../proxy/action-feedback.tsx'
+
+import AktivFraOgMed from './AktivFraOgMed'
 
 export interface NarmestelederFormValues {
     ansattFnr: string

@@ -10,6 +10,7 @@ import {
     DsComboboxPopover,
 } from '../CustomFormComponents/Combobox'
 import { DiagnoseSystem } from '../DiagnosePicker'
+
 import type { DiagnoseSearchResult, DiagnoseSuggestion } from './diagnose-search.ts'
 import { diagnoseSearch } from './diagnose-search.ts'
 

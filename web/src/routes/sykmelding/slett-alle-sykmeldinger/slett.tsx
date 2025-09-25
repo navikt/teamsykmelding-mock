@@ -1,6 +1,8 @@
 import { ReactElement } from 'react'
-import SlettSykmeldingForm from './SlettSykmeldingForm.tsx'
+
 import BasicPage from '../../../components/layout/BasicPage.tsx'
+
+import SlettSykmeldingForm from './SlettSykmeldingForm.tsx'
 
 function SlettSykmelding(): ReactElement {
     return (

@@ -2,7 +2,7 @@ import { ReactElement, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Alert, Button, Heading, List, Loader, Link } from '@navikt/ds-react'
 
-export function OppgaveLink({ id, norwegian }: { id: string; norwegian: boolean }): ReactElement {
+function OppgaveLink({ id, norwegian }: { id: string; norwegian: boolean }): ReactElement {
     // Determine the URL based on the norwegian prop
     const oppgaveUrl = norwegian
         ? `https://syk-dig.intern.dev.nav.no/nasjonal/${id}`
@@ -72,7 +72,7 @@ export function CreatedOppgaver({
                                 Fant {data.antallTreffTotalt} oppgaver
                             </Heading>
                             <List>
-                                {data.oppgaver.map((it: any) => (
+                                {data.oppgaver.map((it: { id: string }) => (
                                     <List.Item key={it.id}>
                                         <OppgaveLink id={it.id} norwegian={norwegian} /> {/* Reuse OppgaveLink */}
                                     </List.Item>

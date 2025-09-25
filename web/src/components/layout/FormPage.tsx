@@ -4,6 +4,7 @@ import { Alert, BodyShort, Heading, Loader } from '@navikt/ds-react'
 
 type Props = {
     title: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutations?: UseMutationResult<any, any, any, any>[]
 }
 
@@ -91,14 +92,14 @@ function FormPage({ title, mutations, children }: PropsWithChildren<Props>): Rea
     )
 }
 
-function FormPageActions({ children }: PropsWithChildren) {
+function FormPageActions({ children }: PropsWithChildren): ReactElement {
     return <>{children}</>
 }
 
 function FormPageResult({
     children,
     variant,
-}: PropsWithChildren<{ variant: 'success' | 'info' | 'error' | 'section' }>) {
+}: PropsWithChildren<{ variant: 'success' | 'info' | 'error' | 'section' }>): ReactElement {
     if (variant === 'section') {
         return <div>{children}</div>
     }

@@ -1,22 +1,26 @@
 import { ReactElement } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
-import { SykmeldingDollyValues } from './Sykmelding.ts'
-import FnrTextField from '../../../components/form/FnrTextField.tsx'
 import { Button, TextField } from '@navikt/ds-react'
-import AktivitetPicker from './AktivitetPicker.tsx'
+
+import FnrTextField from '../../../components/form/FnrTextField.tsx'
 import { useAction } from '../../../proxy/api-hooks.ts'
 import BasicPage from '../../../components/layout/BasicPage.tsx'
 import ActionFeedback from '../../../proxy/action-feedback.tsx'
+
+import AktivitetPicker from './AktivitetPicker.tsx'
+import { SykmeldingDollyValues } from './Sykmelding.ts'
 
 function OpprettSykmeldingDolly(): ReactElement {
     const form = useForm<SykmeldingDollyValues>({
         defaultValues: {
             ident: '',
-            aktivitet: [{
-                fom: '',
-                tom: '',
-                grad: undefined
-            }]
+            aktivitet: [
+                {
+                    fom: '',
+                    tom: '',
+                    grad: undefined,
+                },
+            ],
         },
     })
 
@@ -50,7 +54,7 @@ function OpprettSykmeldingDolly(): ReactElement {
                         <div key={aktivitet.id} className="flex items-end gap-4">
                             <AktivitetPicker name={`aktivitet.${index}`} />
                             <TextField
-                                {...form.register(`aktivitet.${index}.grad` as any, { valueAsNumber: true })}
+                                {...form.register(`aktivitet.${index}.grad`, { valueAsNumber: true })}
                                 className="w-20"
                                 label="Grad"
                                 type="tel"
@@ -63,12 +67,12 @@ function OpprettSykmeldingDolly(): ReactElement {
                                         remove(index)
                                     }
                                 }}
-                                variant="tertiary">
+                                variant="tertiary"
+                            >
                                 Slett
                             </Button>
                         </div>
-                        ))
-                    }
+                    ))}
                     <div className="flex my-5">
                         <Button
                             type="button"
@@ -76,7 +80,7 @@ function OpprettSykmeldingDolly(): ReactElement {
                                 append({
                                     fom: '',
                                     tom: '',
-                                    grad: undefined
+                                    grad: undefined,
                                 })
                             }
                         >

@@ -3,8 +3,10 @@ import { Heading } from '@navikt/ds-react'
 import { useFormContext } from 'react-hook-form'
 import { LinkPanel } from '@navikt/ds-react'
 import { formatISO } from 'date-fns'
-import { SykmeldingFormValues } from './OpprettSykmeldingForm.tsx'
+
 import { subDays } from '../../../utils/date.ts'
+
+import { SykmeldingFormValues } from './OpprettSykmeldingForm.tsx'
 
 function Scenarios(): ReactElement {
     const formContext = useFormContext<SykmeldingFormValues>()
@@ -71,7 +73,7 @@ const manuellBehandlingScenario: () => Partial<SykmeldingFormValues> = () => {
                 type: 'HUNDREPROSENT',
             },
         ],
-        behandletDato: formatISO(now, {representation: 'date'}),
+        behandletDato: formatISO(now, { representation: 'date' }),
         begrunnIkkeKontakt: 'Eksempel på begrunnelse for tilbakedaterirng',
     }
 }
@@ -87,11 +89,13 @@ const ugyldigHoveddiagnoseKodeverkScenario: () => Partial<SykmeldingFormValues> 
 }
 const ugyldigBiDiagnoseKodeverkScenario: () => Partial<SykmeldingFormValues> = () => {
     return {
-        bidiagnoser: [{
-            system: 'icd10',
-            code: 'tullekode',
-            text: 'Tullekode',
-        }],
+        bidiagnoser: [
+            {
+                system: 'icd10',
+                code: 'tullekode',
+                text: 'Tullekode',
+            },
+        ],
     }
 }
 

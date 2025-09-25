@@ -1,8 +1,9 @@
 import { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { ChatIcon } from '@navikt/aksel-icons'
-import godstolen from '../../images/godstolen.png'
 import { Link } from 'react-router-dom'
+
+import godstolen from '../../images/godstolen.png'
 
 function Header(): ReactElement {
     return (

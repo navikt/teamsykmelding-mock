@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 import { Button } from '@navikt/ds-react'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
+
 import FnrTextField from '../../../components/form/FnrTextField.tsx'
 import { CreatedOppgaver, IdType } from '../../../components/CreatedOppgaver.tsx'
 import FormPage from '../../../components/layout/FormPage.tsx'
@@ -12,11 +13,7 @@ interface FormValues {
 }
 
 function OpprettUtenlandskPapirsykmeldingForm(): ReactElement {
-    const {
-        register,
-        handleSubmit,
-        formState: {},
-    } = useForm<FormValues>()
+    const { register, handleSubmit } = useForm<FormValues>()
 
     const opprettMutation = useMutation({
         mutationFn: post<FormValues, SimpleMessage & { journalpostID: string }>('/papirsykmelding/utenlandsk/opprett'),

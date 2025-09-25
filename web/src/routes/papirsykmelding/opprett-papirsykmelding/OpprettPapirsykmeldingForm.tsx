@@ -3,9 +3,6 @@ import { ReactElement } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { format, sub } from 'date-fns'
 
-import styles from './OpprettPapirsykmelding.module.css'
-import Behandletdato from './Behandletdato'
-import SyketilfelleStartdato from './SyketilfelleStartdato'
 import { Periode, SykmeldingType } from '../../../types/sykmelding/Periode.ts'
 import DiagnosePicker, { Diagnose } from '../../../components/form/DiagnosePicker/DiagnosePicker.tsx'
 import PeriodePicker from '../../../components/form/PeriodePicker/PeriodePicker.tsx'
@@ -13,6 +10,10 @@ import FnrTextField from '../../../components/form/FnrTextField.tsx'
 import ActionFeedback from '../../../proxy/action-feedback.tsx'
 import { useAction } from '../../../proxy/api-hooks.ts'
 import { CreatedOppgaver, IdType } from '../../../components/CreatedOppgaver.tsx'
+
+import SyketilfelleStartdato from './SyketilfelleStartdato'
+import Behandletdato from './Behandletdato'
+import styles from './OpprettPapirsykmelding.module.css'
 
 export interface PapirsykmeldingFormValues {
     fnr: string | null

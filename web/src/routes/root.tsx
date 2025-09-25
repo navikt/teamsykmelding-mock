@@ -4,9 +4,9 @@ import { Page } from '@navikt/ds-react'
 
 import Header from '../components/layout/Header.tsx'
 import Sidebar from '../components/layout/Sidebar.tsx'
+import SidebarDolly from '../components/layout/SidebarDolly.tsx'
 
 import styles from './root.module.css'
-import SidebarDolly from "../components/layout/SidebarDolly.tsx";
 
 export default function Root(): ReactElement {
     return (
