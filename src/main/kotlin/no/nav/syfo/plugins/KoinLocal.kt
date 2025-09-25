@@ -1,5 +1,7 @@
 package no.nav.syfo.plugins
 
+import no.nav.syfo.dolly.DollyClient
+import no.nav.syfo.dolly.DollyClientProduction
 import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.mq.MqClient
 import no.nav.syfo.mq.MqClientDevelopment
@@ -52,6 +54,7 @@ fun KoinApplication.initDevelopmentModules() {
         developmentDokarkivModule,
         developmentNorskhelsenettModule,
         developmentOppgaveModule,
+        developmentDollySykmeldingModule,
     )
 }
 
@@ -90,6 +93,7 @@ val developmentEnv = module {
             oppgaveUrl = "dummy-value",
             oppgaveScope = "dummy-value",
             clusterName = "dummy-value",
+            inputDolly = "dummy-value",
         )
     }
 }
@@ -172,5 +176,12 @@ val developmentLegeerklaeringModule = module {
             mqClient = get(),
             legeerklaeringQueue = env.legeerklaeringQueue
         )
+    }
+}
+
+val developmentDollySykmeldingModule = module {
+    single<DollyClient> {
+        val env = get<EnvironmentVariables>()
+        DollyClientProduction(url = env.inputDolly, httpClient = get())
     }
 }

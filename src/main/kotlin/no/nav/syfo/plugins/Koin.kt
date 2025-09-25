@@ -2,6 +2,8 @@ import io.ktor.server.application.*
 import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.azuread.ProductionAccessTokenClientV2
 import no.nav.syfo.clients.createHttpClient
+import no.nav.syfo.dolly.DollyClient
+import no.nav.syfo.dolly.DollyClientProduction
 import no.nav.syfo.legeerklaering.LegeerklaeringService
 import no.nav.syfo.mq.MqClient
 import no.nav.syfo.mq.MqClientProduction
@@ -68,6 +70,7 @@ fun KoinApplication.initProductionModules() {
         narmestelederModule,
         sykmeldingModule,
         legeerklaeringModule,
+        dollySykmeldingModule,
     )
 }
 
@@ -258,4 +261,11 @@ val sykmeldingModule = module {
     }
 
     single { UtenlandskSykmeldingService(dokarkivClient = get(), oppgaveClient = get()) }
+}
+
+val dollySykmeldingModule = module {
+    single<DollyClient> {
+        val env = get<EnvironmentVariables>()
+        DollyClientProduction(url = env.inputDolly, httpClient = get())
+    }
 }

@@ -17,6 +17,7 @@ import OpprettUtenlandskPapirSM from './routes/papirsykmelding/opprett-utenlands
 import OpprettUtenlandskPapirSMRina from './routes/papirsykmelding/opprett-utenlansk-sykmelding-rina/opprett.tsx'
 import ErrorPage from './routes/error-page.tsx'
 import OpprettUtenlandskPapirSMNavNo from './routes/papirsykmelding/opprett-utenlansk-sykmelding-navno/opprett.tsx'
+import OpprettSykmeldingDolly from './routes/dolly/opprett-sykmelding/OpprettSykmeldingDolly.tsx'
 
 const router = createBrowserRouter([
     {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: '/papirsykmelding-utland-nav-no/opprett',
                 element: <OpprettUtenlandskPapirSMNavNo />,
+            },
+            {
+                path: '/opprett-sykmelding',
+                element: <OpprettSykmeldingDolly />,
             },
             { path: '*', element: <NotFound /> },
         ],
