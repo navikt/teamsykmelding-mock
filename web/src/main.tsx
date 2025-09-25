@@ -3,9 +3,9 @@ import './global.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import Page from './routes/page.tsx'
+import Page, { PageDolly } from './routes/page.tsx'
 import NotFound from './routes/not-found.tsx'
-import Root from './routes/root.tsx'
+import Root, { RootDolly } from './routes/root.tsx'
 import Providers from './providers.tsx'
 import OpprettNarmesteleder from './routes/narmesteleder/registrer-narmeste-leder/opprett.tsx'
 import SlettNarmesteleder from './routes/narmesteleder/deaktiver-narmeste-leder/slett.tsx'
@@ -47,8 +47,20 @@ const router = createBrowserRouter([
                 path: '/papirsykmelding-utland-nav-no/opprett',
                 element: <OpprettUtenlandskPapirSMNavNo />,
             },
+            { path: '*', element: <NotFound /> },
+        ],
+    },
+    {
+        path: '/dolly',
+        element: <RootDolly />,
+        errorElement: <ErrorPage />,
+        children: [
             {
-                path: '/opprett-sykmelding',
+                path: '/dolly',
+                element: <PageDolly />,
+            },
+            {
+                path: '/dolly/opprett-sykmelding',
                 element: <OpprettSykmeldingDolly />,
             },
             { path: '*', element: <NotFound /> },
