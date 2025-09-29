@@ -14,6 +14,9 @@ function SidebarDolly({ className }: Props): ReactElement {
                 <li>
                     <Link to="/dolly/opprett-sykmelding">Opprett sykmelding</Link>
                 </li>
+                <li>
+                    <Link to="/dolly/sykmelding">Hent sykmelding</Link>
+                </li>
             </SidebarMenuItem>
         </div>
     )
