@@ -26,3 +26,13 @@ data class DollyOpprettSykmeldingResponse(
     val status: HttpStatusCode,
     val message: String,
 )
+
+data class DollyHentResponse(
+    val status: HttpStatusCode,
+    val message: DollyHentSykmeldingResponse,
+)
+
+data class DollyHentSykmeldingResponse(
+    val message: String,
+    val sykmelding: DollySykmeldingResponse? = null,
+)

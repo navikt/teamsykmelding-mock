@@ -6,20 +6,30 @@ export type SimpleMessage = { message: string }
 /**
  * Used by react query to fetch paths from the Ktor server
  */
-export async function fetcher<Data>(path: `/${string}`) {
-    return async (): Promise<Data> => {
-        const response = await fetch(`/api${path}`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+export async function fetcher<Data>(path: `/${string}`): Promise<Data>  {
+    const response = await fetch(`/api${path}`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
 
-        if (!response.ok) {
-            throw new Error('An error occurred while fetching the data')
+    if (!response.ok) {
+        let errorMessage = `An error occurred while fetching the data. ${response.statusText} (${response.status})`
+        try {
+            const data = await response.json()
+            if (data && data.message) {
+                errorMessage += ` Message: ${data.message}`
+            }
+        } catch {
+            throw new Error(errorMessage)
         }
+        throw new Error(errorMessage)
+    }
 
-        // Note: Doesn't actually validate the response from the server
-        return response.json()
+    try {
+        return await response.json()
+    } catch (error) {
+        throw new Error(`Failed to parse response ${error}`)
     }
 }
 
