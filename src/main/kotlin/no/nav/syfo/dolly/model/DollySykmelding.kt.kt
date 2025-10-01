@@ -22,4 +22,6 @@ data class DollySykmeldingResponse(
     val aktivitet: List<Aktivitet>,
 )
 
+data class DollySykmeldingerResponse(val sykmeldinger: List<DollySykmeldingResponse>)
+
 data class ErrorMessage(val message: String)

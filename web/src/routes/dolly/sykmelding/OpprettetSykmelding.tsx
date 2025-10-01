@@ -9,7 +9,7 @@ interface Props {
 
 function OpprettetSykmelding({ data }: Props): ReactElement {
     return (
-        <div>
+        <>
             <Heading size="medium" level="2" className="mb-4">
                 Opprettet sykmelding
             </Heading>
@@ -20,7 +20,7 @@ function OpprettetSykmelding({ data }: Props): ReactElement {
                     {aktivitet.grad && <List.Item>{`Grad: ${aktivitet.grad}%`}</List.Item>}
                 </List>
             ))}
-        </div>
+        </>
     )
 }
 

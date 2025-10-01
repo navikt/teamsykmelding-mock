@@ -21,6 +21,7 @@ import OpprettUtenlandskPapirSMNavNo from './routes/papirsykmelding/opprett-uten
 import OpprettSykmeldingDolly from './routes/dolly/opprett-sykmelding/OpprettSykmeldingDolly.tsx'
 import HentSykmeldingDolly from './routes/dolly/sykmelding/HentSykmeldingDolly.tsx'
 import SlettSykmeldingerDolly from './routes/dolly/slett-sykmeldinger/SlettSykmeldingerDolly.tsx'
+import HentSykmeldingerDolly from './routes/dolly/sykmelding/HentSykmeldingerDolly.tsx'
 
 const router = createBrowserRouter([
     {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
             {
                 path: '/dolly/sykmelding',
                 element: <HentSykmeldingDolly />,
+            },
+            {
+                path: '/dolly/sykmeldinger',
+                element: <HentSykmeldingerDolly />,
             },
             {
                 path: '/dolly/slett-sykmeldinger',
