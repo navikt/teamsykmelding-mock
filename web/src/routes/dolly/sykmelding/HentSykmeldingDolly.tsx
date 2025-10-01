@@ -36,8 +36,11 @@ function HentSykmeldingDolly(): ReactElement {
             <Button className="mt-5 mb-10" loading={isFetching} onClick={() => refetch()}>
                 Hent sykmelding
             </Button>
-            {data != null && <OpprettetSykmelding data={data} />}
-            {error && <Alert variant="error">{error.message}</Alert>}
+            {error ? (
+                <Alert variant="error">{error.message}</Alert>
+            ) : data != null ? (
+                <OpprettetSykmelding data={data} />
+            ) : null}
         </div>
     )
 }
