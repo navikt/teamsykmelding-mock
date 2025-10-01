@@ -14,6 +14,7 @@ import io.ktor.http.contentType
 import no.nav.syfo.dolly.model.DollyResponse
 import no.nav.syfo.dolly.model.DollySykmelding
 import no.nav.syfo.dolly.model.DollySykmeldingResponse
+import no.nav.syfo.dolly.model.DollySykmeldingerResponse
 import no.nav.syfo.dolly.model.ErrorMessage
 import no.nav.syfo.utils.logger
 
@@ -21,6 +22,8 @@ interface DollyClient {
     suspend fun opprettSykmelding(sykmelding: DollySykmelding): DollyResponse<Unit>
 
     suspend fun hentSykmelding(sykmeldingId: String): DollyResponse<DollySykmeldingResponse>
+
+    suspend fun hentAlleSykmeldinger(ident: String): DollyResponse<DollySykmeldingerResponse>
 
     suspend fun slettSykmeldinger(ident: String): DollyResponse<Unit>
 }
@@ -100,6 +103,39 @@ class DollyClientProduction(
             else -> {
                 throw RuntimeException(
                     "Noe gikk galt ved henting av sykmelding: ${response.status}, ${response.bodyAsText()}"
+                )
+            }
+        }
+    }
+
+    override suspend fun hentAlleSykmeldinger(
+        ident: String
+    ): DollyResponse<DollySykmeldingerResponse> {
+        val response = httpClient.get("$url/api/sykmelding/ident") { header("X-ident", ident) }
+
+        when (response.status) {
+            HttpStatusCode.OK -> {
+                val sykmeldingResponse = response.body<DollySykmeldingerResponse>()
+                logger.info("Hentet alle sykmeldinger med input-dolly med ident.")
+                return DollyResponse(
+                    status = response.status,
+                    message = "Hentet alle sykmeldinger med input-dolly med ident.",
+                    data = sykmeldingResponse
+                )
+            }
+            HttpStatusCode.InternalServerError -> {
+                val errorResponse = response.body<ErrorMessage>()
+                logger.error(
+                    "Feil ved henting av alle sykmeldinger med input-dolly: ${errorResponse.message}"
+                )
+                return DollyResponse(
+                    status = response.status,
+                    message = errorResponse.message,
+                )
+            }
+            else -> {
+                throw RuntimeException(
+                    "Noe gikk galt ved henting av alle sykmeldinger: ${response.status}, ${response.bodyAsText()}"
                 )
             }
         }

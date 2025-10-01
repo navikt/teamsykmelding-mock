@@ -14,3 +14,7 @@ export interface SykmeldingDollyResponse {
     ident: string
     aktivitet: Aktivitet[]
 }
+
+export interface SykmeldingerDollyResponse {
+    sykmeldinger: SykmeldingDollyResponse[]
+}

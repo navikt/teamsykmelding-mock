@@ -37,6 +37,17 @@ fun Route.registrerDollySykmeldingApi() {
             call.respond(hentSykmelding.status, HttpMessage(hentSykmelding.message))
         }
     }
+    get("/sykmelding/ident") {
+        val ident = call.request.headers["X-ident"]
+        requireNotNull(ident)
+
+        val hentSykmeldiger = dollyClient.hentAlleSykmeldinger(ident)
+        if (hentSykmeldiger.data != null) {
+            call.respond(hentSykmeldiger.status, hentSykmeldiger.data)
+        } else {
+            call.respond(hentSykmeldiger.status, HttpMessage(hentSykmeldiger.message))
+        }
+    }
     delete("/sykmelding/ident") {
         val ident = call.request.headers["Sykmeldt-Fnr"]
         requireNotNull(ident)

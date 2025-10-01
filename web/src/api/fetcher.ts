@@ -6,10 +6,12 @@ export type SimpleMessage = { message: string }
 /**
  * Used by react query to fetch paths from the Ktor server
  */
-export async function fetcher<Data>(path: `/${string}`): Promise<Data> {
+export async function fetcher<Data>(path: `/${string}`, ident?: string): Promise<Data> {
+    const extraHeaders = ident ? { 'X-ident': ident } : undefined
     const response = await fetch(`/api${path}`, {
         headers: {
             'Content-Type': 'application/json',
+            ...extraHeaders,
         },
     })
 
