@@ -7,9 +7,9 @@ import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import no.nav.syfo.dolly.DollyClient
-import no.nav.syfo.dolly.model.DollyHentResponse
 import no.nav.syfo.dolly.model.DollyResponse
 import no.nav.syfo.dolly.model.DollySykmelding
+import no.nav.syfo.dolly.model.DollySykmeldingResponse
 import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.utils.logger
 import org.koin.ktor.ext.inject
@@ -21,7 +21,7 @@ fun Route.registrerDollySykmeldingApi() {
         val request = call.receive<DollySykmelding>()
         logger.info("DollySykmelding: $request")
 
-        val opprettSykmelding: DollyResponse = dollyClient.opprettSykmelding(request)
+        val opprettSykmelding: DollyResponse<Unit> = dollyClient.opprettSykmelding(request)
         call.respond(opprettSykmelding.status, HttpMessage(opprettSykmelding.message))
     }
     get("/sykmelding/{sykmeldingId}") {
@@ -29,18 +29,19 @@ fun Route.registrerDollySykmeldingApi() {
         requireNotNull(sykmeldingId)
         logger.info("Henter sykmelding fra input-dolly med sykmeldingId $sykmeldingId")
 
-        val hentSykmelding: DollyHentResponse = dollyClient.hentSykmelding(sykmeldingId)
-        if (hentSykmelding.message.sykmelding != null) {
-            call.respond(hentSykmelding.status, hentSykmelding.message.sykmelding)
+        val hentSykmelding: DollyResponse<DollySykmeldingResponse> =
+            dollyClient.hentSykmelding(sykmeldingId)
+        if (hentSykmelding.data != null) {
+            call.respond(hentSykmelding.status, hentSykmelding.data)
         } else {
-            call.respond(hentSykmelding.status, HttpMessage(hentSykmelding.message.message))
+            call.respond(hentSykmelding.status, HttpMessage(hentSykmelding.message))
         }
     }
     delete("/sykmelding/ident") {
         val ident = call.request.headers["Sykmeldt-Fnr"]
         requireNotNull(ident)
 
-        val slettSykmeldiger = dollyClient.slettSykmeldinger(ident)
+        val slettSykmeldiger: DollyResponse<Unit> = dollyClient.slettSykmeldinger(ident)
         call.respond(slettSykmeldiger.status, HttpMessage(slettSykmeldiger.message))
     }
 }

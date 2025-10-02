@@ -11,8 +11,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import no.nav.syfo.dolly.model.DollyHentResponse
-import no.nav.syfo.dolly.model.DollyHentSykmeldingResponse
 import no.nav.syfo.dolly.model.DollyResponse
 import no.nav.syfo.dolly.model.DollySykmelding
 import no.nav.syfo.dolly.model.DollySykmeldingResponse
@@ -20,18 +18,18 @@ import no.nav.syfo.dolly.model.ErrorMessage
 import no.nav.syfo.utils.logger
 
 interface DollyClient {
-    suspend fun opprettSykmelding(sykmelding: DollySykmelding): DollyResponse
+    suspend fun opprettSykmelding(sykmelding: DollySykmelding): DollyResponse<Unit>
 
-    suspend fun hentSykmelding(sykmeldingId: String): DollyHentResponse
+    suspend fun hentSykmelding(sykmeldingId: String): DollyResponse<DollySykmeldingResponse>
 
-    suspend fun slettSykmeldinger(ident: String): DollyResponse
+    suspend fun slettSykmeldinger(ident: String): DollyResponse<Unit>
 }
 
 class DollyClientProduction(
     private val url: String,
     private val httpClient: HttpClient,
 ) : DollyClient {
-    override suspend fun opprettSykmelding(sykmelding: DollySykmelding): DollyResponse {
+    override suspend fun opprettSykmelding(sykmelding: DollySykmelding): DollyResponse<Unit> {
         logger.info("Oppretter sykmelding for ${sykmelding}")
         val response =
             httpClient.post("$url/api/sykmelding") {
@@ -70,7 +68,9 @@ class DollyClientProduction(
         }
     }
 
-    override suspend fun hentSykmelding(sykmeldingId: String): DollyHentResponse {
+    override suspend fun hentSykmelding(
+        sykmeldingId: String
+    ): DollyResponse<DollySykmeldingResponse> {
         val response = httpClient.get("$url/api/sykmelding/$sykmeldingId")
 
         when (response.status) {
@@ -79,19 +79,11 @@ class DollyClientProduction(
                 logger.info(
                     "Hentet sykmelding med input-dolly med id ${sykmeldingResponse.sykmeldingId}"
                 )
-                return DollyHentResponse(
+                return DollyResponse(
                     status = response.status,
                     message =
-                        DollyHentSykmeldingResponse(
-                            message =
-                                "Hentet sykmelding med sykmeldingId ${sykmeldingResponse.sykmeldingId}",
-                            sykmelding =
-                                DollySykmeldingResponse(
-                                    sykmeldingId = sykmeldingResponse.sykmeldingId,
-                                    ident = sykmeldingResponse.ident,
-                                    aktivitet = sykmeldingResponse.aktivitet,
-                                )
-                        )
+                        "Hentet sykmelding med sykmeldingId ${sykmeldingResponse.sykmeldingId}",
+                    data = sykmeldingResponse
                 )
             }
             HttpStatusCode.NotFound,
@@ -100,13 +92,9 @@ class DollyClientProduction(
                 logger.error(
                     "Feil ved henting av sykmelding med input-dolly: ${errorResponse.message}"
                 )
-                return DollyHentResponse(
+                return DollyResponse(
                     status = response.status,
-                    message =
-                        DollyHentSykmeldingResponse(
-                            message = errorResponse.message,
-                            sykmelding = null
-                        )
+                    message = errorResponse.message,
                 )
             }
             else -> {
@@ -117,7 +105,7 @@ class DollyClientProduction(
         }
     }
 
-    override suspend fun slettSykmeldinger(ident: String): DollyResponse {
+    override suspend fun slettSykmeldinger(ident: String): DollyResponse<Unit> {
         val response = httpClient.delete("$url/api/sykmelding/ident") { header("X-ident", ident) }
 
         when (response.status) {
