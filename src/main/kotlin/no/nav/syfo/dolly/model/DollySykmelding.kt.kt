@@ -14,10 +14,7 @@ data class DollySykmelding(
     val aktivitet: List<Aktivitet>,
 )
 
-data class DollyResponse(
-    val status: HttpStatusCode,
-    val message: String,
-)
+data class DollyResponse<T>(val status: HttpStatusCode, val message: String, val data: T? = null)
 
 data class DollySykmeldingResponse(
     val sykmeldingId: String,
@@ -26,13 +23,3 @@ data class DollySykmeldingResponse(
 )
 
 data class ErrorMessage(val message: String)
-
-data class DollyHentResponse(
-    val status: HttpStatusCode,
-    val message: DollyHentSykmeldingResponse,
-)
-
-data class DollyHentSykmeldingResponse(
-    val message: String,
-    val sykmelding: DollySykmeldingResponse? = null,
-)
