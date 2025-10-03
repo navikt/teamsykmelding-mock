@@ -37,7 +37,7 @@ function OpprettSykmeldingDolly(): ReactElement {
     const [postData, { error, result, loading }] = useAction<SykmeldingDollyValues>('/sykmelding')
 
     return (
-        <BasicPage title="Opprett sykmelding med input-dolly">
+        <BasicPage title="Opprett sykmelding">
             <FormProvider {...form}>
                 <form
                     onSubmit={form.handleSubmit((values) => {
