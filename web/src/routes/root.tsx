@@ -5,6 +5,7 @@ import { Page } from '@navikt/ds-react'
 import Header from '../components/layout/Header.tsx'
 import Sidebar from '../components/layout/Sidebar.tsx'
 import SidebarDolly from '../components/layout/SidebarDolly.tsx'
+import HeaderDolly from '../components/layout/HeaderDolly.tsx'
 
 import styles from './root.module.css'
 
@@ -25,7 +26,7 @@ export default function Root(): ReactElement {
 export function RootDolly(): ReactElement {
     return (
         <Page contentBlockPadding="none">
-            <Header />
+            <HeaderDolly />
             <div className={styles.content}>
                 <SidebarDolly className={styles.sidebar} />
                 <Page.Block width="2xl" as="main">
