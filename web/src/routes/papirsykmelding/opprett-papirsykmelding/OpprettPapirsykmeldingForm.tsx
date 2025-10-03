@@ -38,7 +38,7 @@ function OpprettPapirsykmeldingForm(): ReactElement {
         defaultValues: {
             syketilfelleStartdato: enUkeSiden,
             behandletDato: enUkeSiden,
-            perioder: [{ fom: enUkeSiden, tom: iGar, type: SykmeldingType.Enum.HUNDREPROSENT }],
+            perioder: [{ fom: enUkeSiden, tom: iGar, type: SykmeldingType.enum.HUNDREPROSENT }],
             hoveddiagnose: {
                 system: 'icd10',
                 code: 'H100',
@@ -119,7 +119,7 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                             append({
                                 fom: enUkeSiden,
                                 tom: iGar,
-                                type: SykmeldingType.Enum.HUNDREPROSENT,
+                                type: SykmeldingType.enum.HUNDREPROSENT,
                             })
                         }
                     >
