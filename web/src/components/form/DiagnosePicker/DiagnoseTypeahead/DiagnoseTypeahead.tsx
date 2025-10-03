@@ -79,15 +79,23 @@ function useDiagnoseSuggestions(system: DiagnoseSystem, searchTerm: string): Dia
     const [suggestions, setSuggestions] = useState<DiagnoseSuggestion[]>([])
 
     useEffect(() => {
-        if (searchTerm.trim() !== '') {
-            let isCurrentSearch = true
-            fetchDiagnoseSuggestions(system, searchTerm).then((result) => {
-                if (isCurrentSearch) setSuggestions(result.suggestions)
-            })
+        if (searchTerm.trim() === '') {
+            setSuggestions([])
+            return
+        }
 
-            return () => {
-                isCurrentSearch = false
+        let isCurrentSearch = true
+        fetchDiagnoseSuggestions(system, searchTerm).then((result) => {
+            if (isCurrentSearch) {
+                setSuggestions((prevSuggestions) => {
+                    const isSame = JSON.stringify(prevSuggestions) === JSON.stringify(result.suggestions)
+                    return isSame ? prevSuggestions : result.suggestions
+                })
             }
+        })
+
+        return () => {
+            isCurrentSearch = false
         }
     }, [searchTerm, system])
 

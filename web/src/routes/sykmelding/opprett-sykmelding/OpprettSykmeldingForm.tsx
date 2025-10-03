@@ -50,7 +50,7 @@ function OpprettSykmeldingForm(): ReactElement {
         defaultValues: {
             syketilfelleStartdato: enUkeSiden,
             behandletDato: enUkeSiden,
-            perioder: [{ fom: enUkeSiden, tom: iGar, type: SykmeldingType.Enum.HUNDREPROSENT }],
+            perioder: [{ fom: enUkeSiden, tom: iGar, type: SykmeldingType.enum.HUNDREPROSENT }],
             hoveddiagnose: {
                 system: 'icd10',
                 code: 'H100',
@@ -140,7 +140,7 @@ function OpprettSykmeldingForm(): ReactElement {
                                 perioderAppend({
                                     fom: enUkeSiden,
                                     tom: iGar,
-                                    type: SykmeldingType.Enum.HUNDREPROSENT,
+                                    type: SykmeldingType.enum.HUNDREPROSENT,
                                 })
                             }
                         >
