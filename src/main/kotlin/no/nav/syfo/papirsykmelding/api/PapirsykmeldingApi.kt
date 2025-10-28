@@ -1,13 +1,13 @@
 package no.nav.syfo.papirsykmelding.api
 
 import io.ktor.http.*
-import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.model.JournalpostOpprettetResponse
+import no.nav.syfo.model.Status
 import no.nav.syfo.papirsykmelding.PapirsykmeldingService
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
@@ -21,19 +21,29 @@ fun Route.registrerPapirsykmeldingApi() {
     post("/papirsykmelding/opprett") {
         val request = call.receive<PapirsykmeldingRequest>()
 
-        val papirsykmeldingCreatedResponse = papirsykmeldingService.opprettPapirsykmelding(request)
+        val isRuleOK: Boolean =
+            if (request.utenOcr) false
+            else
+                try {
+                    val validationResult = papirsykmeldingService.sjekkRegler(request)
+                    validationResult.status == Status.OK
+                } catch (_: Exception) {
+                    false
+                }
+
+        val createdJournalPostId: String = papirsykmeldingService.opprettPapirsykmelding(request)
 
         logger.info(
-            "Opprettet papirsykmelding med journalpostId ${papirsykmeldingCreatedResponse.journalpostId}"
+            "Opprettet papirsykmelding med journalpostId ${createdJournalPostId}",
         )
         call.respond(
             HttpStatusCode.OK,
             JournalpostOpprettetResponse(
-                "OK",
-                "Opprettet papirsykmelding med journalpostId ${papirsykmeldingCreatedResponse.journalpostId}",
-                papirsykmeldingCreatedResponse.journalpostId,
-                papirsykmeldingCreatedResponse.automatic
-            )
+                status = "OK",
+                message = "Opprettet papirsykmelding med journalpostId ${createdJournalPostId}",
+                journalpostID = createdJournalPostId,
+                automatic = isRuleOK,
+            ),
         )
     }
 
@@ -42,7 +52,7 @@ fun Route.registrerPapirsykmeldingApi() {
         if (request.utenOcr) {
             call.respond(
                 HttpStatusCode.BadRequest,
-                HttpMessage("Kan ikke sjekke papirsykmelding uten OCR")
+                HttpMessage("Kan ikke sjekke papirsykmelding uten OCR"),
             )
             return@post
         }
@@ -55,7 +65,7 @@ fun Route.registrerPapirsykmeldingApi() {
         } catch (e: PapirsykmeldingMappingException) {
             call.respond(
                 HttpStatusCode.BadRequest,
-                HttpMessage(e.message ?: "Kunne ikke mappe sykmelding til ReceivedSykmelding")
+                HttpMessage(e.message ?: "Kunne ikke mappe sykmelding til ReceivedSykmelding"),
             )
         }
     }
@@ -65,7 +75,7 @@ fun Route.registrerPapirsykmeldingApi() {
         if (fnrSykmeldt != null && fnrSykmeldt.length != 11) {
             call.respond(
                 HttpStatusCode.BadRequest,
-                HttpMessage("Sykmeldt-Fnr har feil lengde, er ${fnrSykmeldt.length}")
+                HttpMessage("Sykmeldt-Fnr har feil lengde, er ${fnrSykmeldt.length}"),
             )
             return@post
         }
@@ -80,7 +90,7 @@ fun Route.registrerPapirsykmeldingApi() {
                 "OK",
                 "Opprettet utenlandsk papirsykmelding med journalpostId $journalpostId",
                 journalpostId,
-            )
+            ),
         )
     }
 }
