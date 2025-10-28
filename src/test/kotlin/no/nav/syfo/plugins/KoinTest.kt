@@ -49,8 +49,6 @@ class CheckModulesTest : KoinTest {
             syfosmregisterScope = "",
             syfosmreglerUrl = "",
             syfosmreglerScope = "",
-            syfosmpapirreglerUrl = "",
-            syfosmpapirreglerScope = "",
             norskHelsenettUrl = "",
             norskHelsenettScope = "",
             oppgaveUrl = "",

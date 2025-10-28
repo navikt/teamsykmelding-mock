@@ -94,7 +94,7 @@ class SykmeldingService(
                 utenlandskSykmelding = null,
             )
 
-        return syfosmreglerClient.sjekkRegler(receivedSykmelding)
+        return syfosmreglerClient.sjekkRegler(receivedSykmelding, false)
     }
 
     suspend fun tilSykmeldingXml(

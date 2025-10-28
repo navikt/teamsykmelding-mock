@@ -46,7 +46,6 @@ spec:
       rules:
         - application: syfosmregister
         - application: syfosmregler
-        - application: syfosmpapirregler
         - application: syfohelsenettproxy
         - application: tsm-input-dolly
           namespace: tsm
@@ -81,8 +80,6 @@ spec:
       value: api://dev-gcp.teamsykmelding.syfosmregister/.default
     - name: SYFOSMREGLER_SCOPE
       value: api://dev-gcp.teamsykmelding.syfosmregler/.default
-    - name: SYFOSMPAPIRREGLER_SCOPE
-      value: api://dev-gcp.teamsykmelding.syfosmpapirregler/.default
     - name: NORSKHELSENETT_SCOPE
       value: api://dev-gcp.teamsykmelding.syfohelsenettproxy/.default
     - name: OPPGAVE_SCOPE

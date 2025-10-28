@@ -28,8 +28,6 @@ data class EnvironmentVariables(
     val syfosmregisterScope: String = getEnvVar("SYFOSMREGISTER_SCOPE"),
     val syfosmreglerUrl: String = "http://syfosmregler",
     val syfosmreglerScope: String = getEnvVar("SYFOSMREGLER_SCOPE"),
-    val syfosmpapirreglerUrl: String = "http://syfosmpapirregler",
-    val syfosmpapirreglerScope: String = getEnvVar("SYFOSMPAPIRREGLER_SCOPE"),
     val norskHelsenettUrl: String = "http://syfohelsenettproxy",
     val norskHelsenettScope: String = getEnvVar("NORSKHELSENETT_SCOPE"),
     val oppgaveUrl: String = getEnvVar("OPPGAVEBEHANDLING_URL"),

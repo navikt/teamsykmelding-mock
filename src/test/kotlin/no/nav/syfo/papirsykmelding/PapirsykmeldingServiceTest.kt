@@ -11,8 +11,8 @@ import no.nav.syfo.model.SykmeldingPeriode
 import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
-import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
+import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.utils.setupTestApplication
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.AfterEach
@@ -23,7 +23,7 @@ import org.koin.dsl.module
 
 internal class PapirsykmeldingServiceTest {
     private val dokarkivClient = mockk<DokarkivClient>()
-    private val syfosmpapirreglerClient = mockk<SyfosmpapirreglerClient>()
+    private val syfosmpapirreglerClient = mockk<SyfosmreglerClient>()
     private val norskHelsenettClient = mockk<NorskHelsenettClient>()
     private val papirsykmeldingService =
         PapirsykmeldingService(dokarkivClient, syfosmpapirreglerClient, norskHelsenettClient)

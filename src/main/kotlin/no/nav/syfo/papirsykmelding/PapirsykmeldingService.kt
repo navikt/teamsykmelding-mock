@@ -29,11 +29,11 @@ import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
-import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
 import no.nav.syfo.papirsykmelding.client.opprettJournalpostPayload
 import no.nav.syfo.papirsykmelding.client.opprettUtenlandskJournalpostPayload
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingMappingException
 import no.nav.syfo.papirsykmelding.model.PapirsykmeldingRequest
+import no.nav.syfo.sykmelding.client.SyfosmreglerClient
 import no.nav.syfo.sykmelding.toSykmelding
 import no.nav.syfo.utils.XMLDateAdapter
 import no.nav.syfo.utils.get
@@ -48,7 +48,7 @@ data class PapirsykmeldingCreatedResponse(
 
 class PapirsykmeldingService(
     private val dokarkivClient: DokarkivClient,
-    private val syfosmpapirreglerClient: SyfosmpapirreglerClient,
+    private val syfosmreglerClient: SyfosmreglerClient,
     private val norskHelsenettClient: NorskHelsenettClient,
 ) {
     private val defaultPdf =
@@ -162,7 +162,7 @@ class PapirsykmeldingService(
             throw PapirsykmeldingMappingException(e.message)
         }
 
-        return syfosmpapirreglerClient.sjekkRegler(receivedSykmelding)
+        return syfosmreglerClient.sjekkRegler(receivedSykmelding, true)
     }
 
     suspend fun opprettUtenlandskPapirsykmelding(fnr: String?): String {

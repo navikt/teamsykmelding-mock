@@ -17,8 +17,6 @@ import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.DokarkivClientProduction
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClientProduction
-import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
-import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClientProduction
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.client.ProductionPdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
@@ -65,7 +63,6 @@ fun KoinApplication.initProductionModules() {
         mqModule,
         syfosmregisterModule,
         syfosmreglerModule,
-        syfosmpapirreglerModule,
         norskhelsenettModule,
         narmestelederModule,
         sykmeldingModule,
@@ -190,18 +187,6 @@ val syfosmreglerModule = module {
     }
 }
 
-val syfosmpapirreglerModule = module {
-    single<SyfosmpapirreglerClient> {
-        val env = get<EnvironmentVariables>()
-        SyfosmpapirreglerClientProduction(
-            syfosmpapirreglerUrl = env.syfosmpapirreglerUrl,
-            accessTokenClientV2 = get(),
-            syfosmpapirreglerScope = env.syfosmpapirreglerScope,
-            httpClient = get(),
-        )
-    }
-}
-
 val norskhelsenettModule = module {
     single<NorskHelsenettClient> {
         val env = get<EnvironmentVariables>()
@@ -255,7 +240,7 @@ val sykmeldingModule = module {
     single {
         PapirsykmeldingService(
             dokarkivClient = get(),
-            syfosmpapirreglerClient = get(),
+            syfosmreglerClient = get(),
             norskHelsenettClient = get()
         )
     }

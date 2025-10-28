@@ -15,8 +15,6 @@ import no.nav.syfo.papirsykmelding.client.DokarkivClient
 import no.nav.syfo.papirsykmelding.client.DokarkivClientDevelopment
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClient
 import no.nav.syfo.papirsykmelding.client.NorskHelsenettClientDevelopment
-import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClient
-import no.nav.syfo.papirsykmelding.client.SyfosmpapirreglerClientDevelopment
 import no.nav.syfo.pdl.client.DevelopmentPdlClient
 import no.nav.syfo.pdl.client.PdlClient
 import no.nav.syfo.pdl.service.PdlPersonService
@@ -45,7 +43,6 @@ fun KoinApplication.initDevelopmentModules() {
         developmentmqModule,
         developmentPdlModule,
         developmentSyfosmreglerModule,
-        developmentSyfosmpapirreglerModule,
         developmentSyfosmregisterModule,
         developmentKafkaModules,
         developmentSykmeldingModule,
@@ -86,8 +83,6 @@ val developmentEnv = module {
             syfosmregisterScope = "dummy-value",
             syfosmreglerUrl = "dummy-value",
             syfosmreglerScope = "dummy-value",
-            syfosmpapirreglerUrl = "dummy-value",
-            syfosmpapirreglerScope = "dummy-value",
             norskHelsenettUrl = "dummy-value",
             norskHelsenettScope = "dummy-value",
             oppgaveUrl = "dummy-value",
@@ -107,9 +102,6 @@ val developmentPdlModule = module {
 
 val developmentSyfosmreglerModule = module {
     single<SyfosmreglerClient> { SyfosmreglerClientDevelopment() }
-}
-val developmentSyfosmpapirreglerModule = module {
-    single<SyfosmpapirreglerClient> { SyfosmpapirreglerClientDevelopment() }
 }
 
 val developmentSyfosmregisterModule = module {
@@ -144,7 +136,7 @@ val developmentSykmeldingModule = module {
     single {
         PapirsykmeldingService(
             dokarkivClient = get(),
-            syfosmpapirreglerClient = get(),
+            syfosmreglerClient = get(),
             norskHelsenettClient = get()
         )
     }

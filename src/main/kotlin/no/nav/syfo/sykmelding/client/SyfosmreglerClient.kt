@@ -18,7 +18,10 @@ import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.utils.logger
 
 interface SyfosmreglerClient {
-    suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult
+    suspend fun sjekkRegler(
+        receivedSykmelding: ReceivedSykmelding,
+        isPapir: Boolean,
+    ): ValidationResult
 }
 
 class SyfosmreglerClientProduction(
@@ -27,11 +30,22 @@ class SyfosmreglerClientProduction(
     private val syfosmreglerScope: String,
     private val httpClient: HttpClient,
 ) : SyfosmreglerClient {
-    override suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
+    override suspend fun sjekkRegler(
+        receivedSykmelding: ReceivedSykmelding,
+        isPapir: Boolean
+    ): ValidationResult {
         val accessToken = accessTokenClientV2.getAccessTokenV2(syfosmreglerScope)
         logger.info("Gjør kall mot syfosmregler api")
+
+        val url =
+            if (isPapir) {
+                "$syfosmreglerUrl/v1/rules/validate/papir"
+            } else {
+                "$syfosmreglerUrl/v1/rules/validate"
+            }
+
         val httpResponse =
-            httpClient.post("$syfosmreglerUrl/v1/rules/validate") {
+            httpClient.post(url) {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
                 header("Authorization", "Bearer $accessToken")
@@ -49,7 +63,10 @@ class SyfosmreglerClientProduction(
 }
 
 class SyfosmreglerClientDevelopment() : SyfosmreglerClient {
-    override suspend fun sjekkRegler(receivedSykmelding: ReceivedSykmelding): ValidationResult {
+    override suspend fun sjekkRegler(
+        receivedSykmelding: ReceivedSykmelding,
+        isPapir: Boolean
+    ): ValidationResult {
         return ValidationResult(Status.OK, listOf(RuleInfo("regel", "", "", Status.OK)))
     }
 }
