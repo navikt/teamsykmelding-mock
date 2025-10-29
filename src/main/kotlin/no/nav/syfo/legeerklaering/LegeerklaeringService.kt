@@ -34,6 +34,7 @@ import no.nav.syfo.utils.get
 import no.nav.syfo.utils.legeerklaeringUnmarshaller
 import no.nav.syfo.utils.logger
 import no.nav.syfo.utils.marshallLegeerklaering
+import java.time.LocalDateTime
 
 class LegeerklaeringService(
     private val pdlPersonService: PdlPersonService,
@@ -81,6 +82,7 @@ class LegeerklaeringService(
         val fellesformat =
             legeerklaeringUnmarshaller.unmarshal(StringReader(legeerklaeringXml))
                 as XMLEIFellesformat
+        fellesformat.get<XMLMsgHead>().msgInfo.genDate = LocalDateTime.now().toString()
 
         val personer =
             pdlPersonService.getPersoner(
