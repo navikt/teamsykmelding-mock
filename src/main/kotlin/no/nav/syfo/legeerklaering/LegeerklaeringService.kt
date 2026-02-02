@@ -4,6 +4,7 @@ import jakarta.jms.Session
 import java.io.StringReader
 import java.math.BigInteger
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import no.nav.helse.eiFellesformat.XMLEIFellesformat
 import no.nav.helse.eiFellesformat.XMLMottakenhetBlokk
@@ -34,7 +35,6 @@ import no.nav.syfo.utils.get
 import no.nav.syfo.utils.legeerklaeringUnmarshaller
 import no.nav.syfo.utils.logger
 import no.nav.syfo.utils.marshallLegeerklaering
-import java.time.LocalDateTime
 
 class LegeerklaeringService(
     private val pdlPersonService: PdlPersonService,

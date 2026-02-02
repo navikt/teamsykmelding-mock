@@ -4,9 +4,9 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 val coroutinesVersion = "1.10.2"
-val jacksonVersion = "2.19.1"
+val jacksonVersion = "2.20.2"
 val kluentVersion = "1.73"
-val ktorVersion = "3.2.1"
+val ktorVersion = "3.4.0"
 val logbackVersion = "1.5.18"
 val logstashEncoderVersion = "8.1"
 val prometheusVersion = "0.16.0"
@@ -18,7 +18,6 @@ val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
-val commonsCodecVersion = "1.18.0"
 val ktfmtVersion = "0.49"
 val javaVersion = JvmTarget.JVM_21
 val junitJupiterVersion = "5.13.3"
@@ -66,12 +65,6 @@ dependencies {
 
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    constraints {
-        implementation("commons-codec:commons-codec:$commonsCodecVersion") {
-            because("override transient version from io.ktor:ktor-client-apache")
-        }
-    }
-
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
 
