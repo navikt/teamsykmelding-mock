@@ -53,7 +53,7 @@ spec:
       external:
         - host: pdl-api.dev-fss-pub.nais.io
         - host: dokarkiv.dev-fss-pub.nais.io
-        - host: oppgave-q1.dev-fss-pub.nais.io
+        - host: oppgave.dev-fss-pub.nais.io
         - host: b27apvl221.preprod.local
           ports:
           - port: 1413
@@ -75,7 +75,7 @@ spec:
     - name: DOKARKIV_URL
       value: https://dokarkiv.dev-fss-pub.nais.io/rest/journalpostapi/v1/journalpost
     - name: DOKARKIV_SCOPE
-      value: api://dev-fss.teamdokumenthandtering.dokarkiv-q1/.default
+      value: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
     - name: SYFOSMREGISTER_SCOPE
       value: api://dev-gcp.teamsykmelding.syfosmregister/.default
     - name: SYFOSMREGLER_SCOPE
@@ -83,8 +83,8 @@ spec:
     - name: NORSKHELSENETT_SCOPE
       value: api://dev-gcp.teamsykmelding.syfohelsenettproxy/.default
     - name: OPPGAVE_SCOPE
-      value: api://dev-fss.oppgavehandtering.oppgave-q1/.default
+      value: api://dev-fss.oppgavehandtering.oppgave/.default
     - name: OPPGAVEBEHANDLING_URL
-      value: https://oppgave-q1.dev-fss-pub.nais.io/api/v1/oppgaver
+      value: https://oppgave.dev-fss-pub.nais.io/api/v1/oppgaver
     - name: INPUT_DOLLY
       value: http://tsm-input-dolly.tsm
