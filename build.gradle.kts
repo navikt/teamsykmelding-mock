@@ -7,11 +7,11 @@ val coroutinesVersion = "1.10.2"
 val jacksonVersion = "2.20.2"
 val kluentVersion = "1.73"
 val ktorVersion = "3.4.0"
-val logbackVersion = "1.5.18"
+val logbackVersion = "1.5.26"
 val logstashEncoderVersion = "8.1"
 val prometheusVersion = "0.16.0"
 val mockkVersion = "1.14.4"
-val testContainerKafkaVersion = "1.21.3"
+val testcontainerVersion = "2.0.1"
 val nimbusVersion = "9.40"
 val kotlinVersion = "2.2.0"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
@@ -21,7 +21,6 @@ val javaTimeAdapterVersion = "1.1.3"
 val ktfmtVersion = "0.49"
 val javaVersion = JvmTarget.JVM_21
 val junitJupiterVersion = "5.13.3"
-val commonsCompressVersion = "1.27.1"
 val koinVersion = "4.1.0-Beta8"
 val diagnosekoderVersion = "1.2025.0"
 val ibmMqVersion = "9.4.3.0"
@@ -71,7 +70,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
 
-    implementation("org.apache.kafka:kafka_2.12:$kafkaVersion")
+    implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
     implementation("org.apache.kafka:kafka-streams:$kafkaVersion")
 
     implementation("com.ibm.mq:com.ibm.mq.jakarta.client:$ibmMqVersion")
@@ -94,15 +93,10 @@ dependencies {
 
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("org.testcontainers:kafka:$testContainerKafkaVersion")
+    testImplementation("org.testcontainers:testcontainers-kafka:$testcontainerVersion")
 
     implementation("io.insert-koin:koin-ktor3:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
-    constraints {
-        implementation("org.apache.commons:commons-compress:$commonsCompressVersion") {
-            because("override transient version from org.testcontainers:kafka")
-        }
-    }
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
