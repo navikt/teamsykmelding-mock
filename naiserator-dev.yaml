@@ -52,7 +52,7 @@ spec:
           cluster: dev-gcp
       external:
         - host: pdl-api.dev-fss-pub.nais.io
-        - host: dokarkiv.dev-fss-pub.nais.io
+        - host: dokarkiv-q2.dev-fss-pub.nais.io
         - host: oppgave.dev-fss-pub.nais.io
         - host: b27apvl221.preprod.local
           ports:
@@ -73,7 +73,7 @@ spec:
     - name: MQ_CHANNEL_NAME
       value: Q1_SYKMELDINGMOCK
     - name: DOKARKIV_URL
-      value: https://dokarkiv.dev-fss-pub.nais.io/rest/journalpostapi/v1/journalpost
+      value: https://dokarkiv-q2.dev-fss-pub.nais.io/rest/journalpostapi/v1/journalpost
     - name: DOKARKIV_SCOPE
       value: api://dev-fss.teamdokumenthandtering.dokarkiv/.default
     - name: SYFOSMREGISTER_SCOPE
