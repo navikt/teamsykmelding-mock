@@ -39,8 +39,11 @@ spec:
     pool: nav-dev
   azure:
     application:
+      allowAllUsers: true
       enabled: true
-      tenant: trygdeetaten.no
+      claims:
+        extra:
+          - NAVident
   accessPolicy:
     outbound:
       rules:
