@@ -4,33 +4,33 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 val coroutinesVersion = "1.10.2"
-val jacksonVersion = "2.20.2"
+val jacksonVersion = "2.21.0"
 val kluentVersion = "1.73"
 val ktorVersion = "3.4.0"
-val logbackVersion = "1.5.26"
-val logstashEncoderVersion = "8.1"
+val logbackVersion = "1.5.32"
+val logstashEncoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
-val mockkVersion = "1.14.4"
-val testcontainerVersion = "2.0.1"
+val mockkVersion = "1.14.9"
+val testcontainerVersion = "2.0.3"
 val nimbusVersion = "9.40"
-val kotlinVersion = "2.2.0"
+val kotlinVersion = "2.3.10"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
 val ktfmtVersion = "0.49"
 val javaVersion = JvmTarget.JVM_21
-val junitJupiterVersion = "5.13.3"
+val junitJupiterVersion = "6.0.3"
 val koinVersion = "4.1.0-Beta8"
-val diagnosekoderVersion = "1.2025.0"
-val ibmMqVersion = "9.4.3.0"
-val kafkaVersion = "3.9.1"
+val diagnosekoderVersion = "1.2026.0"
+val ibmMqVersion = "9.4.5.0"
+val kafkaVersion = "4.2.0"
 
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "7.1.0"
-    kotlin("jvm") version "2.2.0"
+    id("com.diffplug.spotless") version "8.2.1"
+    kotlin("jvm") version "2.3.10"
 }
 
 application {
