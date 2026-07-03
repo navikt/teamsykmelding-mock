@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "22"
+    "node": "24"
   },
   "scripts": {
     "dev": "vite",
@@ -49,6 +49,6 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.9"
   },
-  "packageManager": "yarn@4.5.1",
+  "packageManager": "yarn@4.17.0",
   "prettier": "@navikt/eslint-config-teamsykmelding/prettier"
 }
