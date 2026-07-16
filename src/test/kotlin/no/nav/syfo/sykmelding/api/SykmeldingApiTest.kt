@@ -73,7 +73,7 @@ internal class SykmeldingApiTest {
                         "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
                         "    \"system\": \"ICPC2\"\n" +
                         "  },\n" +
-                        "  \"fnr\": \"20086600138\",\n" +
+                        "  \"fnr\": \"04056600324\",\n" +
                         "  \"fnrLege\": \"01117302624\",\n" +
                         "  \"herId\": null,\n" +
                         "  \"hprNummer\": \"7125186\",\n" +
@@ -134,7 +134,7 @@ internal class SykmeldingApiTest {
                         "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
                         "    \"system\": \"ICPC2\"\n" +
                         "  },\n" +
-                        "  \"fnr\": \"20086600138\",\n" +
+                        "  \"fnr\": \"04056600324\",\n" +
                         "  \"fnrLege\": \"01117302624\",\n" +
                         "  \"herId\": null,\n" +
                         "  \"hprNummer\": \"7125186\",\n" +
@@ -190,7 +190,7 @@ internal class SykmeldingApiTest {
                         "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
                         "    \"system\": \"ICPC2\"\n" +
                         "  },\n" +
-                        "  \"fnr\": \"20086600138\",\n" +
+                        "  \"fnr\": \"04056600324\",\n" +
                         "  \"fnrLege\": \"01117302624\",\n" +
                         "  \"herId\": null,\n" +
                         "  \"hprNummer\": \"7125186\",\n" +
