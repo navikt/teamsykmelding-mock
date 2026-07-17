@@ -14,7 +14,7 @@ function SidebarMenuItem({ title, Icon, children }: PropsWithChildren<Props>): R
                 <Icon className="mr-2" />
                 {title}
             </Heading>
-            <ul className="list-disc pl-12">{children}</ul>
+            <ul className="pl-8 flex flex-col gap-1">{children}</ul>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
-import { BandageIcon, PersonGroupIcon, PrinterSmallIcon, StethoscopeIcon } from '@navikt/aksel-icons'
+import { BandageIcon, PersonGroupIcon, PrinterSmallIcon, StethoscopeIcon, ExternalLinkIcon } from '@navikt/aksel-icons'
+import { Link as AkselLink } from '@navikt/ds-react'
 import { Link } from 'react-router-dom'
 
 import SidebarMenuItem from './SidebarMenuItem.tsx'
@@ -12,41 +13,45 @@ function Sidebar({ className }: Props): ReactElement {
     return (
         <div className={className}>
             <SidebarMenuItem title="Nærmesteleder" Icon={PersonGroupIcon}>
-                <li>
-                    <Link to="/narmesteleder/opprett">Registrer nærmeste leder</Link>
-                </li>
-                <li>
-                    <Link to="/narmesteleder/slett">Deaktiver nærmeste leder</Link>
-                </li>
+                <SidebarLink to="/narmesteleder/opprett">Registrer nærmeste leder</SidebarLink>
+                <SidebarLink to="/narmesteleder/slett">Deaktiver nærmeste leder</SidebarLink>
             </SidebarMenuItem>
             <SidebarMenuItem title="Legeerklæring" Icon={StethoscopeIcon}>
-                <li>
-                    <Link to="/legeerklaering/opprett">Opprett legeerklæring</Link>
-                </li>
+                <SidebarLink to="/legeerklaering/opprett">Opprett legeerklæring</SidebarLink>
             </SidebarMenuItem>
             <SidebarMenuItem title="Sykmelding" Icon={BandageIcon}>
+                <SidebarLink to="/sykmelding/opprett">Opprett sykmelding (XML)</SidebarLink>
                 <li>
-                    <Link to="/sykmelding/opprett">Opprett sykmelding</Link>
+                    <AkselLink
+                        href="https://www.ekstern.dev.nav.no/samarbeidspartner/sykmelding"
+                        target="_blank"
+                        className="-ml-6 flex items-center"
+                    >
+                        <ExternalLinkIcon aria-hidden />
+                        Opprett sykmelding (Ny)
+                    </AkselLink>
                 </li>
-                <li>
-                    <Link to="/sykmelding/slett">Slett alle sykmeldinger</Link>
-                </li>
+                <SidebarLink to="/sykmelding/slett">Slett alle sykmeldinger</SidebarLink>
             </SidebarMenuItem>
             <SidebarMenuItem title="Papirsykmelding" Icon={PrinterSmallIcon}>
-                <li>
-                    <Link to="/papirsykmelding/opprett">Opprett papirsykmelding</Link>
-                </li>
-                <li>
-                    <Link to="/papirsykmelding-utland/opprett">Opprett utenlandsk papirsykmelding</Link>
-                </li>
-                <li>
-                    <Link to="/papirsykmelding-utland-rina/opprett">Opprett utenlandsk sykmelding rina</Link>
-                </li>
-                <li>
-                    <Link to="/papirsykmelding-utland-nav-no/opprett">Opprett utenlandsk sykmelding nav.no</Link>
-                </li>
+                <SidebarLink to="/papirsykmelding/opprett">Opprett papirsykmelding</SidebarLink>
+                <SidebarLink to="/papirsykmelding-utland/opprett">Opprett utenlandsk papirsykmelding</SidebarLink>
+                <SidebarLink to="/papirsykmelding-utland-rina/opprett">Opprett utenlandsk sykmelding rina</SidebarLink>
+                <SidebarLink to="/papirsykmelding-utland-nav-no/opprett">
+                    Opprett utenlandsk sykmelding nav.no
+                </SidebarLink>
             </SidebarMenuItem>
         </div>
+    )
+}
+
+function SidebarLink({ to, children }: { to: string; children: React.ReactNode }): ReactElement {
+    return (
+        <li>
+            <AkselLink as={Link} to={to}>
+                {children}
+            </AkselLink>
+        </li>
     )
 }
 
