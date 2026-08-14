@@ -73,6 +73,11 @@ const manuellBehandlingScenario: () => Partial<SykmeldingFormValues> = () => {
                 type: 'HUNDREPROSENT',
             },
         ],
+        hoveddiagnose: {
+            system: 'icpc2',
+            code: 'T86',
+            text: 'Hypotyreose/myksødem',
+        },
         behandletDato: formatISO(now, { representation: 'date' }),
         begrunnIkkeKontakt: 'Eksempel på begrunnelse for tilbakedaterirng',
     }
