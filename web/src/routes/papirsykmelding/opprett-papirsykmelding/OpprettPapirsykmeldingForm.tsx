@@ -130,7 +130,7 @@ function OpprettPapirsykmeldingForm(): ReactElement {
                     className={styles.commonFormElement}
                     {...form.register('hprNummer')}
                     label="HPR-nummer"
-                    defaultValue="9144889"
+                    defaultValue="565600716"
                 />
                 <div className={styles.commonFormElement}>
                     <SyketilfelleStartdato />
