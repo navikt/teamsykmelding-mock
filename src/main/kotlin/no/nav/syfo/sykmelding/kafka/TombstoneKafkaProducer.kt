@@ -11,13 +11,11 @@ interface TombstoneKafkaProducer {
     fun sendTombstone(sykmeldingId: String)
 }
 
-class TombstoneKafkaProducerProduction(
-    private val topics: List<String>,
-) : TombstoneKafkaProducer {
+class TombstoneKafkaProducerProduction(private val topics: List<String>) : TombstoneKafkaProducer {
     private val tombstoneProducer =
         KafkaProducer<String, Any?>(
             KafkaUtils.getAivenKafkaConfig("tombstone-producer")
-                .toProducerConfig("mock-tombstone-producer", JacksonNullableKafkaSerializer::class),
+                .toProducerConfig("mock-tombstone-producer", JacksonNullableKafkaSerializer::class)
         )
 
     override fun sendTombstone(sykmeldingId: String) {
@@ -28,7 +26,7 @@ class TombstoneKafkaProducerProduction(
         } catch (e: Exception) {
             logger.error(
                 "Kunne ikke skrive tombstone til topic for sykmeldingid $sykmeldingId: {}",
-                e.message
+                e.message,
             )
             throw e
         }

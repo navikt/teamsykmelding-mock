@@ -60,7 +60,7 @@ internal class SykmeldingServiceTest {
                             fom = LocalDate.now().plusDays(1),
                             tom = LocalDate.now().plusWeeks(1),
                             type = SykmeldingType.HUNDREPROSENT,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -74,7 +74,7 @@ internal class SykmeldingServiceTest {
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val mottakId = "mottakId"
         runBlocking {
@@ -112,7 +112,7 @@ internal class SykmeldingServiceTest {
                             fom = LocalDate.now().plusDays(1),
                             tom = LocalDate.now().plusWeeks(1),
                             type = SykmeldingType.HUNDREPROSENT,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -127,7 +127,7 @@ internal class SykmeldingServiceTest {
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val mottakId = "mottakId"
         runBlocking {
@@ -165,7 +165,7 @@ internal class SykmeldingServiceTest {
                             fom = LocalDate.now().plusDays(1),
                             tom = LocalDate.now().plusWeeks(1),
                             type = SykmeldingType.HUNDREPROSENT,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -176,18 +176,12 @@ internal class SykmeldingServiceTest {
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
                 bidiagnoser =
-                    listOf(
-                        Diagnose(
-                            code = "M674",
-                            system = "icd10",
-                            text = "Ein viktig diagnose",
-                        ),
-                    ),
+                    listOf(Diagnose(code = "M674", system = "icd10", text = "Ein viktig diagnose")),
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val mottakId = "mottakId"
         runBlocking {

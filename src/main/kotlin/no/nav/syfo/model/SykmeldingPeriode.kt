@@ -2,11 +2,7 @@ package no.nav.syfo.model
 
 import java.time.LocalDate
 
-data class SykmeldingPeriode(
-    val fom: LocalDate,
-    val tom: LocalDate,
-    val type: SykmeldingType,
-)
+data class SykmeldingPeriode(val fom: LocalDate, val tom: LocalDate, val type: SykmeldingType)
 
 enum class SykmeldingType {
     AVVENTENDE,

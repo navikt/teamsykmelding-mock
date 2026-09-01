@@ -1,8 +1,5 @@
 package no.nav.syfo.sykmelding.api
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.kotlinModule
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -22,10 +19,16 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
+import tools.jackson.module.kotlin.jacksonMapperBuilder
 
 internal class SykmeldingApiTest {
     val objectMapper =
-        jacksonObjectMapper().registerModule(kotlinModule()).registerModule(JavaTimeModule())
+        jacksonMapperBuilder()
+            .enable(
+                tools.jackson.databind.DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT
+            )
+            .build()
+
     val sykmeldingService = mockk<SykmeldingService>()
     val slettSykmeldingService = mockk<SlettSykmeldingService>()
 
@@ -39,7 +42,7 @@ internal class SykmeldingApiTest {
                         "Behandler er ikke gyldig i HPR på konsultasjonstidspunkt. Pasienten har fått beskjed.",
                     messageForUser = "Den som skrev sykmeldingen manglet autorisasjon.",
                     ruleStatus = Status.INVALID,
-                ),
+                )
             ),
         )
 
@@ -95,11 +98,11 @@ internal class SykmeldingApiTest {
                         "  \"diagnosekodesystem\": \"ICPC2\",\n" +
                         "  \"diagnosekode\": \"A90\",\n" +
                         "  \"arbeidsgiverNavn\": null\n" +
-                        "}",
+                        "}"
                 )
             }
 
-        assertEquals(response.status, HttpStatusCode.OK)
+        assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
         val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
@@ -150,11 +153,11 @@ internal class SykmeldingApiTest {
                         "  \"diagnosekodesystem\": \"ICPC2\",\n" +
                         "  \"diagnosekode\": \"A90\",\n" +
                         "  \"arbeidsgiverNavn\": \"NAV\"\n" +
-                        "}",
+                        "}"
                 )
             }
 
-        assertEquals(response.status, HttpStatusCode.OK)
+        assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
         val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
@@ -212,11 +215,11 @@ internal class SykmeldingApiTest {
                         "  \"diagnosekodesystem\": \"ICPC2\",\n" +
                         "  \"diagnosekode\": \"A90\",\n" +
                         "  \"arbeidsgiverNavn\": null\n" +
-                        "}",
+                        "}"
                 )
             }
 
-        assertEquals(response.status, HttpStatusCode.OK)
+        assertEquals(HttpStatusCode.OK, response.status)
         val responseBody = response.bodyAsText()
         val validationResultFromResponse =
             objectMapper.readValue(responseBody, ValidationResult::class.java)

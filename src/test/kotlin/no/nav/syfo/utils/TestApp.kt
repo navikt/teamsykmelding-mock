@@ -32,9 +32,7 @@ class Blocks {
     }
 }
 
-fun ApplicationTestBuilder.setupTestApplication(
-    setup: (Blocks.() -> Unit)? = null,
-) {
+fun ApplicationTestBuilder.setupTestApplication(setup: (Blocks.() -> Unit)? = null) {
     val blocks =
         if (setup != null) {
             Blocks().apply(setup)

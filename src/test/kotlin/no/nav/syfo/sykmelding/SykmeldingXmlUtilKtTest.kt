@@ -31,7 +31,7 @@ internal class SykmeldingXmlUtilKtTest {
                             fom = LocalDate.now().plusDays(1),
                             tom = LocalDate.now().plusWeeks(1),
                             type = SykmeldingType.HUNDREPROSENT,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -46,7 +46,7 @@ internal class SykmeldingXmlUtilKtTest {
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "A02", system = "ICPC2", text = "")
+                hoveddiagnose = Diagnose(code = "A02", system = "ICPC2", text = ""),
             )
         val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
         val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -112,7 +112,7 @@ internal class SykmeldingXmlUtilKtTest {
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
         val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -189,21 +189,13 @@ internal class SykmeldingXmlUtilKtTest {
                 meldingTilArbeidsgiver = "Viktig melding til arbeidsgiver",
                 bidiagnoser =
                     listOf(
-                        Diagnose(
-                            code = "M674",
-                            system = "icd10",
-                            text = "Ein viktig diagnose",
-                        ),
-                        Diagnose(
-                            code = "Z09",
-                            system = "icpc2",
-                            text = "Politi",
-                        ),
+                        Diagnose(code = "M674", system = "icd10", text = "Ein viktig diagnose"),
+                        Diagnose(code = "Z09", system = "icpc2", text = "Politi"),
                     ),
                 arbeidsgiverNavn = "NAV",
                 vedleggMedVirus = false,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
         val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -265,7 +257,7 @@ internal class SykmeldingXmlUtilKtTest {
                             fom = LocalDate.now().plusDays(1),
                             tom = LocalDate.now().plusWeeks(1),
                             type = SykmeldingType.HUNDREPROSENT,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -280,7 +272,7 @@ internal class SykmeldingXmlUtilKtTest {
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "TULLEKODE", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "TULLEKODE", system = "icd10", text = ""),
             )
         val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
         val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -311,7 +303,7 @@ internal class SykmeldingXmlUtilKtTest {
                             fom = LocalDate.now().plusDays(1),
                             tom = LocalDate.now().plusWeeks(1),
                             type = SykmeldingType.HUNDREPROSENT,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -326,7 +318,7 @@ internal class SykmeldingXmlUtilKtTest {
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
         val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -352,7 +344,7 @@ internal class SykmeldingXmlUtilKtTest {
                             fom = LocalDate.now(),
                             tom = LocalDate.now().plusDays(10),
                             type = SykmeldingType.BEHANDLINGSDAG,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -367,7 +359,7 @@ internal class SykmeldingXmlUtilKtTest {
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
         val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))
@@ -398,7 +390,7 @@ internal class SykmeldingXmlUtilKtTest {
                             fom = LocalDate.now(),
                             tom = LocalDate.now().plusDays(10),
                             type = SykmeldingType.BEHANDLINGSDAGER,
-                        ),
+                        )
                     ),
                 behandletDato = LocalDate.now(),
                 kontaktDato = null,
@@ -413,7 +405,7 @@ internal class SykmeldingXmlUtilKtTest {
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = "")
+                hoveddiagnose = Diagnose(code = "M674", system = "icd10", text = ""),
             )
         val sykmeldt = PdlPerson(Navn("Syk", null, "Sykestad"))
         val lege = PdlPerson(Navn("Doktor", null, "Dyregod"))

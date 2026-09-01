@@ -136,11 +136,6 @@ data class OpprettOppgaveResponse(
     val mappeId: Int? = null,
 )
 
-data class OppgaveResponse(
-    val antallTreffTotalt: Int,
-    val oppgaver: List<Oppgave>,
-)
+data class OppgaveResponse(val antallTreffTotalt: Int, val oppgaver: List<Oppgave>)
 
-data class Oppgave(
-    val id: Int,
-)
+data class Oppgave(val id: Int)

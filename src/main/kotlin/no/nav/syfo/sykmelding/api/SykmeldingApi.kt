@@ -24,7 +24,7 @@ fun Route.registrerSykmeldingApi() {
         if (request.fnr.length != 11) {
             call.respond(
                 HttpStatusCode.BadRequest,
-                HttpMessage("request.fnr har feil lengde, er ${request.fnr.length}")
+                HttpMessage("request.fnr har feil lengde, er ${request.fnr.length}"),
             )
             return@post
         }
@@ -50,7 +50,7 @@ fun Route.registrerSykmeldingApi() {
         if (fnr == null || fnr.length != 11) {
             call.respond(
                 HttpStatusCode.BadRequest,
-                HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde")
+                HttpMessage("Sykmeldt-Fnr mangler eller har feil lengde"),
             )
             return@delete
         }

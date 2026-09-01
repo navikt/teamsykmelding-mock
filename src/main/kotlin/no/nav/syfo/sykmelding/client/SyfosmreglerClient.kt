@@ -32,7 +32,7 @@ class SyfosmreglerClientProduction(
 ) : SyfosmreglerClient {
     override suspend fun sjekkRegler(
         receivedSykmelding: ReceivedSykmelding,
-        isPapir: Boolean
+        isPapir: Boolean,
     ): ValidationResult {
         val accessToken = accessTokenClientV2.getAccessTokenV2(syfosmreglerScope)
         logger.info("Gjør kall mot syfosmregler api")
@@ -65,7 +65,7 @@ class SyfosmreglerClientProduction(
 class SyfosmreglerClientDevelopment() : SyfosmreglerClient {
     override suspend fun sjekkRegler(
         receivedSykmelding: ReceivedSykmelding,
-        isPapir: Boolean
+        isPapir: Boolean,
     ): ValidationResult {
         return ValidationResult(Status.OK, listOf(RuleInfo("regel", "", "", Status.OK)))
     }

@@ -6,5 +6,5 @@ data class ErIArbeidDTO(
     val egetArbeidPaSikt: Boolean,
     val annetArbeidPaSikt: Boolean,
     val arbeidFOM: LocalDate?,
-    val vurderingsdato: LocalDate?
+    val vurderingsdato: LocalDate?,
 )

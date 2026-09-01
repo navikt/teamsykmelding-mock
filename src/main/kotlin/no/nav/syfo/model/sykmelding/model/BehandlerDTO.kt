@@ -9,5 +9,5 @@ data class BehandlerDTO(
     val hpr: String?,
     val her: String?,
     val adresse: AdresseDTO,
-    val tlf: String?
+    val tlf: String?,
 )

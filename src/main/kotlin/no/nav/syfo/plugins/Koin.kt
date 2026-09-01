@@ -109,23 +109,19 @@ val pdlModule = module {
 
 val kafkaModules = module {
     single<NlResponseProducer> {
-        NlResponseProducerProduction(
-            get<EnvironmentVariables>().narmestelederTopic,
-        )
+        NlResponseProducerProduction(get<EnvironmentVariables>().narmestelederTopic)
     }
     single<TombstoneKafkaProducer> {
         TombstoneKafkaProducerProduction(
             listOf(
                 get<EnvironmentVariables>().papirSmRegistreringTopic,
                 get<EnvironmentVariables>().manuellTopic,
-            ),
+            )
         )
     }
 
     single<SykmeldingStatusKafkaProducer> {
-        SykmeldingStatusKafkaProducerProduction(
-            get<EnvironmentVariables>().sykmeldingStatusTopic,
-        )
+        SykmeldingStatusKafkaProducerProduction(get<EnvironmentVariables>().sykmeldingStatusTopic)
     }
 }
 
@@ -156,10 +152,7 @@ val mqModule = module {
     single<MqClient> {
         val env = get<EnvironmentVariables>()
 
-        MqClientProduction(
-            env = env,
-            serviceUser = ServiceUser(),
-        )
+        MqClientProduction(env = env, serviceUser = ServiceUser())
     }
 }
 
@@ -200,12 +193,7 @@ val norskhelsenettModule = module {
 }
 
 val narmestelederModule = module {
-    single {
-        NarmestelederService(
-            nlResponseProducer = get(),
-            pdlPersonService = get(),
-        )
-    }
+    single { NarmestelederService(nlResponseProducer = get(), pdlPersonService = get()) }
 }
 
 val legeerklaeringModule = module {
@@ -214,7 +202,7 @@ val legeerklaeringModule = module {
         LegeerklaeringService(
             pdlPersonService = get(),
             mqClient = get(),
-            legeerklaeringQueue = env.legeerklaeringQueue
+            legeerklaeringQueue = env.legeerklaeringQueue,
         )
     }
 }
@@ -233,7 +221,7 @@ val sykmeldingModule = module {
             pdlPersonService = get(),
             mqClient = get(),
             sykmeldingQueue = env.sykmeldingQueue,
-            syfosmreglerClient = get()
+            syfosmreglerClient = get(),
         )
     }
 
@@ -241,7 +229,7 @@ val sykmeldingModule = module {
         PapirsykmeldingService(
             dokarkivClient = get(),
             syfosmreglerClient = get(),
-            norskHelsenettClient = get()
+            norskHelsenettClient = get(),
         )
     }
 

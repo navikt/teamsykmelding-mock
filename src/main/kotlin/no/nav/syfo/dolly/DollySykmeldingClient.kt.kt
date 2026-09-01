@@ -28,10 +28,8 @@ interface DollyClient {
     suspend fun slettSykmeldinger(ident: String): DollyResponse<Unit>
 }
 
-class DollyClientProduction(
-    private val url: String,
-    private val httpClient: HttpClient,
-) : DollyClient {
+class DollyClientProduction(private val url: String, private val httpClient: HttpClient) :
+    DollyClient {
     override suspend fun opprettSykmelding(sykmelding: DollySykmelding): DollyResponse<Unit> {
         logger.info("Oppretter sykmelding for ${sykmelding}")
         val response =
@@ -58,10 +56,7 @@ class DollyClientProduction(
                 logger.error(
                     "Feil ved oppretting av sykmelding med input-dolly: ${errorResponse.message}"
                 )
-                return DollyResponse(
-                    status = response.status,
-                    message = errorResponse.message,
-                )
+                return DollyResponse(status = response.status, message = errorResponse.message)
             }
             else -> {
                 throw RuntimeException(
@@ -86,7 +81,7 @@ class DollyClientProduction(
                     status = response.status,
                     message =
                         "Hentet sykmelding med sykmeldingId ${sykmeldingResponse.sykmeldingId}",
-                    data = sykmeldingResponse
+                    data = sykmeldingResponse,
                 )
             }
             HttpStatusCode.NotFound,
@@ -95,10 +90,7 @@ class DollyClientProduction(
                 logger.error(
                     "Feil ved henting av sykmelding med input-dolly: ${errorResponse.message}"
                 )
-                return DollyResponse(
-                    status = response.status,
-                    message = errorResponse.message,
-                )
+                return DollyResponse(status = response.status, message = errorResponse.message)
             }
             else -> {
                 throw RuntimeException(
@@ -120,7 +112,7 @@ class DollyClientProduction(
                 return DollyResponse(
                     status = response.status,
                     message = "Hentet alle sykmeldinger med input-dolly med ident.",
-                    data = sykmeldingResponse
+                    data = sykmeldingResponse,
                 )
             }
             HttpStatusCode.InternalServerError -> {
@@ -128,10 +120,7 @@ class DollyClientProduction(
                 logger.error(
                     "Feil ved henting av alle sykmeldinger med input-dolly: ${errorResponse.message}"
                 )
-                return DollyResponse(
-                    status = response.status,
-                    message = errorResponse.message,
-                )
+                return DollyResponse(status = response.status, message = errorResponse.message)
             }
             else -> {
                 throw RuntimeException(
@@ -157,10 +146,7 @@ class DollyClientProduction(
                 logger.error(
                     "Feil ved sletting av sykmeldinger med input-dolly: ${errorResponse.message}"
                 )
-                return DollyResponse(
-                    status = response.status,
-                    message = errorResponse.message,
-                )
+                return DollyResponse(status = response.status, message = errorResponse.message)
             }
             else -> {
                 throw RuntimeException(

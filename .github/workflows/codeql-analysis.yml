@@ -30,7 +30,7 @@ jobs:
         id: setup-java
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
 
       - run: ./gradlew installDist -x test
 

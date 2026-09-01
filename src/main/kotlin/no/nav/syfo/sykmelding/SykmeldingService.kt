@@ -99,7 +99,7 @@ class SykmeldingService(
 
     suspend fun tilSykmeldingXml(
         sykmeldingRequest: SykmeldingRequest,
-        mottakId: String
+        mottakId: String,
     ): XMLEIFellesformat {
         val sykmeldingXml =
             if (sykmeldingRequest.vedlegg) {

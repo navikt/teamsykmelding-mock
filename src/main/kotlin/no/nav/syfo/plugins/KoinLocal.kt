@@ -137,7 +137,7 @@ val developmentSykmeldingModule = module {
         PapirsykmeldingService(
             dokarkivClient = get(),
             syfosmreglerClient = get(),
-            norskHelsenettClient = get()
+            norskHelsenettClient = get(),
         )
     }
 
@@ -150,12 +150,7 @@ val developmentNorskhelsenettModule = module {
 val developmentOppgaveModule = module { single<OppgaveClient> { DevelopmentOppgaveClient() } }
 
 val developmentNarmestelederModule = module {
-    single {
-        NarmestelederService(
-            nlResponseProducer = get(),
-            pdlPersonService = get(),
-        )
-    }
+    single { NarmestelederService(nlResponseProducer = get(), pdlPersonService = get()) }
 }
 
 val developmentDokarkivModule = module { single<DokarkivClient> { DokarkivClientDevelopment() } }
@@ -166,7 +161,7 @@ val developmentLegeerklaeringModule = module {
         LegeerklaeringService(
             pdlPersonService = get(),
             mqClient = get(),
-            legeerklaeringQueue = env.legeerklaeringQueue
+            legeerklaeringQueue = env.legeerklaeringQueue,
         )
     }
 }

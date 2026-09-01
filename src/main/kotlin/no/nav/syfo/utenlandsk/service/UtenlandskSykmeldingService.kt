@@ -33,13 +33,13 @@ class UtenlandskSykmeldingService(
                     fnr = utenlandskSykmeldingPdfRequest.fnr,
                     pdf = utenlandskPdf,
                     antallPdfs = utenlandskSykmeldingPdfRequest.antallPdfs,
-                ),
+                )
             )
         logger.info("Opprettet journalpost med journalPostId $journalpostId")
         if (utenlandskSykmeldingPdfRequest.fnr.isNullOrEmpty()) {
             logger.info(
                 "oppretter ikke oppgave for utenlandske sykmeldinger uten fnr {}",
-                kv("JournalpostId", journalpostId)
+                kv("JournalpostId", journalpostId),
             )
             return journalpostId
         }
@@ -73,13 +73,13 @@ class UtenlandskSykmeldingService(
                 opprettUtenlandskNavNoJournalpost(
                     fnr = utenlandskSykmeldingNavNoRequest.fnr,
                     pdf = utenlandskPdf,
-                ),
+                )
             )
         logger.info("Opprettet journalpost med journalPostId $journalpostId")
         if (utenlandskSykmeldingNavNoRequest.fnr.isNullOrEmpty()) {
             logger.info(
                 "oppretter ikke oppgave for utenlandske sykmeldinger uten fnr {}",
-                kv("JournalpostId", journalpostId)
+                kv("JournalpostId", journalpostId),
             )
             return journalpostId
         }

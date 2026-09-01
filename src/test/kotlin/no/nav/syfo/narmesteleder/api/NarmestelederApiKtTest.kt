@@ -1,8 +1,5 @@
 package no.nav.syfo.narmesteleder.api
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.kotlinModule
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -29,10 +26,12 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.jacksonMapperBuilder
 
 internal class NarmestelederApiKtTest {
-    val objectMapper =
-        jacksonObjectMapper().registerModule(kotlinModule()).registerModule(JavaTimeModule())
+    val jsonMapper: JsonMapper = jacksonMapperBuilder().build()
+
     val nlResponseProducer = mockk<NlResponseProducer>(relaxed = true)
     val pdlPersonService = mockk<PdlPersonService>(relaxed = true)
 
@@ -68,13 +67,13 @@ internal class NarmestelederApiKtTest {
         val response =
             testClient().post("/narmesteleder/opprett") {
                 headers { append("Content-Type", "application/json") }
-                setBody(objectMapper.writeValueAsString(opprettNarmestelederRequest))
+                setBody(jsonMapper.writeValueAsString(opprettNarmestelederRequest))
             }
 
         assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
-        val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
+        val httpMessage = jsonMapper.readValue(responseBody, HttpMessage::class.java)
         assertEquals("Nærmeste leder er registrert", httpMessage.message)
 
         coVerify {
@@ -89,10 +88,10 @@ internal class NarmestelederApiKtTest {
                             mobil = "98989898",
                             epost = "test@nav.no",
                             fornavn = "Leder",
-                            etternavn = "Ledersen"
+                            etternavn = "Ledersen",
                         ),
                     sykmeldt = Sykmeldt(fnr = ansattFnr, navn = "Fornavn Etternavn"),
-                    aktivFom = OffsetDateTime.of(LocalDate.now().atStartOfDay(), ZoneOffset.UTC)
+                    aktivFom = OffsetDateTime.of(LocalDate.now().atStartOfDay(), ZoneOffset.UTC),
                 )
             println("Forventet NlResponse: $expectedNlResponse")
             nlResponseProducer.sendNlResponse(
@@ -110,16 +109,9 @@ internal class NarmestelederApiKtTest {
                                     fornavn = "Leder",
                                     etternavn = "Ledersen",
                                 ),
-                            sykmeldt =
-                                Sykmeldt(
-                                    fnr = ansattFnr,
-                                    navn = "Fornavn Etternavn",
-                                ),
+                            sykmeldt = Sykmeldt(fnr = ansattFnr, navn = "Fornavn Etternavn"),
                             aktivFom =
-                                OffsetDateTime.of(
-                                    LocalDate.now().atStartOfDay(),
-                                    ZoneOffset.UTC,
-                                ),
+                                OffsetDateTime.of(LocalDate.now().atStartOfDay(), ZoneOffset.UTC),
                         )
                 },
                 nlAvbrutt = null,

@@ -6,11 +6,11 @@ data class RuleInfo(
     val ruleName: String,
     val messageForSender: String,
     val messageForUser: String,
-    val ruleStatus: Status
+    val ruleStatus: Status,
 )
 
 enum class Status {
     OK,
     MANUAL_PROCESSING,
-    INVALID
+    INVALID,
 }

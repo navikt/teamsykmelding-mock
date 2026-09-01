@@ -76,7 +76,7 @@ class CheckModulesTest : KoinTest {
                     single<SykmeldingService>() { mockk<SykmeldingService>() }
                     single<MqClient>() { mockk<MqClient>() }
                     single<NlResponseProducer>() { mockk<NlResponseProducerDevelopment>() }
-                },
+                }
             )
 
             // TODO: Replace deprecated API

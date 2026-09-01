@@ -17,9 +17,8 @@ interface SykmeldingStatusKafkaProducer {
     fun send(sykmeldingStatusKafkaEventDTO: SykmeldingStatusKafkaEventDTO, fnr: String)
 }
 
-class SykmeldingStatusKafkaProducerProduction(
-    private val statusTopic: String,
-) : SykmeldingStatusKafkaProducer {
+class SykmeldingStatusKafkaProducerProduction(private val statusTopic: String) :
+    SykmeldingStatusKafkaProducer {
     private val kafkaProducer =
         KafkaProducer<String, SykmeldingStatusKafkaMessageDTO>(
             KafkaUtils.getAivenKafkaConfig("sykmelding-status-producer")
@@ -27,7 +26,7 @@ class SykmeldingStatusKafkaProducerProduction(
                     groupId = "mock-sykmelding-status-producer",
                     valueSerializer = JacksonKafkaSerializer::class,
                     keySerializer = StringSerializer::class,
-                ),
+                )
         )
 
     override fun send(sykmeldingStatusKafkaEventDTO: SykmeldingStatusKafkaEventDTO, fnr: String) {
@@ -37,10 +36,7 @@ class SykmeldingStatusKafkaProducerProduction(
         val metadataDTO =
             KafkaMetadataDTO(
                 sykmeldingId = sykmeldingStatusKafkaEventDTO.sykmeldingId,
-                timestamp =
-                    OffsetDateTime.now(
-                        ZoneOffset.UTC,
-                    ),
+                timestamp = OffsetDateTime.now(ZoneOffset.UTC),
                 fnr = fnr,
                 source = "teamsykmelding-mock-backend",
             )
@@ -54,7 +50,7 @@ class SykmeldingStatusKafkaProducerProduction(
                     ProducerRecord(
                         statusTopic,
                         sykmeldingStatusKafkaMessageDTO.event.sykmeldingId,
-                        sykmeldingStatusKafkaMessageDTO
+                        sykmeldingStatusKafkaMessageDTO,
                     )
                 )
                 .get()

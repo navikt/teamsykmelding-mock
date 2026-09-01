@@ -57,11 +57,9 @@ fun mapOcrFilTilFellesformat(
                         genDate =
                             velgRiktigKontaktOgSignaturDato(
                                     skanningmetadata.sykemeldinger.kontaktMedPasient?.behandletDato,
-                                    tilPeriodeListe(skanningmetadata.sykemeldinger.aktivitet)
+                                    tilPeriodeListe(skanningmetadata.sykemeldinger.aktivitet),
                                 )
-                                .format(
-                                    DateTimeFormatter.ISO_LOCAL_DATE_TIME,
-                                )
+                                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                         msgId = sykmeldingId
                         ack =
                             XMLCS().apply {
@@ -103,7 +101,7 @@ fun mapOcrFilTilFellesformat(
                                                                     v = "FNR"
                                                                 }
                                                         },
-                                                    ),
+                                                    )
                                                 )
                                             }
                                     }
@@ -140,7 +138,7 @@ fun mapOcrFilTilFellesformat(
                                                             v = "ENH"
                                                         }
                                                 },
-                                            ),
+                                            )
                                         )
                                     }
                             }
@@ -275,7 +273,7 @@ fun mapOcrFilTilFellesformat(
                                                                         skanningmetadata
                                                                             .sykemeldinger
                                                                             .aktivitet
-                                                                    )
+                                                                    ),
                                                                 )
                                                         }
                                                 behandler = tilBehandler(hprNummer, fnrLege)
@@ -292,13 +290,13 @@ fun mapOcrFilTilFellesformat(
                                                             // syfosmsak
                                                         }
                                                 strekkode = "123456789qwerty"
-                                            },
+                                            }
                                         )
                                     }
                             }
-                    },
+                    }
                 )
-            },
+            }
         )
     }
 }
@@ -331,7 +329,7 @@ fun tilBehandler(hprNummer: String, fnrLege: String): HelseOpplysningerArbeidsuf
                             v = "FNR"
                         }
                 },
-            ),
+            )
         )
         adresse = Address()
         kontaktInfo.add(
@@ -342,7 +340,7 @@ fun tilBehandler(hprNummer: String, fnrLege: String): HelseOpplysningerArbeidsuf
                         dn = "Hovedtelefon"
                     }
                 teleAddress = URL().apply { v = "tel:12345678" }
-            },
+            }
         )
     }
 
@@ -373,11 +371,11 @@ fun tilSpmGruppe(
                             CS().apply {
                                 v = "A"
                                 dn = "Informasjonen skal ikke vises arbeidsgiver"
-                            },
+                            }
                         )
                     }
                 svarTekst = utdypendeOpplysningerType.sykehistorie
-            },
+            }
         )
     }
 
@@ -392,11 +390,11 @@ fun tilSpmGruppe(
                             CS().apply {
                                 v = "A"
                                 dn = "Informasjonen skal ikke vises arbeidsgiver"
-                            },
+                            }
                         )
                     }
                 svarTekst = utdypendeOpplysningerType.arbeidsevne
-            },
+            }
         )
     }
 
@@ -411,11 +409,11 @@ fun tilSpmGruppe(
                             CS().apply {
                                 v = "A"
                                 dn = "Informasjonen skal ikke vises arbeidsgiver"
-                            },
+                            }
                         )
                     }
                 svarTekst = utdypendeOpplysningerType.behandlingsresultat
-            },
+            }
         )
     }
 
@@ -430,11 +428,11 @@ fun tilSpmGruppe(
                             CS().apply {
                                 v = "A"
                                 dn = "Informasjonen skal ikke vises arbeidsgiver"
-                            },
+                            }
                         )
                     }
                 svarTekst = utdypendeOpplysningerType.planlagtBehandling
-            },
+            }
         )
     }
 
@@ -446,7 +444,7 @@ fun tilSpmGruppe(
                 spmGruppeId = "6.2"
                 spmGruppeTekst = "Utdypende opplysninger ved 7/8,17 og 39 uker"
                 spmSvar.addAll(listeDynaSvarType)
-            },
+            }
         )
 
     if (spmGruppe.first().spmSvar.isNotEmpty()) {
@@ -519,7 +517,7 @@ fun tilPeriodeListe(
                 gradertSykmelding = null
                 behandlingsdager = null
                 isReisetilskudd = false
-            },
+            }
         )
     }
 
@@ -538,7 +536,7 @@ fun tilPeriodeListe(
                     }
                 behandlingsdager = null
                 isReisetilskudd = false
-            },
+            }
         )
     }
     if (
@@ -557,7 +555,7 @@ fun tilPeriodeListe(
                 gradertSykmelding = null
                 behandlingsdager = null
                 isReisetilskudd = false
-            },
+            }
         )
     }
     if (aktivitetType.behandlingsdager != null) {
@@ -574,7 +572,7 @@ fun tilPeriodeListe(
                             aktivitetType.behandlingsdager?.antallBehandlingsdager?.toInt() ?: 1
                     }
                 isReisetilskudd = false
-            },
+            }
         )
     }
     if (aktivitetType.reisetilskudd != null) {
@@ -587,7 +585,7 @@ fun tilPeriodeListe(
                 gradertSykmelding = null
                 behandlingsdager = null
                 isReisetilskudd = true
-            },
+            }
         )
     }
     if (periodeListe.isEmpty()) {
@@ -632,7 +630,7 @@ fun tilArbeidsgiver(
                     else -> {
                         logger.warn(
                             "Klarte ikke å mappe {} til riktig harArbeidsgiver-verdi, bruker en arbeidsgiver som standard",
-                            arbeidsgiverType?.harArbeidsgiver
+                            arbeidsgiverType?.harArbeidsgiver,
                         )
                         CS().apply {
                             dn = "Ingen arbeidsgiver"
@@ -670,7 +668,7 @@ fun tilMedisinskVurdering(
                         toMedisinskVurderingDiagnose(
                             medisinskVurderingType.hovedDiagnose[0].diagnosekode,
                             medisinskVurderingType.hovedDiagnose[0].diagnosekodeSystem,
-                            medisinskVurderingType.hovedDiagnose[0].diagnose
+                            medisinskVurderingType.hovedDiagnose[0].diagnose,
                         )
                 }
         }
@@ -720,7 +718,7 @@ fun identifiserDiagnoseKodeverk(diagnoseKode: String, system: String?, diagnose:
 fun toMedisinskVurderingDiagnose(
     originalDiagnosekode: String,
     originalSystem: String?,
-    diagnose: String?
+    diagnose: String?,
 ): CV {
     val diagnosekode =
         if (originalDiagnosekode.contains(".")) {
@@ -790,7 +788,7 @@ fun toMedisinskVurderingDiagnose(
 
 fun velgRiktigKontaktOgSignaturDato(
     behandletDato: LocalDate?,
-    periodeliste: List<HelseOpplysningerArbeidsuforhet.Aktivitet.Periode>
+    periodeliste: List<HelseOpplysningerArbeidsuforhet.Aktivitet.Periode>,
 ): LocalDateTime {
     behandletDato?.let {
         return LocalDateTime.of(it, LocalTime.NOON)

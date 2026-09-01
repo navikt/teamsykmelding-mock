@@ -10,14 +10,14 @@ const val STATUS_SLETTET = "SLETTET"
 data class ArbeidsgiverStatusDTO(
     val orgnummer: String,
     val juridiskOrgnummer: String? = null,
-    val orgNavn: String
+    val orgNavn: String,
 )
 
 data class SporsmalOgSvarDTO(
     val tekst: String,
     val shortName: ShortNameDTO,
     val svartype: SvartypeDTO,
-    val svar: String
+    val svar: String,
 )
 
 enum class ShortNameDTO {
@@ -26,12 +26,12 @@ enum class ShortNameDTO {
     FRAVAER,
     PERIODE,
     FORSIKRING,
-    EGENMELDINGSDAGER
+    EGENMELDINGSDAGER,
 }
 
 enum class SvartypeDTO {
     ARBEIDSSITUASJON,
     PERIODER,
     JA_NEI,
-    DAGER
+    DAGER,
 }

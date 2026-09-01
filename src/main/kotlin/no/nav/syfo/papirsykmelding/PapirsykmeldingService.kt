@@ -74,7 +74,7 @@ class PapirsykmeldingService(
                     ocr = ocr,
                     pdf = defaultPdf,
                     metadata = defaultMetadata,
-                ),
+                )
             )
         return journalpostId
     }
@@ -161,7 +161,7 @@ class PapirsykmeldingService(
                 fnr = fnr,
                 pdf = utenlandskPdf,
                 metadata = defaultMetadata,
-            ),
+            )
         )
     }
 

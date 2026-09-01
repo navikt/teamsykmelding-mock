@@ -5,7 +5,7 @@ data class KafkaEnvironment(
     val KAFKA_CLIENT_ID: String = getEnvVar("HOSTNAME"),
     val KAFKA_TRUSTSTORE_PATH: String = getEnvVar("KAFKA_TRUSTSTORE_PATH"),
     val KAFKA_KEYSTORE_PATH: String = getEnvVar("KAFKA_KEYSTORE_PATH"),
-    val KAFKA_CREDSTORE_PASSWORD: String = getEnvVar("KAFKA_CREDSTORE_PASSWORD")
+    val KAFKA_CREDSTORE_PASSWORD: String = getEnvVar("KAFKA_CREDSTORE_PASSWORD"),
 ) {
     companion object {
         fun getEnvVar(varName: String, defaultValue: String? = null) =
