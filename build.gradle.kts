@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val javaVersion = JvmTarget.JVM_25
 
 val coroutinesVersion = "1.10.2"
 val jacksonVersion = "3.2.2"
@@ -107,9 +106,7 @@ dependencies {
 
 
 kotlin {
-    compilerOptions {
-        jvmTarget = javaVersion
-    }
+    jvmToolchain(25)
 }
 
 tasks {
