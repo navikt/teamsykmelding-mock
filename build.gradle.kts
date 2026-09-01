@@ -86,7 +86,6 @@ dependencies {
     implementation("com.migesok:jaxb-java-time-adapters:$javaTimeAdapterVersion")
 
     implementation("tools.jackson.module:jackson-module-kotlin:${jacksonVersion}")
-    implementation("tools.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("tools.jackson.dataformat:jackson-dataformat-xml:${jacksonVersion}")
     implementation("tools.jackson.module:jackson-module-jaxb-annotations:${jacksonVersion}")
 
