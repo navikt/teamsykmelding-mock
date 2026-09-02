@@ -9,9 +9,12 @@ import io.mockk.mockk
 import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.model.RuleInfo
 import no.nav.syfo.model.Status
+import no.nav.syfo.model.SykmeldingPeriode
+import no.nav.syfo.model.SykmeldingType
 import no.nav.syfo.model.ValidationResult
-import no.nav.syfo.sykmelding.SlettSykmeldingService
 import no.nav.syfo.sykmelding.SykmeldingService
+import no.nav.syfo.sykmelding.model.Diagnose
+import no.nav.syfo.sykmelding.model.SykmeldingRequest
 import no.nav.syfo.utils.setupTestApplication
 import no.nav.syfo.utils.testClient
 import org.junit.jupiter.api.AfterEach
@@ -19,19 +22,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
-import tools.jackson.databind.DeserializationFeature
-import tools.jackson.databind.cfg.DateTimeFeature
 import tools.jackson.module.kotlin.jacksonMapperBuilder
+import java.time.LocalDate
 
 internal class SykmeldingApiTest {
-    val objectMapper =
-        jacksonMapperBuilder()
-            .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            .build()
+    val objectMapper = jacksonMapperBuilder().build()
 
     val sykmeldingService = mockk<SykmeldingService>()
-    val slettSykmeldingService = mockk<SlettSykmeldingService>()
 
     val validationResult =
         ValidationResult(
@@ -58,52 +55,47 @@ internal class SykmeldingApiTest {
 
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
+        val sykmeldingRequest =
+            SykmeldingRequest(
+                fnr = "04827695713",
+                fnrLege = "01117302624",
+                herId = null,
+                hprNummer = "7125186",
+                syketilfelleStartdato = LocalDate.of(2022,9,27),
+                annenFraverGrunn = null,
+                perioder =
+                    listOf(
+                        SykmeldingPeriode(
+                            fom = LocalDate.of(2022,9,27),
+                            tom = LocalDate.of(2022,10,3),
+                            type = SykmeldingType.HUNDREPROSENT,
+                        )
+                    ),
+                behandletDato = LocalDate.of(2022,9,27),
+                kontaktDato = null,
+                begrunnIkkeKontakt = null,
+                vedlegg = true,
+                virksomhetsykmelding = false,
+                utdypendeOpplysninger = null,
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = listOf(
+                    Diagnose(code = "Z999", system = "ICD10", text = "Avhengighet av ikke spes. teknisk hjelpemiddel og innretning"),
+                ),
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false,
+                beskrivBistandNav = null,
+                yrkesskade = false,
+                hoveddiagnose = Diagnose(code = "A90", system = "ICPC2", text = "Medfødt feil IKA/multiple feil"),
+            )
+
         val response =
             testClient().post("/sykmelding/opprett") {
                 headers { append("Content-Type", ContentType.Application.Json.toString()) }
-                setBody(
-                    "{\n" +
-                        "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
-                        "  \"behandletDato\": \"2022-09-27\",\n" +
-                        "  \"perioder\": [\n" +
-                        "    {\n" +
-                        "      \"fom\": \"2022-09-27\",\n" +
-                        "      \"tom\": \"2022-10-03\",\n" +
-                        "      \"type\": \"HUNDREPROSENT\"\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"hoveddiagnose\": {\n" +
-                        "    \"code\": \"A90\",\n" +
-                        "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
-                        "    \"system\": \"ICPC2\"\n" +
-                        "  },\n" +
-                        "  \"fnr\": \"04827695713\",\n" +
-                        "  \"fnrLege\": \"01117302624\",\n" +
-                        "  \"herId\": null,\n" +
-                        "  \"hprNummer\": \"7125186\",\n" +
-                        "  \"meldingTilArbeidsgiver\": null,\n" +
-                        "  \"annenFraverGrunn\": null,\n" +
-                        "  \"begrunnIkkeKontakt\": null,\n" +
-                        "  \"vedlegg\": false,\n" +
-                        "  \"virksomhetsykmelding\": false,\n" +
-                        "  \"utenUtdypendeOpplysninger\": false,\n" +
-                        "  \"regelsettVersjon\": \"2\",\n" +
-                        "  \"kontaktDato\": null,\n" +
-                        "  \"bidiagnoser\": [\n" +
-                        "    {\n" +
-                        "      \"code\": \"Z999\",\n" +
-                        "      \"text\": \"Avhengighet av ikke spes. teknisk hjelpemiddel og innretning\",\n" +
-                        "      \"system\": \"ICD10\"\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                        "  \"diagnosekode\": \"A90\",\n" +
-                        "  \"arbeidsgiverNavn\": null\n" +
-                        "}"
-                )
+                setBody(objectMapper.writeValueAsString(sykmeldingRequest))
             }
 
-        assertEquals(HttpStatusCode.OK, response.status)
+         assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
         val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
@@ -119,46 +111,45 @@ internal class SykmeldingApiTest {
 
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
+
+        val sykmeldingRequest =
+            SykmeldingRequest(
+                fnr = "04827695713",
+                fnrLege = "01117302624",
+                herId = null,
+                hprNummer = "7125186",
+                syketilfelleStartdato = LocalDate.of(2022,9,27),
+                annenFraverGrunn = null,
+                perioder =
+                    listOf(
+                        SykmeldingPeriode(
+                            fom = LocalDate.of(2022,9,27),
+                            tom = LocalDate.of(2022,10,3),
+                            type = SykmeldingType.HUNDREPROSENT,
+                        )
+                    ),
+                behandletDato = LocalDate.of(2022,9,27),
+                kontaktDato = null,
+                begrunnIkkeKontakt = null,
+                vedlegg = true,
+                virksomhetsykmelding = false,
+                utdypendeOpplysninger = null,
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = emptyList(),
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false,
+                beskrivBistandNav = null,
+                yrkesskade = false,
+                hoveddiagnose = Diagnose(code = "A90", system = "ICPC2", text = "Medfødt feil IKA/multiple feil"),
+            )
         val response =
             testClient().post("/sykmelding/opprett") {
                 headers { append("Content-Type", ContentType.Application.Json.toString()) }
-                setBody(
-                    "{\n" +
-                        "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
-                        "  \"behandletDato\": \"2022-09-27\",\n" +
-                        "  \"perioder\": [\n" +
-                        "    {\n" +
-                        "      \"fom\": \"2022-09-27\",\n" +
-                        "      \"tom\": \"2022-10-03\",\n" +
-                        "      \"type\": \"HUNDREPROSENT\"\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"hoveddiagnose\": {\n" +
-                        "    \"code\": \"A90\",\n" +
-                        "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
-                        "    \"system\": \"ICPC2\"\n" +
-                        "  },\n" +
-                        "  \"fnr\": \"04827695713\",\n" +
-                        "  \"fnrLege\": \"01117302624\",\n" +
-                        "  \"herId\": null,\n" +
-                        "  \"hprNummer\": \"7125186\",\n" +
-                        "  \"meldingTilArbeidsgiver\": null,\n" +
-                        "  \"annenFraverGrunn\": null,\n" +
-                        "  \"begrunnIkkeKontakt\": null,\n" +
-                        "  \"vedlegg\": false,\n" +
-                        "  \"virksomhetsykmelding\": false,\n" +
-                        "  \"utenUtdypendeOpplysninger\": false,\n" +
-                        "  \"regelsettVersjon\": \"2\",\n" +
-                        "  \"kontaktDato\": null,\n" +
-                        "  \"bidiagnoser\": [],\n" +
-                        "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                        "  \"diagnosekode\": \"A90\",\n" +
-                        "  \"arbeidsgiverNavn\": \"NAV\"\n" +
-                        "}"
-                )
+                setBody(objectMapper.writeValueAsString(sykmeldingRequest))
             }
 
-        assertEquals(HttpStatusCode.OK, response.status)
+         assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
         val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
@@ -175,52 +166,47 @@ internal class SykmeldingApiTest {
         coEvery { sykmeldingService.opprettSykmelding(any()) } returns "123-123--21321313"
         coEvery { sykmeldingService.sjekkRegler(any()) } returns validationResult
 
+        val sykmeldingRequest =
+            SykmeldingRequest(
+                fnr = "04827695713",
+                fnrLege = "01117302624",
+                herId = null,
+                hprNummer = "7125186",
+                syketilfelleStartdato = LocalDate.of(2022,9,27),
+                annenFraverGrunn = null,
+                perioder =
+                    listOf(
+                        SykmeldingPeriode(
+                            fom = LocalDate.of(2022,9,27),
+                            tom = LocalDate.of(2022,10,3),
+                            type = SykmeldingType.HUNDREPROSENT,
+                        )
+                    ),
+                behandletDato = LocalDate.of(2022,9,27),
+                kontaktDato = null,
+                begrunnIkkeKontakt = null,
+                vedlegg = false,
+                virksomhetsykmelding = false,
+                utdypendeOpplysninger = null,
+                regelsettVersjon = "2",
+                meldingTilArbeidsgiver = null,
+                bidiagnoser = listOf(
+                    Diagnose(code = "Z999", system = "ICD10", text = "Avhengighet av ikke spes. teknisk hjelpemiddel og innretning"),
+                ),
+                arbeidsgiverNavn = null,
+                vedleggMedVirus = false,
+                beskrivBistandNav = null,
+                yrkesskade = false,
+                hoveddiagnose = Diagnose(code = "A90", system = "ICPC2", text = "Medfødt feil IKA/multiple feil"),
+            )
+
         val response =
             testClient().post("/sykmelding/regelsjekk") {
                 headers { append("Content-Type", ContentType.Application.Json.toString()) }
-                setBody(
-                    "{\n" +
-                        "  \"syketilfelleStartdato\": \"2022-09-27\",\n" +
-                        "  \"behandletDato\": \"2022-09-27\",\n" +
-                        "  \"perioder\": [\n" +
-                        "    {\n" +
-                        "      \"fom\": \"2022-09-27\",\n" +
-                        "      \"tom\": \"2022-10-03\",\n" +
-                        "      \"type\": \"HUNDREPROSENT\"\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"hoveddiagnose\": {\n" +
-                        "    \"code\": \"A90\",\n" +
-                        "    \"text\": \"Medfødt feil IKA/multiple feil\",\n" +
-                        "    \"system\": \"ICPC2\"\n" +
-                        "  },\n" +
-                        "  \"fnr\": \"04827695713\",\n" +
-                        "  \"fnrLege\": \"01117302624\",\n" +
-                        "  \"herId\": null,\n" +
-                        "  \"hprNummer\": \"7125186\",\n" +
-                        "  \"meldingTilArbeidsgiver\": null,\n" +
-                        "  \"annenFraverGrunn\": null,\n" +
-                        "  \"begrunnIkkeKontakt\": null,\n" +
-                        "  \"vedlegg\": false,\n" +
-                        "  \"virksomhetsykmelding\": false,\n" +
-                        "  \"utenUtdypendeOpplysninger\": false,\n" +
-                        "  \"regelsettVersjon\": \"2\",\n" +
-                        "  \"kontaktDato\": null,\n" +
-                        "  \"bidiagnoser\": [\n" +
-                        "    {\n" +
-                        "      \"code\": \"Z999\",\n" +
-                        "      \"text\": \"Avhengighet av ikke spes. teknisk hjelpemiddel og innretning\",\n" +
-                        "      \"system\": \"ICD10\"\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"diagnosekodesystem\": \"ICPC2\",\n" +
-                        "  \"diagnosekode\": \"A90\",\n" +
-                        "  \"arbeidsgiverNavn\": null\n" +
-                        "}"
-                )
+                setBody(objectMapper.writeValueAsString(sykmeldingRequest))
             }
 
-        assertEquals(HttpStatusCode.OK, response.status)
+         assertEquals(HttpStatusCode.OK, response.status)
         val responseBody = response.bodyAsText()
         val validationResultFromResponse =
             objectMapper.readValue(responseBody, ValidationResult::class.java)

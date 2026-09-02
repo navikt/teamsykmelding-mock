@@ -85,9 +85,9 @@ dependencies {
     implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion")
     implementation("com.migesok:jaxb-java-time-adapters:$javaTimeAdapterVersion")
 
-    implementation("tools.jackson.module:jackson-module-kotlin:${jacksonVersion}")
-    implementation("tools.jackson.dataformat:jackson-dataformat-xml:${jacksonVersion}")
-    implementation("tools.jackson.module:jackson-module-jaxb-annotations:${jacksonVersion}")
+    implementation("tools.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("tools.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
+    implementation("tools.jackson.module:jackson-module-jaxb-annotations:$jacksonVersion")
 
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
