@@ -29,15 +29,15 @@ fun Route.registrerUtenlandskPapirsykmeldingApi() {
                     OppgaveOpprettetResponse(
                         "OK",
                         "Opprettet utenlandsk papirsykmelding med oppgaveId $oppgaveId",
-                        oppgaveId
-                    )
+                        oppgaveId,
+                    ),
                 )
             }
         } catch (exception: Exception) {
             logger.error("Exception", exception)
             call.respond(
                 HttpStatusCode.InternalServerError,
-                HttpMessage(exception.message ?: "Unknown error")
+                HttpMessage(exception.message ?: "Unknown error"),
             )
         }
     }
@@ -50,14 +50,14 @@ fun Route.registrerUtenlandskPapirsykmeldingApi() {
                 OppgaveOpprettetResponse(
                     "OK",
                     "Opprettet utenlandsk papirsykmelding med oppgaveId $oppgaveId",
-                    oppgaveId
-                )
+                    oppgaveId,
+                ),
             )
         } catch (exception: Exception) {
             logger.error("Exception", exception)
             call.respond(
                 HttpStatusCode.InternalServerError,
-                HttpMessage(exception.message ?: "Unknown error")
+                HttpMessage(exception.message ?: "Unknown error"),
             )
         }
     }

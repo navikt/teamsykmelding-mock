@@ -29,14 +29,14 @@ fun Route.registrerNarmestelederApi() {
                     ansattFnr = request.ansattFnr.trim { it <= ' ' },
                     lederFnr = request.lederFnr.trim { it <= ' ' },
                     orgnummer = request.orgnummer.trim { it <= ' ' },
-                ),
+                )
             )
             logger.info("Opprettet nærmesteleder-kobling")
             call.respond(HttpStatusCode.OK, HttpMessage("Nærmeste leder er registrert"))
         } else {
             call.respond(
                 HttpStatusCode.BadRequest,
-                HttpMessage("Feil lengde på fødselsnummer eller orgnummer")
+                HttpMessage("Feil lengde på fødselsnummer eller orgnummer"),
             )
         }
     }

@@ -50,7 +50,7 @@ class NarmestelederService(
                     aktivFom =
                         OffsetDateTime.of(
                             opprettNarmestelederRequest.aktivFom.atStartOfDay(),
-                            ZoneOffset.UTC
+                            ZoneOffset.UTC,
                         ),
                 ),
             nlAvbrutt = null,

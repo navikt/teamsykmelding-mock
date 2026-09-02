@@ -10,5 +10,5 @@ data class SykmeldingsperiodeDTO(
     val innspillTilArbeidsgiver: String?,
     val type: PeriodetypeDTO,
     val aktivitetIkkeMulig: AktivitetIkkeMuligDTO?,
-    val reisetilskudd: Boolean
+    val reisetilskudd: Boolean,
 )

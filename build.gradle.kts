@@ -3,34 +3,34 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 group = "no.nav.syfo"
 version = "1.0.0"
 
+
 val coroutinesVersion = "1.10.2"
-val jacksonVersion = "2.20.2"
+val jacksonVersion = "3.2.2"
 val kluentVersion = "1.73"
-val ktorVersion = "3.4.0"
-val logbackVersion = "1.5.26"
-val logstashEncoderVersion = "8.1"
+val ktorVersion = "3.5.2"
+val logbackVersion = "1.6.3"
+val logstashEncoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val mockkVersion = "1.14.4"
 val testcontainerVersion = "2.0.3"
 val nimbusVersion = "9.40"
-val kotlinVersion = "2.2.0"
+val kotlinVersion = "2.4.10"
 val jaxbRuntimeVersion = "2.4.0-b180830.0438"
 val jaxbApiVersion = "2.4.0-b180830.0359"
 val sysfoXmlCodeGen = "2.0.1"
 val javaTimeAdapterVersion = "1.1.3"
-val ktfmtVersion = "0.49"
-val javaVersion = JvmTarget.JVM_21
-val junitJupiterVersion = "5.13.3"
+val ktfmtVersion = "0.56"
+val junitJupiterVersion = "6.1.3"
 val koinVersion = "4.1.0-Beta8"
-val diagnosekoderVersion = "1.2025.0"
-val ibmMqVersion = "9.4.3.0"
-val kafkaVersion = "3.9.1"
+val diagnosekoderVersion = "1.2026.0"
+val ibmMqVersion = "10.0.0.0"
+val kafkaVersion = "4.3.1"
 
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "7.1.0"
-    kotlin("jvm") version "2.2.0"
+    id("com.diffplug.spotless") version "8.10.1"
+    kotlin("jvm") version "2.4.10"
 }
 
 application {
@@ -49,7 +49,6 @@ repositories {
 
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:$coroutinesVersion")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
@@ -63,9 +62,9 @@ dependencies {
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
 
     implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache5:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson3:$ktorVersion")
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
@@ -86,10 +85,9 @@ dependencies {
     implementation("org.glassfish.jaxb:jaxb-runtime:$jaxbRuntimeVersion")
     implementation("com.migesok:jaxb-java-time-adapters:$javaTimeAdapterVersion")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("tools.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("tools.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
+    implementation("tools.jackson.module:jackson-module-jaxb-annotations:$jacksonVersion")
 
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
@@ -97,11 +95,10 @@ dependencies {
 
     implementation("io.insert-koin:koin-ktor3:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
-    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
-        exclude(group = "org.eclipse.jetty")
-    }
+
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+
     testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.insert-koin:koin-test:$koinVersion")
     testImplementation("io.insert-koin:koin-test-junit5:$koinVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -109,9 +106,7 @@ dependencies {
 
 
 kotlin {
-    compilerOptions {
-        jvmTarget = javaVersion
-    }
+    jvmToolchain(25)
 }
 
 tasks {

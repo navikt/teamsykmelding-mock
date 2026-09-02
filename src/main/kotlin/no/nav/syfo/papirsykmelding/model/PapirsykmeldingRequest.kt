@@ -14,6 +14,4 @@ data class PapirsykmeldingRequest(
     val utenOcr: Boolean,
 )
 
-data class UtenlandskPapirsykmeldingRequest(
-    val fnr: String?,
-)
+data class UtenlandskPapirsykmeldingRequest(val fnr: String?)

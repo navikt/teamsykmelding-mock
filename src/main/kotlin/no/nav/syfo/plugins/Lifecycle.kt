@@ -18,7 +18,4 @@ fun Application.configureLifecycleHooks() {
     }
 }
 
-data class ApplicationState(
-    var alive: Boolean = true,
-    var ready: Boolean = true,
-)
+data class ApplicationState(var alive: Boolean = true, var ready: Boolean = true)

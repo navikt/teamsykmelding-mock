@@ -22,5 +22,5 @@ data class EnkelSykmelding(
     val egenmeldt: Boolean,
     val papirsykmelding: Boolean,
     val harRedusertArbeidsgiverperiode: Boolean,
-    val merknader: List<Merknad>?
+    val merknader: List<Merknad>?,
 )

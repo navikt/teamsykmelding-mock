@@ -101,7 +101,7 @@ internal class PapirsykmeldingServiceTest {
 
             coVerify {
                 dokarkivClient.opprettJournalpost(
-                    match { it.dokumenter[0].dokumentvarianter.size == 3 },
+                    match { it.dokumenter[0].dokumentvarianter.size == 3 }
                 )
             }
         }
@@ -112,12 +112,12 @@ internal class PapirsykmeldingServiceTest {
         coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
         runBlocking {
             papirsykmeldingService.opprettPapirsykmelding(
-                papirsykmeldingRequest.copy(utenOcr = true),
+                papirsykmeldingRequest.copy(utenOcr = true)
             )
 
             coVerify {
                 dokarkivClient.opprettJournalpost(
-                    match { it.dokumenter[0].dokumentvarianter.size == 2 },
+                    match { it.dokumenter[0].dokumentvarianter.size == 2 }
                 )
             }
         }
@@ -134,7 +134,7 @@ internal class PapirsykmeldingServiceTest {
                     match {
                         it.dokumenter[0].dokumentvarianter.size == 2 &&
                             it.dokumenter[0].brevkode == "NAV 08-07.04 U"
-                    },
+                    }
                 )
             }
         }
@@ -144,9 +144,7 @@ internal class PapirsykmeldingServiceTest {
     internal fun `opprettPapirsykmelding med fnr = null`() {
         coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
         runBlocking {
-            papirsykmeldingService.opprettPapirsykmelding(
-                papirsykmeldingRequest.copy(fnr = null),
-            )
+            papirsykmeldingService.opprettPapirsykmelding(papirsykmeldingRequest.copy(fnr = null))
 
             coVerify { dokarkivClient.opprettJournalpost(match { it.bruker?.id == null }) }
         }
@@ -156,9 +154,7 @@ internal class PapirsykmeldingServiceTest {
     internal fun `opprettUtenlandskPapirsykmelding med fnr = null`() {
         coEvery { dokarkivClient.opprettJournalpost(any()) } returns "1"
         runBlocking {
-            papirsykmeldingService.opprettUtenlandskPapirsykmelding(
-                fnr = null,
-            )
+            papirsykmeldingService.opprettUtenlandskPapirsykmelding(fnr = null)
             coVerify { dokarkivClient.opprettJournalpost(match { it.bruker?.id == null }) }
         }
     }

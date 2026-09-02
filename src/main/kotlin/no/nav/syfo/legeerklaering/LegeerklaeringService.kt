@@ -59,7 +59,7 @@ class LegeerklaeringService(
 
     suspend fun tilLegeerklaeringXml(
         legeerklaeringRequest: LegeerklaeringRequest,
-        mottakId: String
+        mottakId: String,
     ): XMLEIFellesformat {
         val legeerklaeringXml =
             if (legeerklaeringRequest.vedlegg) {
@@ -86,7 +86,7 @@ class LegeerklaeringService(
 
         val personer =
             pdlPersonService.getPersoner(
-                listOf(legeerklaeringRequest.fnr, legeerklaeringRequest.fnrLege),
+                listOf(legeerklaeringRequest.fnr, legeerklaeringRequest.fnrLege)
             )
         val pasient = personer[legeerklaeringRequest.fnr]
         val lege = personer[legeerklaeringRequest.fnrLege]
@@ -121,7 +121,7 @@ class LegeerklaeringService(
 
     private fun diagnoseArbeidsuforhet(
         diagnosekode: String,
-        statuspresens: String?
+        statuspresens: String?,
     ): DiagnoseArbeidsuforhet {
         return DiagnoseArbeidsuforhet().apply {
             diagnoseKodesystem =
@@ -132,7 +132,7 @@ class LegeerklaeringService(
                             diagnose = "Vondt i skulder"
                             kodeverdi = diagnosekode
                             sortering = BigInteger.valueOf(0)
-                        },
+                        }
                     )
                 }
             symptomerBehandling = "Får vondt av behandlingen"
@@ -173,7 +173,7 @@ class LegeerklaeringService(
 
     private fun opprettHealthcareProfessional(
         legeFnr: String,
-        pdlPerson: PdlPerson
+        pdlPerson: PdlPerson,
     ): XMLHealthcareProfessional {
         return XMLHealthcareProfessional().apply {
             ident.add(
@@ -185,7 +185,7 @@ class LegeerklaeringService(
                             s = "6.87.654.3.21.9.8.7.6543.2198"
                             dn = "Fødselsnummer"
                         }
-                },
+                }
             )
             familyName = pdlPerson.navn.etternavn
             middleName = pdlPerson.navn.mellomnavn

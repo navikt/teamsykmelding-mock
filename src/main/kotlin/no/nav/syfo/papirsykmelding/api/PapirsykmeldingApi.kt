@@ -33,9 +33,7 @@ fun Route.registrerPapirsykmeldingApi() {
 
         val createdJournalPostId: String = papirsykmeldingService.opprettPapirsykmelding(request)
 
-        logger.info(
-            "Opprettet papirsykmelding med journalpostId ${createdJournalPostId}",
-        )
+        logger.info("Opprettet papirsykmelding med journalpostId ${createdJournalPostId}")
         call.respond(
             HttpStatusCode.OK,
             JournalpostOpprettetResponse(

@@ -23,7 +23,7 @@ fun Route.registrerLegeerklaeringApi() {
         logger.info("Opprettet legeerklæring")
         call.respond(
             HttpStatusCode.OK,
-            HttpMessage("Opprettet legeerklæring med mottakId $mottakId")
+            HttpMessage("Opprettet legeerklæring med mottakId $mottakId"),
         )
     }
 }

@@ -59,6 +59,4 @@ class NorskHelsenettClientDevelopment() : NorskHelsenettClient {
     }
 }
 
-data class Behandler(
-    val fnr: String?,
-)
+data class Behandler(val fnr: String?)

@@ -8,10 +8,7 @@ interface MqClient {
     val connection: Connection?
 }
 
-class MqClientProduction(
-    env: EnvironmentVariables,
-    serviceUser: ServiceUser,
-) : MqClient {
+class MqClientProduction(env: EnvironmentVariables, serviceUser: ServiceUser) : MqClient {
     override val connection: Connection? =
         connectionFactory(env).createConnection(serviceUser.username, serviceUser.password)
 }

@@ -48,19 +48,14 @@ class PdlPersonServiceProduction(
     private fun ResponseData.toPdlPersonMap(): Map<String, PdlPerson> {
         return hentPersonBolk!!
             .filter { it.person != null }
-            .associate {
-                it.ident to
-                    PdlPerson(
-                        navn = getNavn(it.person?.navn?.first()),
-                    )
-            }
+            .associate { it.ident to PdlPerson(navn = getNavn(it.person?.navn?.first())) }
     }
 
     private fun getNavn(navn: no.nav.syfo.pdl.client.model.Navn?): Navn =
         Navn(
             fornavn = navn?.fornavn ?: "Fornavn",
             mellomnavn = navn?.mellomnavn,
-            etternavn = navn?.etternavn ?: "Etternavn"
+            etternavn = navn?.etternavn ?: "Etternavn",
         )
 }
 

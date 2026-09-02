@@ -14,9 +14,7 @@ import no.nav.syfo.azuread.AccessTokenClientV2
 import no.nav.syfo.utils.logger
 
 interface DokarkivClient {
-    suspend fun opprettJournalpost(
-        journalpostRequest: JournalpostRequest,
-    ): String
+    suspend fun opprettJournalpost(journalpostRequest: JournalpostRequest): String
 }
 
 class DokarkivClientProduction(
@@ -25,15 +23,10 @@ class DokarkivClientProduction(
     private val scope: String,
     private val httpClient: HttpClient,
 ) : DokarkivClient {
-    override suspend fun opprettJournalpost(
-        journalpostRequest: JournalpostRequest,
-    ): String =
+    override suspend fun opprettJournalpost(journalpostRequest: JournalpostRequest): String =
         try {
             logger.info("Oppretter papirsykmelding i dokarkiv")
-            logger.info(
-                "journalpostRequest info {}",
-                kv("fnr", journalpostRequest.bruker?.id),
-            )
+            logger.info("journalpostRequest info {}", kv("fnr", journalpostRequest.bruker?.id))
             val token = accessTokenClientV2.getAccessTokenV2(scope)
             logger.info("Got access_token for dokarkiv")
             val httpResponse =
@@ -61,11 +54,7 @@ class DokarkivClientProduction(
         }
 }
 
-fun opprettUtenlandskJournalpost(
-    fnr: String?,
-    pdf: String,
-    antallPdfs: Int,
-): JournalpostRequest {
+fun opprettUtenlandskJournalpost(fnr: String?, pdf: String, antallPdfs: Int): JournalpostRequest {
     val dokumenter =
         (0 until antallPdfs).map {
             Dokument(
@@ -76,27 +65,19 @@ fun opprettUtenlandskJournalpost(
                             filtype = "PDFA",
                             variantformat = "ARKIV",
                             fysiskDokument = pdf,
-                        ),
+                        )
                     ),
                 tittel = "Sykmelding-doc-$it",
             )
         }
     if (fnr.isNullOrEmpty()) {
-        return JournalpostRequest(
-            dokumenter = dokumenter,
-        )
+        return JournalpostRequest(dokumenter = dokumenter)
     }
 
-    return JournalpostRequest(
-        bruker = Bruker(id = fnr),
-        dokumenter = dokumenter,
-    )
+    return JournalpostRequest(bruker = Bruker(id = fnr), dokumenter = dokumenter)
 }
 
-fun opprettUtenlandskNavNoJournalpost(
-    fnr: String?,
-    pdf: String,
-): JournalpostRequest {
+fun opprettUtenlandskNavNoJournalpost(fnr: String?, pdf: String): JournalpostRequest {
     val dokumenter =
         (0 until 1).map {
             Dokument(
@@ -157,23 +138,17 @@ fun opprettJournalpostPayload(
                 filtype = "XML",
                 variantformat = "ORIGINAL",
                 fysiskDokument = ocr,
-            ),
+            )
         )
     }
     if (fnr.isNullOrEmpty()) {
         return JournalpostRequest(
-            dokumenter =
-                listOf(
-                    Dokument(dokumentvarianter = dokumentvarianter),
-                ),
+            dokumenter = listOf(Dokument(dokumentvarianter = dokumentvarianter))
         )
     }
     return JournalpostRequest(
         bruker = Bruker(id = fnr),
-        dokumenter =
-            listOf(
-                Dokument(dokumentvarianter = dokumentvarianter),
-            ),
+        dokumenter = listOf(Dokument(dokumentvarianter = dokumentvarianter)),
     )
 }
 
@@ -201,10 +176,7 @@ fun opprettUtenlandskJournalpostPayload(
         return JournalpostRequest(
             dokumenter =
                 listOf(
-                    Dokument(
-                        brevkode = "NAV 08-07.04 U",
-                        dokumentvarianter = dokumentvarianter,
-                    ),
+                    Dokument(brevkode = "NAV 08-07.04 U", dokumentvarianter = dokumentvarianter)
                 ),
             tittel = "Utenlandsk papirsykmelding",
         )
@@ -212,12 +184,7 @@ fun opprettUtenlandskJournalpostPayload(
     return JournalpostRequest(
         bruker = Bruker(id = fnr),
         dokumenter =
-            listOf(
-                Dokument(
-                    brevkode = "NAV 08-07.04 U",
-                    dokumentvarianter = dokumentvarianter,
-                ),
-            ),
+            listOf(Dokument(brevkode = "NAV 08-07.04 U", dokumentvarianter = dokumentvarianter)),
         tittel = "Utenlandsk papirsykmelding",
     )
 }

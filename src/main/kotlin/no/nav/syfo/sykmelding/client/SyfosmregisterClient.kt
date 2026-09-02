@@ -37,6 +37,4 @@ class SyfosmregisterClientDevelopment() : SyfosmregisterClient {
     }
 }
 
-data class Sykmelding(
-    val id: String,
-)
+data class Sykmelding(val id: String)

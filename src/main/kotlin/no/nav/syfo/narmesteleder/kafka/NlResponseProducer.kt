@@ -21,10 +21,7 @@ class NlResponseProducerProduction(private val topic: String) : NlResponseProduc
     private val nlResponseProducer =
         KafkaProducer<String, NlResponseKafkaMessage>(
             KafkaUtils.getAivenKafkaConfig("nl-response-producer")
-                .toProducerConfig(
-                    "mock-nl-response-producer",
-                    JacksonKafkaSerializer::class,
-                )
+                .toProducerConfig("mock-nl-response-producer", JacksonKafkaSerializer::class)
         )
 
     override fun sendNlResponse(nlResponse: NlResponse?, nlAvbrutt: NlAvbrutt?) {
