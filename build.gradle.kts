@@ -30,7 +30,7 @@ val kafkaVersion = "4.3.1"
 plugins {
     id("application")
     id("com.diffplug.spotless") version "8.10.2"
-    kotlin("jvm") version "2.4.10"
+    kotlin("jvm") version "2.4.20"
 }
 
 application {
