@@ -23,14 +23,14 @@ val ktfmtVersion = "0.56"
 val junitJupiterVersion = "6.1.3"
 val koinVersion = "4.1.0-Beta8"
 val diagnosekoderVersion = "1.2026.0"
-val ibmMqVersion = "10.0.0.0"
+val ibmMqVersion = "10.0.0.5"
 val kafkaVersion = "4.3.1"
 
 
 plugins {
     id("application")
     id("com.diffplug.spotless") version "8.10.2"
-    kotlin("jvm") version "2.4.10"
+    kotlin("jvm") version "2.4.20"
 }
 
 application {
