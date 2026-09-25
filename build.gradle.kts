@@ -5,7 +5,7 @@ version = "1.0.0"
 
 
 val coroutinesVersion = "1.11.0"
-val jacksonVersion = "3.2.2"
+val jacksonVersion = "3.2.3"
 val kluentVersion = "1.73"
 val ktorVersion = "3.6.0"
 val logbackVersion = "1.6.3"
