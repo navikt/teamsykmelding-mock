@@ -6,6 +6,7 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.mockk
+import java.time.LocalDate
 import no.nav.syfo.model.HttpMessage
 import no.nav.syfo.model.RuleInfo
 import no.nav.syfo.model.Status
@@ -23,7 +24,6 @@ import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import tools.jackson.module.kotlin.jacksonMapperBuilder
-import java.time.LocalDate
 
 internal class SykmeldingApiTest {
     val objectMapper = jacksonMapperBuilder().build()
@@ -61,17 +61,17 @@ internal class SykmeldingApiTest {
                 fnrLege = "01117302624",
                 herId = null,
                 hprNummer = "7125186",
-                syketilfelleStartdato = LocalDate.of(2022,9,27),
+                syketilfelleStartdato = LocalDate.of(2022, 9, 27),
                 annenFraverGrunn = null,
                 perioder =
                     listOf(
                         SykmeldingPeriode(
-                            fom = LocalDate.of(2022,9,27),
-                            tom = LocalDate.of(2022,10,3),
+                            fom = LocalDate.of(2022, 9, 27),
+                            tom = LocalDate.of(2022, 10, 3),
                             type = SykmeldingType.HUNDREPROSENT,
                         )
                     ),
-                behandletDato = LocalDate.of(2022,9,27),
+                behandletDato = LocalDate.of(2022, 9, 27),
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
                 vedlegg = true,
@@ -79,14 +79,24 @@ internal class SykmeldingApiTest {
                 utdypendeOpplysninger = null,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = listOf(
-                    Diagnose(code = "Z999", system = "ICD10", text = "Avhengighet av ikke spes. teknisk hjelpemiddel og innretning"),
-                ),
+                bidiagnoser =
+                    listOf(
+                        Diagnose(
+                            code = "Z999",
+                            system = "ICD10",
+                            text = "Avhengighet av ikke spes. teknisk hjelpemiddel og innretning",
+                        )
+                    ),
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "A90", system = "ICPC2", text = "Medfødt feil IKA/multiple feil"),
+                hoveddiagnose =
+                    Diagnose(
+                        code = "A90",
+                        system = "ICPC2",
+                        text = "Medfødt feil IKA/multiple feil",
+                    ),
             )
 
         val response =
@@ -95,7 +105,7 @@ internal class SykmeldingApiTest {
                 setBody(objectMapper.writeValueAsString(sykmeldingRequest))
             }
 
-         assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
         val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
@@ -118,17 +128,17 @@ internal class SykmeldingApiTest {
                 fnrLege = "01117302624",
                 herId = null,
                 hprNummer = "7125186",
-                syketilfelleStartdato = LocalDate.of(2022,9,27),
+                syketilfelleStartdato = LocalDate.of(2022, 9, 27),
                 annenFraverGrunn = null,
                 perioder =
                     listOf(
                         SykmeldingPeriode(
-                            fom = LocalDate.of(2022,9,27),
-                            tom = LocalDate.of(2022,10,3),
+                            fom = LocalDate.of(2022, 9, 27),
+                            tom = LocalDate.of(2022, 10, 3),
                             type = SykmeldingType.HUNDREPROSENT,
                         )
                     ),
-                behandletDato = LocalDate.of(2022,9,27),
+                behandletDato = LocalDate.of(2022, 9, 27),
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
                 vedlegg = true,
@@ -141,7 +151,12 @@ internal class SykmeldingApiTest {
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "A90", system = "ICPC2", text = "Medfødt feil IKA/multiple feil"),
+                hoveddiagnose =
+                    Diagnose(
+                        code = "A90",
+                        system = "ICPC2",
+                        text = "Medfødt feil IKA/multiple feil",
+                    ),
             )
         val response =
             testClient().post("/sykmelding/opprett") {
@@ -149,7 +164,7 @@ internal class SykmeldingApiTest {
                 setBody(objectMapper.writeValueAsString(sykmeldingRequest))
             }
 
-         assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(HttpStatusCode.OK, response.status)
 
         val responseBody = response.bodyAsText()
         val httpMessage = objectMapper.readValue(responseBody, HttpMessage::class.java)
@@ -172,17 +187,17 @@ internal class SykmeldingApiTest {
                 fnrLege = "01117302624",
                 herId = null,
                 hprNummer = "7125186",
-                syketilfelleStartdato = LocalDate.of(2022,9,27),
+                syketilfelleStartdato = LocalDate.of(2022, 9, 27),
                 annenFraverGrunn = null,
                 perioder =
                     listOf(
                         SykmeldingPeriode(
-                            fom = LocalDate.of(2022,9,27),
-                            tom = LocalDate.of(2022,10,3),
+                            fom = LocalDate.of(2022, 9, 27),
+                            tom = LocalDate.of(2022, 10, 3),
                             type = SykmeldingType.HUNDREPROSENT,
                         )
                     ),
-                behandletDato = LocalDate.of(2022,9,27),
+                behandletDato = LocalDate.of(2022, 9, 27),
                 kontaktDato = null,
                 begrunnIkkeKontakt = null,
                 vedlegg = false,
@@ -190,14 +205,24 @@ internal class SykmeldingApiTest {
                 utdypendeOpplysninger = null,
                 regelsettVersjon = "2",
                 meldingTilArbeidsgiver = null,
-                bidiagnoser = listOf(
-                    Diagnose(code = "Z999", system = "ICD10", text = "Avhengighet av ikke spes. teknisk hjelpemiddel og innretning"),
-                ),
+                bidiagnoser =
+                    listOf(
+                        Diagnose(
+                            code = "Z999",
+                            system = "ICD10",
+                            text = "Avhengighet av ikke spes. teknisk hjelpemiddel og innretning",
+                        )
+                    ),
                 arbeidsgiverNavn = null,
                 vedleggMedVirus = false,
                 beskrivBistandNav = null,
                 yrkesskade = false,
-                hoveddiagnose = Diagnose(code = "A90", system = "ICPC2", text = "Medfødt feil IKA/multiple feil"),
+                hoveddiagnose =
+                    Diagnose(
+                        code = "A90",
+                        system = "ICPC2",
+                        text = "Medfødt feil IKA/multiple feil",
+                    ),
             )
 
         val response =
@@ -206,7 +231,7 @@ internal class SykmeldingApiTest {
                 setBody(objectMapper.writeValueAsString(sykmeldingRequest))
             }
 
-         assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(HttpStatusCode.OK, response.status)
         val responseBody = response.bodyAsText()
         val validationResultFromResponse =
             objectMapper.readValue(responseBody, ValidationResult::class.java)

@@ -23,14 +23,16 @@ val ktfmtVersion = "0.56"
 val junitJupiterVersion = "6.1.3"
 val koinVersion = "4.1.0-Beta8"
 val diagnosekoderVersion = "1.2026.0"
-val ibmMqVersion = "10.0.0.0"
+val ibmMqVersion = "10.0.0.5"
 val kafkaVersion = "4.3.1"
 
+// Included due vulnerabilities in this transitive dependency
+val bcprovJdk18onVersion = "1.86"
 
 plugins {
     id("application")
     id("com.diffplug.spotless") version "8.10.2"
-    kotlin("jvm") version "2.4.10"
+    kotlin("jvm") version "2.4.20"
 }
 
 application {
@@ -73,6 +75,11 @@ dependencies {
     implementation("org.apache.kafka:kafka-streams:$kafkaVersion")
 
     implementation("com.ibm.mq:com.ibm.mq.jakarta.client:$ibmMqVersion")
+    constraints {
+        implementation("org.bouncycastle:bcprov-jdk18on:$bcprovJdk18onVersion") {
+            because("Due to this transitive dependency vulnerability inside of com.ibm.mq:com.ibm.mq.jakarta.client")
+        }
+    }
 
     implementation("no.nav.helse:diagnosekoder:$diagnosekoderVersion")
 
