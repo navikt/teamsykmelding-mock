@@ -5,10 +5,10 @@ version = "1.0.0"
 
 
 val coroutinesVersion = "1.11.0"
-val jacksonVersion = "3.2.2"
+val jacksonVersion = "3.2.3"
 val kluentVersion = "1.73"
 val ktorVersion = "3.6.0"
-val logbackVersion = "1.6.3"
+val logbackVersion = "1.6.4"
 val logstashEncoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val mockkVersion = "1.14.11"
@@ -31,7 +31,7 @@ val bcprovJdk18onVersion = "1.86"
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "8.10.2"
+    id("com.diffplug.spotless") version "8.10.3"
     kotlin("jvm") version "2.4.20"
 }
 
