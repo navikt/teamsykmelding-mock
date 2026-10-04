@@ -32,7 +32,7 @@ jobs:
           distribution: 'temurin'
           java-version: '25'
 
-      - run: ./gradlew installDist -x test
+      - run: ./gradlew installDist -x test -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g
 
       - uses: github/codeql-action/analyze@v4.38.2
         with:
