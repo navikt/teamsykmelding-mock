@@ -31,8 +31,8 @@ val bcprovJdk18onVersion = "1.86"
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "8.10.3"
-    kotlin("jvm") version "2.4.20"
+    id("com.diffplug.spotless") version "8.10.4"
+    kotlin("jvm") version "2.4.21"
 }
 
 application {
