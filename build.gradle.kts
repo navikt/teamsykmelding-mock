@@ -23,16 +23,16 @@ val ktfmtVersion = "0.56"
 val junitJupiterVersion = "6.1.3"
 val koinVersion = "4.1.0-Beta8"
 val diagnosekoderVersion = "1.2026.0"
-val ibmMqVersion = "10.0.0.5"
-val kafkaVersion = "4.3.1"
+val ibmMqVersion = "10.0.1.0"
+val kafkaVersion = "4.3.2"
 
 // Included due vulnerabilities in this transitive dependency
 val bcprovJdk18onVersion = "1.86"
 
 plugins {
     id("application")
-    id("com.diffplug.spotless") version "8.10.3"
-    kotlin("jvm") version "2.4.20"
+    id("com.diffplug.spotless") version "8.10.4"
+    kotlin("jvm") version "2.4.21"
 }
 
 application {
