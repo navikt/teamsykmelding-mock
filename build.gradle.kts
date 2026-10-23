@@ -24,7 +24,7 @@ val junitJupiterVersion = "6.1.3"
 val koinVersion = "4.1.0-Beta8"
 val diagnosekoderVersion = "1.2026.0"
 val ibmMqVersion = "10.0.1.0"
-val kafkaVersion = "4.3.2"
+val kafkaVersion = "4.4.0"
 
 // Included due vulnerabilities in this transitive dependency
 val bcprovJdk18onVersion = "1.86"
