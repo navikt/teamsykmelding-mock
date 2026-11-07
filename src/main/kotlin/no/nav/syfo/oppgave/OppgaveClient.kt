@@ -123,7 +123,6 @@ data class OpprettOppgave(
     val aktivDato: LocalDate,
     val fristFerdigstillelse: LocalDate? = null,
     val prioritet: String,
-    val behandlingsTema: Nothing?,
     val metadata: Map<String, String?> = emptyMap(),
     val personident: String? = null,
 )
