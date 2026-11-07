@@ -49,7 +49,6 @@ class UtenlandskSykmeldingService(
                 behandlesAvApplikasjon = null,
                 beskrivelse = "Manuell",
                 tema = "SYM",
-                behandlingsTema = null,
                 oppgavetype = "JFR",
                 behandlingstype = "ae0106",
                 aktivDato = LocalDate.now(),
