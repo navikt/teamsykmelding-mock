@@ -89,7 +89,6 @@ class UtenlandskSykmeldingService(
                 behandlesAvApplikasjon = null,
                 beskrivelse = "Egenerklæring for utenlandske sykemeldinger",
                 tema = "SYK",
-                behandlingsTema = null,
                 oppgavetype = "JFR",
                 behandlingstype = "ae0106",
                 aktivDato = LocalDate.now(),
