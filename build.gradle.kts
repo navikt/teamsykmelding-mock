@@ -27,7 +27,7 @@ val ibmMqVersion = "10.0.1.0"
 val kafkaVersion = "4.4.0"
 
 // Included due vulnerabilities in this transitive dependency
-val bcprovJdk18onVersion = "1.86"
+val bcprovJdk18onVersion = "1.87"
 
 plugins {
     id("application")
