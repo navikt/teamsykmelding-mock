@@ -8,7 +8,7 @@ val coroutinesVersion = "1.11.0"
 val jacksonVersion = "3.3.0"
 val kluentVersion = "1.73"
 val ktorVersion = "3.6.1"
-val logbackVersion = "1.6.6"
+val logbackVersion = "1.6.7"
 val logstashEncoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val mockkVersion = "1.14.12"
@@ -27,7 +27,7 @@ val ibmMqVersion = "10.0.1.0"
 val kafkaVersion = "4.4.0"
 
 // Included due vulnerabilities in this transitive dependency
-val bcprovJdk18onVersion = "1.86"
+val bcprovJdk18onVersion = "1.87"
 
 plugins {
     id("application")
