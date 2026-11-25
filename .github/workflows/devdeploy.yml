@@ -51,7 +51,7 @@ jobs:
           ./gradlew installDist -x test
       - name: docker-build-push
         if: ${{ github.actor != 'dependabot[bot]' }}
-        uses: nais/docker-build-push@v0
+        uses: nais/docker-build-push@v1
         id: docker-build-push
         with:
           team: teamsykmelding
